@@ -20,17 +20,17 @@ public class MainActivity extends AppCompatActivity {
         HashMap<String, Object> paymentDetails = new HashMap<>();
         paymentDetails.put(MOLPayActivity.mp_amount, "1.10");
 
-//        paymentDetails.put(MOLPayActivity.mp_username, "SB_molpayxdk");
-//        paymentDetails.put(MOLPayActivity.mp_password, "cT54#Lk@22");
-//        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "SB_molpayxdk");
-//        paymentDetails.put(MOLPayActivity.mp_app_name, "molpayxdk");
-//        paymentDetails.put(MOLPayActivity.mp_verification_key, "4445db44bdb60687a8e7f7903a59c3a9");
-
         paymentDetails.put(MOLPayActivity.mp_username, "molpayxdk");
         paymentDetails.put(MOLPayActivity.mp_password, "cT54#Lk@22");
         paymentDetails.put(MOLPayActivity.mp_merchant_ID, "molpayxdk");
         paymentDetails.put(MOLPayActivity.mp_app_name, "deeplinkapp");
         paymentDetails.put(MOLPayActivity.mp_verification_key, "4445db44bdb60687a8e7f7903a59c3a9");
+
+//        paymentDetails.put(MOLPayActivity.mp_username, "molpayxdk");
+//        paymentDetails.put(MOLPayActivity.mp_password, "cT54#Lk@22");
+//        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "molpayxdk");
+//        paymentDetails.put(MOLPayActivity.mp_app_name, "deeplinkapp");
+//        paymentDetails.put(MOLPayActivity.mp_verification_key, "4445db44bdb60687a8e7f7903a59c3a9");
 
 //        paymentDetails.put(MOLPayActivity.mp_username, "api_lyfegroups");
 //        paymentDetails.put(MOLPayActivity.mp_password, "api_surpr58!");
@@ -51,9 +51,9 @@ public class MainActivity extends AppCompatActivity {
         paymentDetails.put(MOLPayActivity.mp_bill_description, "description");
         paymentDetails.put(MOLPayActivity.mp_bill_name, "Hisyam Adzha");
         paymentDetails.put(MOLPayActivity.mp_bill_email, "example@email.com");
-        paymentDetails.put(MOLPayActivity.mp_bill_mobile, "+60123456789");
+        paymentDetails.put(MOLPayActivity.mp_bill_mobile, "0355545401");
         paymentDetails.put(MOLPayActivity.mp_channel_editing, false);
-        paymentDetails.put(MOLPayActivity.mp_editing_enabled, false);
+        paymentDetails.put(MOLPayActivity.mp_editing_enabled, true);
 
         // 3.23.0
 //        paymentDetails.put(MOLPayActivity.mp_bill_name, "Clement`~!@#$%^&*()_-+={[}]|\\\\:;\\\"'<,>.?/");
