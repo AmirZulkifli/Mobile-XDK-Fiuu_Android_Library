@@ -4,7 +4,7 @@ uploadArchives {
     repositories.mavenDeployer {
         pom.groupId = 'com.molpay'
         pom.artifactId = 'molpay-mobile-xdk-android'
-        pom.version = '3.29.0'
+        pom.version = '3.29.1'
         // Add other pom properties here if you want (developer details / licenses)
         repository(url: "file:///someLocation/")
     }
@@ -15,7 +15,7 @@ apply plugin: 'com.android.library'
 ext {
     PUBLISH_GROUP_ID = 'com.molpay'
     PUBLISH_ARTIFACT_ID =  'molpay-mobile-xdk-android'
-    PUBLISH_VERSION = '3.29.0'
+    PUBLISH_VERSION = '3.29.1'
 }
 
 //android {
@@ -45,7 +45,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 27
         versionCode 1
-        versionName '3.29.0'
+        versionName '3.29.1'
     }
     buildTypes {
         release {

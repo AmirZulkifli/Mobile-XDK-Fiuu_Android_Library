@@ -18,38 +18,20 @@ public class MainActivity extends AppCompatActivity {
 
     private void restartmolpay() {
         HashMap<String, Object> paymentDetails = new HashMap<>();
-        paymentDetails.put(MOLPayActivity.mp_amount, "1.10");
+        paymentDetails.put(MOLPayActivity.mp_amount, "0.10");
 
-        paymentDetails.put(MOLPayActivity.mp_username, "molpayxdk");
-        paymentDetails.put(MOLPayActivity.mp_password, "cT54#Lk@22");
-        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "molpayxdk");
-        paymentDetails.put(MOLPayActivity.mp_app_name, "deeplinkapp");
-        paymentDetails.put(MOLPayActivity.mp_verification_key, "4445db44bdb60687a8e7f7903a59c3a9");
-
-//        paymentDetails.put(MOLPayActivity.mp_username, "molpayxdk");
-//        paymentDetails.put(MOLPayActivity.mp_password, "cT54#Lk@22");
-//        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "molpayxdk");
-//        paymentDetails.put(MOLPayActivity.mp_app_name, "deeplinkapp");
-//        paymentDetails.put(MOLPayActivity.mp_verification_key, "4445db44bdb60687a8e7f7903a59c3a9");
-
-//        paymentDetails.put(MOLPayActivity.mp_username, "api_lyfegroups");
-//        paymentDetails.put(MOLPayActivity.mp_password, "api_surpr58!");
-//        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "lyfegroups");
-//        paymentDetails.put(MOLPayActivity.mp_app_name, "lyfegroups");
-//        paymentDetails.put(MOLPayActivity.mp_verification_key, "fe6bed3fa572c9b14a408aa06d04c418");
-
-//        paymentDetails.put(MOLPayActivity.mp_username, "api_SB_hisyam");
-//        paymentDetails.put(MOLPayActivity.mp_password, "hisyam*1302");
-//        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "SB_hisyam");
-//        paymentDetails.put(MOLPayActivity.mp_app_name, "hisyamadzha");
-//        paymentDetails.put(MOLPayActivity.mp_verification_key, "83d93f5c269ed3e70a514d92734f5f6c");
+        paymentDetails.put(MOLPayActivity.mp_username, "");
+        paymentDetails.put(MOLPayActivity.mp_password, "");
+        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "");
+        paymentDetails.put(MOLPayActivity.mp_app_name, "");
+        paymentDetails.put(MOLPayActivity.mp_verification_key, "");
 
         paymentDetails.put(MOLPayActivity.mp_order_ID, Calendar.getInstance().getTimeInMillis());
         paymentDetails.put(MOLPayActivity.mp_currency, "MYR");
         paymentDetails.put(MOLPayActivity.mp_country, "MY");
         paymentDetails.put(MOLPayActivity.mp_channel, "multi");
         paymentDetails.put(MOLPayActivity.mp_bill_description, "description");
-        paymentDetails.put(MOLPayActivity.mp_bill_name, "Hisyam Adzha");
+        paymentDetails.put(MOLPayActivity.mp_bill_name, "CY & Co.");
         paymentDetails.put(MOLPayActivity.mp_bill_email, "example@email.com");
         paymentDetails.put(MOLPayActivity.mp_bill_mobile, "0355545401");
         paymentDetails.put(MOLPayActivity.mp_channel_editing, false);
