@@ -94,7 +94,7 @@ public class MOLPayActivity extends AppCompatActivity {
     private final static String mppinstructioncapture = "mppinstructioncapture://";
     private final static String module_id = "module_id";
     private final static String wrapper_version = "wrapper_version";
-    private final static String wrapperVersion = "1";
+    private final static String wrapperVersion = "0";
 
     private String base64Img;
     private String filename;
@@ -253,13 +253,34 @@ public class MOLPayActivity extends AppCompatActivity {
             }
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+        @Override
+        public boolean shouldOverrideUrlLoading(final WebView view, String url) {
+            Log.d(MOLPAY, "MPMOLPayUIWebClient shouldOverrideUrlLoading url = " + url);
+            if (url != null) {
+                if (url.contains("scbeasy/easy_app_link.html")) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                    startActivity(intent);
+                    view.evaluateJavascript("document.getElementById(\"ref_no\").value", new ValueCallback<String>() {
+                        @Override
+                        public void onReceiveValue(String ref_no) {
+                            Log.d(MOLPAY, "MPMOLPayUIWebClient trans_id = " + ref_no.replaceAll("\"", ""));
+                            view.loadUrl("https://pay.merchant.razer.com/RMS/intermediate_app/loading.php?tranID=" + ref_no.replaceAll("\"", ""));
+                        }
+                    });
+                    return true;
+                }
+            }
+            return false;
+        }
+
 	    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
 		@Override
 		public void onPageFinished (final WebView view, String url) {
 		    Log.d(MOLPAY, "MPMOLPayUIWebClient onPageFinished url = " + url);
 	//            nativeWebRequestUrlUpdates(url);
 
-		    if (url.indexOf("intermediate_appTNG-EWALLET.php") > -1 || url.indexOf("intermediate_app/processing.php") > -1) {
+		    if (url.contains("intermediate_appTNG-EWALLET.php") || url.contains("intermediate_app/processing.php")) {
 
 			Log.d(MOLPAY, "contains url");
 
