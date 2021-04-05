@@ -4,7 +4,7 @@ uploadArchives {
     repositories.mavenDeployer {
         pom.groupId = 'com.molpay'
         pom.artifactId = 'molpay-mobile-xdk-android'
-        pom.version = '3.29.1'
+        pom.version = '3.30.0'
         // Add other pom properties here if you want (developer details / licenses)
         repository(url: "file:///someLocation/")
     }
@@ -15,7 +15,7 @@ apply plugin: 'com.android.library'
 ext {
     PUBLISH_GROUP_ID = 'com.molpay'
     PUBLISH_ARTIFACT_ID =  'molpay-mobile-xdk-android'
-    PUBLISH_VERSION = '3.29.1'
+    PUBLISH_VERSION = '3.30.0'
 }
 
 //android {
@@ -45,7 +45,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 27
         versionCode 1
-        versionName '3.29.1'
+        versionName '3.30.0'
     }
     buildTypes {
         release {
@@ -82,10 +82,10 @@ android {
 dependencies {
     testImplementation 'junit:junit:4.12'
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.android.volley:volley:1.1.0'
-    implementation 'com.android.support:support-v4:27.0.1'
-    implementation 'com.android.support:appcompat-v7:27.0.1'
-    implementation 'com.android.support:design:27.0.1'
+    implementation 'com.android.volley:volley:1.2.0'
+    implementation 'com.android.support:support-v4:27.1.1'
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support:design:27.1.1'
 }
 
 apply from: 'https://raw.githubusercontent.com/ArthurHub/release-android-library/master/android-release-aar.gradle'

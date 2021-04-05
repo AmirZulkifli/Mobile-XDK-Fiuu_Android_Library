@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void restartmolpay() {
         HashMap<String, Object> paymentDetails = new HashMap<>();
-        paymentDetails.put(MOLPayActivity.mp_amount, "0.10");
+        paymentDetails.put(MOLPayActivity.mp_amount, "1.01");
 
         paymentDetails.put(MOLPayActivity.mp_username, "");
         paymentDetails.put(MOLPayActivity.mp_password, "");
@@ -30,10 +30,10 @@ public class MainActivity extends AppCompatActivity {
         paymentDetails.put(MOLPayActivity.mp_currency, "MYR");
         paymentDetails.put(MOLPayActivity.mp_country, "MY");
         paymentDetails.put(MOLPayActivity.mp_channel, "multi");
-        paymentDetails.put(MOLPayActivity.mp_bill_description, "description");
-        paymentDetails.put(MOLPayActivity.mp_bill_name, "CY & Co.");
-        paymentDetails.put(MOLPayActivity.mp_bill_email, "example@email.com");
-        paymentDetails.put(MOLPayActivity.mp_bill_mobile, "0355545401");
+        paymentDetails.put(MOLPayActivity.mp_bill_description, "bill description");
+        paymentDetails.put(MOLPayActivity.mp_bill_name, "bill name");
+        paymentDetails.put(MOLPayActivity.mp_bill_email, "example@gmail.com");
+        paymentDetails.put(MOLPayActivity.mp_bill_mobile, "01234567888");
         paymentDetails.put(MOLPayActivity.mp_channel_editing, false);
         paymentDetails.put(MOLPayActivity.mp_editing_enabled, true);
 
