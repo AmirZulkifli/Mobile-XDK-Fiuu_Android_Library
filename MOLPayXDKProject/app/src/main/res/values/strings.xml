@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MOLPayXDKProject</string>
+    <string name="app_name">RazerMSXDKProject</string>
     <string name="action_settings">Settings</string>
-    <string name="restart">New</string>
+    <string name="restart">Start</string>
 </resources>
