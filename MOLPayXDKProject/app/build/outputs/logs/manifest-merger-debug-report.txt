@@ -1,0 +1,301 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml:2:1-44:12
+INJECTED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml:2:1-44:12
+INJECTED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml:2:1-44:12
+INJECTED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml:2:1-44:12
+MERGED from [:molpayxdk] /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/molpayxdk/build/intermediates/merged_manifest/debug/AndroidManifest.xml:2:1-18:12
+MERGED from [com.google.android.material:material:1.5.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/af35b537d470373f9e70012b61853e77/transformed/material-1.5.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.constraintlayout:constraintlayout:2.0.1] /Users/adlan.rashdan/.gradle/caches/transforms-3/a7c27c8e51d577acb37a4675369e5583/transformed/constraintlayout-2.0.1/AndroidManifest.xml:2:1-11:12
+MERGED from [androidx.appcompat:appcompat:1.4.1] /Users/adlan.rashdan/.gradle/caches/transforms-3/b4164372e98ef6f73f9d23ffbd822586/transformed/appcompat-1.4.1/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.viewpager2:viewpager2:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/8e8efaf2b73993e8a8b39dd02daf58ab/transformed/jetified-viewpager2-1.0.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.legacy:legacy-support-v4:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/7954d557b6413e1e35e16f1fec5b7b9e/transformed/legacy-support-v4-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.fragment:fragment:1.3.6] /Users/adlan.rashdan/.gradle/caches/transforms-3/f06196d57a49c0e3a8bb87f563cdd72c/transformed/fragment-1.3.6/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.activity:activity:1.2.4] /Users/adlan.rashdan/.gradle/caches/transforms-3/50f78decd8d5ad1a06e185c48b414a40/transformed/jetified-activity-1.2.4/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.appcompat:appcompat-resources:1.4.1] /Users/adlan.rashdan/.gradle/caches/transforms-3/bdae81b5915eccf98e7b4dc68a332774/transformed/jetified-appcompat-resources-1.4.1/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.emoji2:emoji2-views-helper:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/7ef2216fc9198ac947b3e4c566e24870/transformed/jetified-emoji2-views-helper-1.0.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.emoji2:emoji2:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/9186bead2f6ed4aea8e64e614f441a0e/transformed/jetified-emoji2-1.0.0/AndroidManifest.xml:17:1-37:12
+MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/f205ad71f7a4eefa2e11d432a6f0739b/transformed/legacy-support-core-ui-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.drawerlayout:drawerlayout:1.1.1] /Users/adlan.rashdan/.gradle/caches/transforms-3/7e3805d4d0e9fd2c503ffc33f5624a12/transformed/drawerlayout-1.1.1/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.1.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/0fc60acadc76082b2fd9ed4638cc3c6a/transformed/coordinatorlayout-1.1.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.dynamicanimation:dynamicanimation:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/1888cd949f13826ab8f3cdc9b39d1ac7/transformed/dynamicanimation-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.transition:transition:1.2.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/20af7a3d6610d9ab5fea00c2c4e306a6/transformed/transition-1.2.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/6429335d81efa54ffd8648dad4a8c50f/transformed/vectordrawable-animated-1.1.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/44c0db51c7a6617fcb6183006df9d9a4/transformed/vectordrawable-1.1.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.viewpager:viewpager:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/116676d3826e5af2d0414e1e9deea3f0/transformed/viewpager-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/a9d78f7133ff93b6896092b057d52304/transformed/legacy-support-core-utils-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.loader:loader:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/9a860d9615c47d8c8ade808a7b16a2ea/transformed/loader-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.recyclerview:recyclerview:1.1.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/ea9bf75008b057f9994d504e9c8ad6f2/transformed/recyclerview-1.1.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/c69b6edbd4a511ddaf11a0c15f4c337a/transformed/slidingpanelayout-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.customview:customview:1.1.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/6a4852e11818337aeadc6e4268719045/transformed/customview-1.1.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.media:media:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/5c733ccd46061a0d2f32ddc50ee68de0/transformed/media-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/27d10ead7726bdc7964e46c665e8aeb0/transformed/swiperefreshlayout-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.asynclayoutinflater:asynclayoutinflater:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/db70919bb14993219485f93d366fde2f/transformed/asynclayoutinflater-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.core:core:1.7.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/97483df5741529bcdff7e90438db5d82/transformed/core-1.7.0/AndroidManifest.xml:17:1-26:12
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/58b677bf46baade93a5dbed15d3db144/transformed/cursoradapter-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.3.1] /Users/adlan.rashdan/.gradle/caches/transforms-3/7b3a86c5194450921253e38f77412ac5/transformed/jetified-lifecycle-viewmodel-savedstate-2.3.1/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.savedstate:savedstate:1.1.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/796a47cc0c5276ec85c4af2da39cba2f/transformed/jetified-savedstate-1.1.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.3.1] /Users/adlan.rashdan/.gradle/caches/transforms-3/a9ccd0d464c991f4f048a07baa52ea50/transformed/lifecycle-viewmodel-2.3.1/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.cardview:cardview:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/abb739a65f05c90899e1233c59d378f0/transformed/cardview-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/adlan.rashdan/.gradle/caches/transforms-3/797eb581677bef1afe6e8f035e31097b/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:17:1-27:12
+MERGED from [androidx.lifecycle:lifecycle-process:2.4.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/430120718e89ea23fa1ece4ec61758e1/transformed/jetified-lifecycle-process-2.4.0/AndroidManifest.xml:17:1-37:12
+MERGED from [androidx.startup:startup-runtime:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/2d4e8f3461771b42f9f72a01cc96224b/transformed/jetified-startup-runtime-1.0.0/AndroidManifest.xml:17:1-33:12
+MERGED from [androidx.tracing:tracing:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/7c330ee080fa94f350f4bb2f8cc2ae73/transformed/jetified-tracing-1.0.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/3b0706959aee41f6b7bb039ac678cc56/transformed/lifecycle-livedata-2.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.3.1] /Users/adlan.rashdan/.gradle/caches/transforms-3/8e00af4814f091512590d9c98235a04c/transformed/lifecycle-livedata-core-2.3.1/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.4.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/b28cd80df4db44193a66881dce68e672/transformed/lifecycle-runtime-2.4.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.arch.core:core-runtime:2.1.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/a1593157864bd6b59a67a322f49b0c82/transformed/core-runtime-2.1.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.interpolator:interpolator:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/4d263d9bec6e87ab3021aff94af7d659/transformed/interpolator-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.documentfile:documentfile:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/835c3d68d086de5d80e7200953912b01/transformed/documentfile-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/eecef71ed43f0f5cba049cd93ba53d61/transformed/localbroadcastmanager-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.print:print:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/aa23ecb205565db638efe23418d7ffab/transformed/print-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.annotation:annotation-experimental:1.1.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/616d2f9b2138deef59071822175b7dd2/transformed/jetified-annotation-experimental-1.1.0/AndroidManifest.xml:17:1-24:12
+INJECTED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml:2:1-44:12
+INJECTED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml:2:1-44:12
+INJECTED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml:2:1-44:12
+	package
+		ADDED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml:3:5-42
+		INJECTED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml
+		INJECTED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml
+	android:versionName
+		INJECTED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml
+		ADDED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml:2:1-44:12
+		INJECTED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml
+	android:versionCode
+		INJECTED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml
+		ADDED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml:2:1-44:12
+		INJECTED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml:2:11-69
+uses-permission#android.permission.INTERNET
+ADDED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml:5:5-66
+MERGED from [:molpayxdk] /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/molpayxdk/build/intermediates/merged_manifest/debug/AndroidManifest.xml:9:5-67
+MERGED from [:molpayxdk] /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/molpayxdk/build/intermediates/merged_manifest/debug/AndroidManifest.xml:9:5-67
+	android:name
+		ADDED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml:5:22-64
+application
+ADDED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml:7:5-42:19
+MERGED from [:molpayxdk] /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/molpayxdk/build/intermediates/merged_manifest/debug/AndroidManifest.xml:12:5-16:19
+MERGED from [:molpayxdk] /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/molpayxdk/build/intermediates/merged_manifest/debug/AndroidManifest.xml:12:5-16:19
+MERGED from [com.google.android.material:material:1.5.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/af35b537d470373f9e70012b61853e77/transformed/material-1.5.0/AndroidManifest.xml:22:5-20
+MERGED from [com.google.android.material:material:1.5.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/af35b537d470373f9e70012b61853e77/transformed/material-1.5.0/AndroidManifest.xml:22:5-20
+MERGED from [androidx.constraintlayout:constraintlayout:2.0.1] /Users/adlan.rashdan/.gradle/caches/transforms-3/a7c27c8e51d577acb37a4675369e5583/transformed/constraintlayout-2.0.1/AndroidManifest.xml:9:5-20
+MERGED from [androidx.constraintlayout:constraintlayout:2.0.1] /Users/adlan.rashdan/.gradle/caches/transforms-3/a7c27c8e51d577acb37a4675369e5583/transformed/constraintlayout-2.0.1/AndroidManifest.xml:9:5-20
+MERGED from [androidx.emoji2:emoji2:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/9186bead2f6ed4aea8e64e614f441a0e/transformed/jetified-emoji2-1.0.0/AndroidManifest.xml:25:5-35:19
+MERGED from [androidx.emoji2:emoji2:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/9186bead2f6ed4aea8e64e614f441a0e/transformed/jetified-emoji2-1.0.0/AndroidManifest.xml:25:5-35:19
+MERGED from [androidx.core:core:1.7.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/97483df5741529bcdff7e90438db5d82/transformed/core-1.7.0/AndroidManifest.xml:24:5-89
+MERGED from [androidx.core:core:1.7.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/97483df5741529bcdff7e90438db5d82/transformed/core-1.7.0/AndroidManifest.xml:24:5-89
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/adlan.rashdan/.gradle/caches/transforms-3/797eb581677bef1afe6e8f035e31097b/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:24:5-25:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/adlan.rashdan/.gradle/caches/transforms-3/797eb581677bef1afe6e8f035e31097b/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:24:5-25:19
+MERGED from [androidx.lifecycle:lifecycle-process:2.4.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/430120718e89ea23fa1ece4ec61758e1/transformed/jetified-lifecycle-process-2.4.0/AndroidManifest.xml:25:5-35:19
+MERGED from [androidx.lifecycle:lifecycle-process:2.4.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/430120718e89ea23fa1ece4ec61758e1/transformed/jetified-lifecycle-process-2.4.0/AndroidManifest.xml:25:5-35:19
+MERGED from [androidx.startup:startup-runtime:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/2d4e8f3461771b42f9f72a01cc96224b/transformed/jetified-startup-runtime-1.0.0/AndroidManifest.xml:25:5-31:19
+MERGED from [androidx.startup:startup-runtime:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/2d4e8f3461771b42f9f72a01cc96224b/transformed/jetified-startup-runtime-1.0.0/AndroidManifest.xml:25:5-31:19
+	android:appComponentFactory
+		ADDED from [androidx.core:core:1.7.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/97483df5741529bcdff7e90438db5d82/transformed/core-1.7.0/AndroidManifest.xml:24:18-86
+	android:supportsRtl
+		ADDED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml:11:9-35
+	android:label
+		ADDED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml:10:9-41
+	android:icon
+		ADDED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml:9:9-43
+	android:allowBackup
+		ADDED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml:8:9-35
+	android:theme
+		ADDED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml:12:9-40
+activity#com.molpay.molpayxdkproject.MainActivity
+ADDED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml:13:9-24:20
+	android:label
+		ADDED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml:16:13-45
+	android:launchMode
+		ADDED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml:15:13-44
+	android:exported
+		ADDED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml:18:13-36
+	android:theme
+		ADDED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml:17:13-56
+	android:name
+		ADDED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml:14:13-41
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml:19:13-23:29
+action#android.intent.action.MAIN
+ADDED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml:20:17-69
+	android:name
+		ADDED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml:20:25-66
+category#android.intent.category.LAUNCHER
+ADDED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml:22:17-77
+	android:name
+		ADDED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml:22:27-74
+activity#com.molpay.molpayxdkproject.DeepLinkActivity
+ADDED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml:26:9-39:20
+	android:launchMode
+		ADDED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml:27:13-44
+	android:exported
+		ADDED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml:28:13-36
+	android:name
+		ADDED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml:26:19-51
+intent-filter#action:name:android.intent.action.VIEW+category:name:android.intent.category.BROWSABLE+category:name:android.intent.category.DEFAULT+data:scheme:testappurl
+ADDED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml:30:13-38:29
+action#android.intent.action.VIEW
+ADDED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml:31:17-69
+	android:name
+		ADDED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml:31:25-66
+category#android.intent.category.DEFAULT
+ADDED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml:33:17-76
+	android:name
+		ADDED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml:33:27-73
+category#android.intent.category.BROWSABLE
+ADDED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml:34:17-78
+	android:name
+		ADDED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml:34:27-75
+data
+ADDED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml:36:17-37:51
+	android:scheme
+		ADDED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml:37:21-48
+activity#com.molpay.molpayxdk.MOLPayActivity
+ADDED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml:40:9-41:31
+MERGED from [:molpayxdk] /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/molpayxdk/build/intermediates/merged_manifest/debug/AndroidManifest.xml:13:9-15:62
+MERGED from [:molpayxdk] /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/molpayxdk/build/intermediates/merged_manifest/debug/AndroidManifest.xml:13:9-15:62
+	android:label
+		ADDED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml:41:13-29
+	android:configChanges
+		ADDED from [:molpayxdk] /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/molpayxdk/build/intermediates/merged_manifest/debug/AndroidManifest.xml:15:13-59
+	android:name
+		ADDED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml:40:19-69
+uses-sdk
+INJECTED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml
+INJECTED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml
+MERGED from [:molpayxdk] /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/molpayxdk/build/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
+MERGED from [:molpayxdk] /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/molpayxdk/build/intermediates/merged_manifest/debug/AndroidManifest.xml:5:5-7:41
+MERGED from [com.google.android.material:material:1.5.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/af35b537d470373f9e70012b61853e77/transformed/material-1.5.0/AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.material:material:1.5.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/af35b537d470373f9e70012b61853e77/transformed/material-1.5.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.constraintlayout:constraintlayout:2.0.1] /Users/adlan.rashdan/.gradle/caches/transforms-3/a7c27c8e51d577acb37a4675369e5583/transformed/constraintlayout-2.0.1/AndroidManifest.xml:5:5-7:41
+MERGED from [androidx.constraintlayout:constraintlayout:2.0.1] /Users/adlan.rashdan/.gradle/caches/transforms-3/a7c27c8e51d577acb37a4675369e5583/transformed/constraintlayout-2.0.1/AndroidManifest.xml:5:5-7:41
+MERGED from [androidx.appcompat:appcompat:1.4.1] /Users/adlan.rashdan/.gradle/caches/transforms-3/b4164372e98ef6f73f9d23ffbd822586/transformed/appcompat-1.4.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.appcompat:appcompat:1.4.1] /Users/adlan.rashdan/.gradle/caches/transforms-3/b4164372e98ef6f73f9d23ffbd822586/transformed/appcompat-1.4.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.viewpager2:viewpager2:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/8e8efaf2b73993e8a8b39dd02daf58ab/transformed/jetified-viewpager2-1.0.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.viewpager2:viewpager2:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/8e8efaf2b73993e8a8b39dd02daf58ab/transformed/jetified-viewpager2-1.0.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.legacy:legacy-support-v4:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/7954d557b6413e1e35e16f1fec5b7b9e/transformed/legacy-support-v4-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-v4:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/7954d557b6413e1e35e16f1fec5b7b9e/transformed/legacy-support-v4-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.fragment:fragment:1.3.6] /Users/adlan.rashdan/.gradle/caches/transforms-3/f06196d57a49c0e3a8bb87f563cdd72c/transformed/fragment-1.3.6/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.fragment:fragment:1.3.6] /Users/adlan.rashdan/.gradle/caches/transforms-3/f06196d57a49c0e3a8bb87f563cdd72c/transformed/fragment-1.3.6/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.activity:activity:1.2.4] /Users/adlan.rashdan/.gradle/caches/transforms-3/50f78decd8d5ad1a06e185c48b414a40/transformed/jetified-activity-1.2.4/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.activity:activity:1.2.4] /Users/adlan.rashdan/.gradle/caches/transforms-3/50f78decd8d5ad1a06e185c48b414a40/transformed/jetified-activity-1.2.4/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.appcompat:appcompat-resources:1.4.1] /Users/adlan.rashdan/.gradle/caches/transforms-3/bdae81b5915eccf98e7b4dc68a332774/transformed/jetified-appcompat-resources-1.4.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.appcompat:appcompat-resources:1.4.1] /Users/adlan.rashdan/.gradle/caches/transforms-3/bdae81b5915eccf98e7b4dc68a332774/transformed/jetified-appcompat-resources-1.4.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.emoji2:emoji2-views-helper:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/7ef2216fc9198ac947b3e4c566e24870/transformed/jetified-emoji2-views-helper-1.0.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.emoji2:emoji2-views-helper:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/7ef2216fc9198ac947b3e4c566e24870/transformed/jetified-emoji2-views-helper-1.0.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.emoji2:emoji2:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/9186bead2f6ed4aea8e64e614f441a0e/transformed/jetified-emoji2-1.0.0/AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.emoji2:emoji2:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/9186bead2f6ed4aea8e64e614f441a0e/transformed/jetified-emoji2-1.0.0/AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/f205ad71f7a4eefa2e11d432a6f0739b/transformed/legacy-support-core-ui-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-ui:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/f205ad71f7a4eefa2e11d432a6f0739b/transformed/legacy-support-core-ui-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.drawerlayout:drawerlayout:1.1.1] /Users/adlan.rashdan/.gradle/caches/transforms-3/7e3805d4d0e9fd2c503ffc33f5624a12/transformed/drawerlayout-1.1.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.drawerlayout:drawerlayout:1.1.1] /Users/adlan.rashdan/.gradle/caches/transforms-3/7e3805d4d0e9fd2c503ffc33f5624a12/transformed/drawerlayout-1.1.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.1.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/0fc60acadc76082b2fd9ed4638cc3c6a/transformed/coordinatorlayout-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.coordinatorlayout:coordinatorlayout:1.1.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/0fc60acadc76082b2fd9ed4638cc3c6a/transformed/coordinatorlayout-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.dynamicanimation:dynamicanimation:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/1888cd949f13826ab8f3cdc9b39d1ac7/transformed/dynamicanimation-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.dynamicanimation:dynamicanimation:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/1888cd949f13826ab8f3cdc9b39d1ac7/transformed/dynamicanimation-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.transition:transition:1.2.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/20af7a3d6610d9ab5fea00c2c4e306a6/transformed/transition-1.2.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.transition:transition:1.2.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/20af7a3d6610d9ab5fea00c2c4e306a6/transformed/transition-1.2.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/6429335d81efa54ffd8648dad4a8c50f/transformed/vectordrawable-animated-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable-animated:1.1.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/6429335d81efa54ffd8648dad4a8c50f/transformed/vectordrawable-animated-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/44c0db51c7a6617fcb6183006df9d9a4/transformed/vectordrawable-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.vectordrawable:vectordrawable:1.1.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/44c0db51c7a6617fcb6183006df9d9a4/transformed/vectordrawable-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.viewpager:viewpager:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/116676d3826e5af2d0414e1e9deea3f0/transformed/viewpager-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/116676d3826e5af2d0414e1e9deea3f0/transformed/viewpager-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/a9d78f7133ff93b6896092b057d52304/transformed/legacy-support-core-utils-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.legacy:legacy-support-core-utils:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/a9d78f7133ff93b6896092b057d52304/transformed/legacy-support-core-utils-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/9a860d9615c47d8c8ade808a7b16a2ea/transformed/loader-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/9a860d9615c47d8c8ade808a7b16a2ea/transformed/loader-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.recyclerview:recyclerview:1.1.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/ea9bf75008b057f9994d504e9c8ad6f2/transformed/recyclerview-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.recyclerview:recyclerview:1.1.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/ea9bf75008b057f9994d504e9c8ad6f2/transformed/recyclerview-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/c69b6edbd4a511ddaf11a0c15f4c337a/transformed/slidingpanelayout-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.slidingpanelayout:slidingpanelayout:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/c69b6edbd4a511ddaf11a0c15f4c337a/transformed/slidingpanelayout-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview:1.1.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/6a4852e11818337aeadc6e4268719045/transformed/customview-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.customview:customview:1.1.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/6a4852e11818337aeadc6e4268719045/transformed/customview-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.media:media:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/5c733ccd46061a0d2f32ddc50ee68de0/transformed/media-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.media:media:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/5c733ccd46061a0d2f32ddc50ee68de0/transformed/media-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/27d10ead7726bdc7964e46c665e8aeb0/transformed/swiperefreshlayout-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.swiperefreshlayout:swiperefreshlayout:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/27d10ead7726bdc7964e46c665e8aeb0/transformed/swiperefreshlayout-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.asynclayoutinflater:asynclayoutinflater:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/db70919bb14993219485f93d366fde2f/transformed/asynclayoutinflater-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.asynclayoutinflater:asynclayoutinflater:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/db70919bb14993219485f93d366fde2f/transformed/asynclayoutinflater-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core:1.7.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/97483df5741529bcdff7e90438db5d82/transformed/core-1.7.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.core:core:1.7.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/97483df5741529bcdff7e90438db5d82/transformed/core-1.7.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/58b677bf46baade93a5dbed15d3db144/transformed/cursoradapter-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.cursoradapter:cursoradapter:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/58b677bf46baade93a5dbed15d3db144/transformed/cursoradapter-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.3.1] /Users/adlan.rashdan/.gradle/caches/transforms-3/7b3a86c5194450921253e38f77412ac5/transformed/jetified-lifecycle-viewmodel-savedstate-2.3.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.3.1] /Users/adlan.rashdan/.gradle/caches/transforms-3/7b3a86c5194450921253e38f77412ac5/transformed/jetified-lifecycle-viewmodel-savedstate-2.3.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.savedstate:savedstate:1.1.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/796a47cc0c5276ec85c4af2da39cba2f/transformed/jetified-savedstate-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.savedstate:savedstate:1.1.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/796a47cc0c5276ec85c4af2da39cba2f/transformed/jetified-savedstate-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.3.1] /Users/adlan.rashdan/.gradle/caches/transforms-3/a9ccd0d464c991f4f048a07baa52ea50/transformed/lifecycle-viewmodel-2.3.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.3.1] /Users/adlan.rashdan/.gradle/caches/transforms-3/a9ccd0d464c991f4f048a07baa52ea50/transformed/lifecycle-viewmodel-2.3.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.cardview:cardview:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/abb739a65f05c90899e1233c59d378f0/transformed/cardview-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.cardview:cardview:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/abb739a65f05c90899e1233c59d378f0/transformed/cardview-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/adlan.rashdan/.gradle/caches/transforms-3/797eb581677bef1afe6e8f035e31097b/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/adlan.rashdan/.gradle/caches/transforms-3/797eb581677bef1afe6e8f035e31097b/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-process:2.4.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/430120718e89ea23fa1ece4ec61758e1/transformed/jetified-lifecycle-process-2.4.0/AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.lifecycle:lifecycle-process:2.4.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/430120718e89ea23fa1ece4ec61758e1/transformed/jetified-lifecycle-process-2.4.0/AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.startup:startup-runtime:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/2d4e8f3461771b42f9f72a01cc96224b/transformed/jetified-startup-runtime-1.0.0/AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.startup:startup-runtime:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/2d4e8f3461771b42f9f72a01cc96224b/transformed/jetified-startup-runtime-1.0.0/AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.tracing:tracing:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/7c330ee080fa94f350f4bb2f8cc2ae73/transformed/jetified-tracing-1.0.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.tracing:tracing:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/7c330ee080fa94f350f4bb2f8cc2ae73/transformed/jetified-tracing-1.0.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/3b0706959aee41f6b7bb039ac678cc56/transformed/lifecycle-livedata-2.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/3b0706959aee41f6b7bb039ac678cc56/transformed/lifecycle-livedata-2.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.3.1] /Users/adlan.rashdan/.gradle/caches/transforms-3/8e00af4814f091512590d9c98235a04c/transformed/lifecycle-livedata-core-2.3.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.3.1] /Users/adlan.rashdan/.gradle/caches/transforms-3/8e00af4814f091512590d9c98235a04c/transformed/lifecycle-livedata-core-2.3.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.4.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/b28cd80df4db44193a66881dce68e672/transformed/lifecycle-runtime-2.4.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.lifecycle:lifecycle-runtime:2.4.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/b28cd80df4db44193a66881dce68e672/transformed/lifecycle-runtime-2.4.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.arch.core:core-runtime:2.1.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/a1593157864bd6b59a67a322f49b0c82/transformed/core-runtime-2.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.arch.core:core-runtime:2.1.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/a1593157864bd6b59a67a322f49b0c82/transformed/core-runtime-2.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.interpolator:interpolator:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/4d263d9bec6e87ab3021aff94af7d659/transformed/interpolator-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/4d263d9bec6e87ab3021aff94af7d659/transformed/interpolator-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.documentfile:documentfile:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/835c3d68d086de5d80e7200953912b01/transformed/documentfile-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.documentfile:documentfile:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/835c3d68d086de5d80e7200953912b01/transformed/documentfile-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/eecef71ed43f0f5cba049cd93ba53d61/transformed/localbroadcastmanager-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.localbroadcastmanager:localbroadcastmanager:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/eecef71ed43f0f5cba049cd93ba53d61/transformed/localbroadcastmanager-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.print:print:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/aa23ecb205565db638efe23418d7ffab/transformed/print-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.print:print:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/aa23ecb205565db638efe23418d7ffab/transformed/print-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.annotation:annotation-experimental:1.1.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/616d2f9b2138deef59071822175b7dd2/transformed/jetified-annotation-experimental-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.annotation:annotation-experimental:1.1.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/616d2f9b2138deef59071822175b7dd2/transformed/jetified-annotation-experimental-1.1.0/AndroidManifest.xml:20:5-22:41
+INJECTED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml
+INJECTED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml
+		ADDED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml
+		INJECTED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml
+		ADDED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml
+		INJECTED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml
+uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+ADDED from [:molpayxdk] /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/molpayxdk/build/intermediates/merged_manifest/debug/AndroidManifest.xml:10:5-81
+	android:name
+		ADDED from [:molpayxdk] /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/molpayxdk/build/intermediates/merged_manifest/debug/AndroidManifest.xml:10:22-78
+uses-permission#android.permission.READ_EXTERNAL_STORAGE
+IMPLIED from /Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/src/main/AndroidManifest.xml:2:1-44:12 reason: com.molpay.molpayxdk requested WRITE_EXTERNAL_STORAGE
+provider#androidx.startup.InitializationProvider
+ADDED from [androidx.emoji2:emoji2:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/9186bead2f6ed4aea8e64e614f441a0e/transformed/jetified-emoji2-1.0.0/AndroidManifest.xml:26:9-34:20
+MERGED from [androidx.lifecycle:lifecycle-process:2.4.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/430120718e89ea23fa1ece4ec61758e1/transformed/jetified-lifecycle-process-2.4.0/AndroidManifest.xml:26:9-34:20
+MERGED from [androidx.lifecycle:lifecycle-process:2.4.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/430120718e89ea23fa1ece4ec61758e1/transformed/jetified-lifecycle-process-2.4.0/AndroidManifest.xml:26:9-34:20
+MERGED from [androidx.startup:startup-runtime:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/2d4e8f3461771b42f9f72a01cc96224b/transformed/jetified-startup-runtime-1.0.0/AndroidManifest.xml:26:9-30:34
+MERGED from [androidx.startup:startup-runtime:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/2d4e8f3461771b42f9f72a01cc96224b/transformed/jetified-startup-runtime-1.0.0/AndroidManifest.xml:26:9-30:34
+	tools:node
+		ADDED from [androidx.emoji2:emoji2:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/9186bead2f6ed4aea8e64e614f441a0e/transformed/jetified-emoji2-1.0.0/AndroidManifest.xml:30:13-31
+	android:authorities
+		ADDED from [androidx.emoji2:emoji2:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/9186bead2f6ed4aea8e64e614f441a0e/transformed/jetified-emoji2-1.0.0/AndroidManifest.xml:28:13-68
+	android:exported
+		ADDED from [androidx.emoji2:emoji2:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/9186bead2f6ed4aea8e64e614f441a0e/transformed/jetified-emoji2-1.0.0/AndroidManifest.xml:29:13-37
+	android:name
+		ADDED from [androidx.emoji2:emoji2:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/9186bead2f6ed4aea8e64e614f441a0e/transformed/jetified-emoji2-1.0.0/AndroidManifest.xml:27:13-67
+meta-data#androidx.emoji2.text.EmojiCompatInitializer
+ADDED from [androidx.emoji2:emoji2:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/9186bead2f6ed4aea8e64e614f441a0e/transformed/jetified-emoji2-1.0.0/AndroidManifest.xml:31:13-33:52
+	android:value
+		ADDED from [androidx.emoji2:emoji2:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/9186bead2f6ed4aea8e64e614f441a0e/transformed/jetified-emoji2-1.0.0/AndroidManifest.xml:33:17-49
+	android:name
+		ADDED from [androidx.emoji2:emoji2:1.0.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/9186bead2f6ed4aea8e64e614f441a0e/transformed/jetified-emoji2-1.0.0/AndroidManifest.xml:32:17-75
+meta-data#androidx.lifecycle.ProcessLifecycleInitializer
+ADDED from [androidx.lifecycle:lifecycle-process:2.4.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/430120718e89ea23fa1ece4ec61758e1/transformed/jetified-lifecycle-process-2.4.0/AndroidManifest.xml:31:13-33:52
+	android:value
+		ADDED from [androidx.lifecycle:lifecycle-process:2.4.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/430120718e89ea23fa1ece4ec61758e1/transformed/jetified-lifecycle-process-2.4.0/AndroidManifest.xml:33:17-49
+	android:name
+		ADDED from [androidx.lifecycle:lifecycle-process:2.4.0] /Users/adlan.rashdan/.gradle/caches/transforms-3/430120718e89ea23fa1ece4ec61758e1/transformed/jetified-lifecycle-process-2.4.0/AndroidManifest.xml:32:17-78
