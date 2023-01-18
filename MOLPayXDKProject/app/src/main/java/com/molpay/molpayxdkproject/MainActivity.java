@@ -20,11 +20,11 @@ public class MainActivity extends AppCompatActivity {
         HashMap<String, Object> paymentDetails = new HashMap<>();
         paymentDetails.put(MOLPayActivity.mp_amount, "1.01");
 
-        paymentDetails.put(MOLPayActivity.mp_username, "RMSxdk_2022");
-        paymentDetails.put(MOLPayActivity.mp_password, "RMSpwd@2022");
-        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "rmsxdk_mobile_Dev");
-        paymentDetails.put(MOLPayActivity.mp_app_name, "mobile");
-        paymentDetails.put(MOLPayActivity.mp_verification_key, "ee738b541eff7b6b495e44771f71c0ec");
+        paymentDetails.put(MOLPayActivity.mp_username, "");
+        paymentDetails.put(MOLPayActivity.mp_password, "");
+        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "");
+        paymentDetails.put(MOLPayActivity.mp_app_name, "");
+        paymentDetails.put(MOLPayActivity.mp_verification_key, "");
 
         paymentDetails.put(MOLPayActivity.mp_order_ID, Calendar.getInstance().getTimeInMillis());
         paymentDetails.put(MOLPayActivity.mp_currency, "MYR");
