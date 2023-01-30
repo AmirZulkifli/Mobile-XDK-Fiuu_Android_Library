@@ -1,0 +1,28 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.molpay.molpayxdk" >
+4
+5    <uses-sdk
+6        android:minSdkVersion="16"
+6-->/Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/molpayxdk/src/main/AndroidManifest.xml
+7        android:targetSdkVersion="31" />
+7-->/Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/molpayxdk/src/main/AndroidManifest.xml
+8
+9    <uses-permission android:name="android.permission.INTERNET" />
+9-->/Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/molpayxdk/src/main/AndroidManifest.xml:5:5-67
+9-->/Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/molpayxdk/src/main/AndroidManifest.xml:5:22-64
+10    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+10-->/Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/molpayxdk/src/main/AndroidManifest.xml:6:5-81
+10-->/Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/molpayxdk/src/main/AndroidManifest.xml:6:22-78
+11
+12    <application>
+12-->/Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/molpayxdk/src/main/AndroidManifest.xml:8:5-11:19
+13        <activity
+13-->/Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/molpayxdk/src/main/AndroidManifest.xml:9:9-10:62
+14            android:name="com.molpay.molpayxdk.MOLPayActivity"
+14-->/Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/molpayxdk/src/main/AndroidManifest.xml:9:19-49
+15            android:configChanges="orientation|screenSize" />
+15-->/Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/molpayxdk/src/main/AndroidManifest.xml:10:13-59
+16    </application>
+17
+18</manifest>

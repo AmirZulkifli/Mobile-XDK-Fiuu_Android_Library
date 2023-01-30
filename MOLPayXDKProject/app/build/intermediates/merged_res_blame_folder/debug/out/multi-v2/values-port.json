@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "/Users/adlan.rashdan/Desktop/Workspace/git2u/android/MOLPayXDKProject/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-port/values-port.xml",
+            "map": [
+                {
+                    "source": "/Users/adlan.rashdan/.gradle/caches/transforms-3/90f2b18c38ea45ce1c8d37f25188c1dc/transformed/appcompat-1.4.1/res/values-port/values-port.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "55",
+                        "endOffsets": "106"
+                    }
+                }
+            ]
+        }
+    ]
+}
