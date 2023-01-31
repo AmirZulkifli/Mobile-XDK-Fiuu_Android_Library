@@ -2,6 +2,7 @@ package com.molpay.molpayxdk;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -12,9 +13,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Message;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
@@ -94,7 +95,7 @@ public class MOLPayActivity extends AppCompatActivity {
     private final static String mppinstructioncapture = "mppinstructioncapture://";
     private final static String module_id = "module_id";
     private final static String wrapper_version = "wrapper_version";
-    private final static String wrapperVersion = "0";
+    private final static String wrapperVersion = "5";
 
     private String base64Img;
     private String filename;
@@ -143,8 +144,6 @@ public class MOLPayActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_molpay);
 
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
-
         paymentDetails = (HashMap<String, Object>) getIntent().getSerializableExtra(MOLPayPaymentDetails);
 
         // For submodule wrappers
@@ -184,11 +183,6 @@ public class MOLPayActivity extends AppCompatActivity {
         mpMainUI.setWebViewClient(new MPMainUIWebClient());
         mpMainUI.loadUrl("file:///android_asset/molpay-mobile-xdk-www/index.html");
 
-//        mpMainUI.loadUrl("https://www.cimbclicks.com.my/clicks/#/fpx?refId=3d5ad74c5202cecc2bcae04f7a0c316088f5a78a601d9a27913ef09edeffdb9a47f0e506ee208ff88494340a4a945dddeee7088c903fb1dc59e0b121a7330004631559cec169370cd9cf09547dcff090ac5c22fb5920e8063ec1f86d7ec8f1328db26b38dbd9e7c0ab5fda5388bab66730ede95ee309c17a27f7de5f1297b43f");
-//        mpMainUI.loadUrl("https://www.molpay.com/seamless-demo-v3.16/index.html");
-//        mpMainUI.loadUrl("https://www.onlinepayment.com.my/MOLPay/pay/molpay/cimb.php?amount=1.10&orderid=DEMO9521&bill_desc=testing+by+MOLPay&bill_name=MOLPay+Demo&bill_email=demo@molpay.com&bill_mobile=55218438&currency=MYR");
-//        mpMainUI.loadUrl("https://www.cimbclicks.com.my/clicks/#/fpx?refId=5003a8b3a246552bd53c6d832720162019ec8407a844f122ca5b5f0be9e8747f9c6b039adeee9d11d574e035fa2a440ce158240992fa3760fc568aff6ad30abbcbeac1fe987326f4975ae668197b6f0a34415a3f17356327c043a120cf2293997ad33fcdc85a402ebe4839840c622001ccb83fac1c1c9daf4d47f792264b778c");
-
         // Configure MOLPay ui
         mpMOLPayUI.getSettings().setAllowUniversalAccessFromFileURLs(true);
         mpMOLPayUI.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
@@ -196,8 +190,36 @@ public class MOLPayActivity extends AppCompatActivity {
         mpMOLPayUI.getSettings().setDomStorageEnabled(true);
         mpMOLPayUI.setWebViewClient(new MPMOLPayUIWebClient());
         mpMOLPayUI.setWebChromeClient(new MPMOLPayUIWebChromeClient());
+        mpMOLPayUI.getSettings().setLoadWithOverviewMode(true);
+        mpMOLPayUI.getSettings().setUseWideViewPort(true);
 
         CookieManager.getInstance().setAcceptCookie(true);
+
+        mpMOLPayUI.setLongClickable(true);
+        mpMOLPayUI.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                Log.d(MOLPAY, "Long press fired!");
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    mpMOLPayUI.evaluateJavascript("document.getElementById(\"qrcode_img\").src", new ValueCallback<String>() {
+                        @Override
+                        public void onReceiveValue(String qrdata) {
+                            Log.d(MOLPAY, "QR data = " + qrdata);
+                            if(qrdata != null && !qrdata.equals("null")) {
+                                String imageQrCode = qrdata.replaceAll("data:image/png;base64,", "");
+                                Log.d(MOLPAY, "imageQrCode = " + imageQrCode);
+                                byte[] decodedBytes = Base64.decode(imageQrCode, 0);
+                                imgBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+                                filename = paymentDetails.get("mp_order_ID").toString() + ".png";
+
+                                isStoragePermissionGranted();
+                            }
+                        }
+                    });
+                }
+                return false;
+            }
+        });
 
     }
 
@@ -259,8 +281,13 @@ public class MOLPayActivity extends AppCompatActivity {
             Log.d(MOLPAY, "MPMOLPayUIWebClient shouldOverrideUrlLoading url = " + url);
             if (url != null) {
                 if (url.contains("scbeasy/easy_app_link.html")) {
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                    startActivity(intent);
+                    try {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                        startActivity(intent);
+                    } catch (ActivityNotFoundException e) {
+                        // Define what your app should do if no activity can handle the intent.
+                        e.printStackTrace();
+                    }
                     view.evaluateJavascript("document.getElementById(\"ref_no\").value", new ValueCallback<String>() {
                         @Override
                         public void onReceiveValue(String ref_no) {
@@ -269,44 +296,65 @@ public class MOLPayActivity extends AppCompatActivity {
                         }
                     });
                     return true;
+                } else if (url.contains("atome-my.onelink.me") ||
+                        url.contains("boostappdeeplink://") ||
+                        url.contains("market://") ||
+                        url.contains("intent://")) {
+                    try {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                        startActivity(intent);
+                    } catch (ActivityNotFoundException e) {
+                        // Define what your app should do if no activity can handle the intent.
+                        e.printStackTrace();
+                    }
+                    return true;
+                }else if (url.contains("alipays://")) {
+                    try {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                        startActivity(intent);
+                    } catch (ActivityNotFoundException e) {
+                        // Define what your app should do if no activity can handle the intent.
+                        e.printStackTrace();
+                    }
+                    return true;
                 }
             }
             return false;
         }
 
-	    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-		@Override
-		public void onPageFinished (final WebView view, String url) {
-		    Log.d(MOLPAY, "MPMOLPayUIWebClient onPageFinished url = " + url);
-	//            nativeWebRequestUrlUpdates(url);
+        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+        @Override
+        public void onPageFinished (final WebView view, String url) {
+            Log.d(MOLPAY, "MPMOLPayUIWebClient onPageFinished url = " + url);
+            //            nativeWebRequestUrlUpdates(url);
 
-		    if (url.contains("intermediate_appTNG-EWALLET.php") || url.contains("intermediate_app/processing.php")) {
+            if (url.contains("intermediate_appTNG-EWALLET.php") || url.contains("intermediate_app/processing.php")) {
 
-			Log.d(MOLPAY, "contains url");
+                Log.d(MOLPAY, "contains url");
 
-			view.evaluateJavascript("document.getElementById(\"systembrowserurl\").innerHTML", new ValueCallback<String>() {
-			    @Override
-			    public void onReceiveValue(String s) {
-			        String base64String = s;
-			        Log.d(MOLPAY, "MPMOLPayUIWebClient base64String = " + base64String);
+                view.evaluateJavascript("document.getElementById(\"systembrowserurl\").innerHTML", new ValueCallback<String>() {
+                    @Override
+                    public void onReceiveValue(String s) {
+                        String base64String = s;
+                        Log.d(MOLPAY, "MPMOLPayUIWebClient base64String = " + base64String);
 
-		//                // Decode base64
-			        byte[] data = Base64.decode(base64String, Base64.DEFAULT);
-			        String dataString = new String(data);
-			        Log.d(MOLPAY, "MPBankUIWebClient dataString = " + dataString);
+                        //                // Decode base64
+                        byte[] data = Base64.decode(base64String, Base64.DEFAULT);
+                        String dataString = new String(data);
+                        Log.d(MOLPAY, "MPBankUIWebClient dataString = " + dataString);
 
-			        if (base64String.length() > 0) {
-			            Log.d(MOLPAY, "MPMOLPayUIWebClient success");
-			            Intent intent= new Intent(Intent.ACTION_VIEW, Uri.parse(dataString));
-			            startActivity(intent);
-			        } else {
-			            Log.d(MOLPAY, "MPMOLPayUIWebClient empty dataString");
-			        }
-			            }
-			        });
+                        if (base64String.length() > 0) {
+                            Log.d(MOLPAY, "MPMOLPayUIWebClient success");
+                            Intent intent= new Intent(Intent.ACTION_VIEW, Uri.parse(dataString));
+                            startActivity(intent);
+                        } else {
+                            Log.d(MOLPAY, "MPMOLPayUIWebClient empty dataString");
+                        }
+                    }
+                });
 
-		    }
-		}
+            }
+        }
     }
 
     private class MPMOLPayUIWebChromeClient extends WebChromeClient {
@@ -445,7 +493,6 @@ public class MOLPayActivity extends AppCompatActivity {
 
                     byte[] decodedBytes = Base64.decode(base64Img, 0);
                     imgBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
-//                    Log.d(MOLPAY, "Bitmap Img = " + imgBitmap);
 
                     isStoragePermissionGranted();
 
@@ -472,12 +519,6 @@ public class MOLPayActivity extends AppCompatActivity {
                 mpMainUI.loadUrl("javascript:updateSdkData(" + json.toString() + ")");
 
             }
-
-//            // CB-10395 InAppBrowser's WebView not storing cookies reliable to local device storage
-//            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-//                CookieManager.getInstance().flush();
-//            }
-
         }
 
     }
@@ -489,13 +530,6 @@ public class MOLPayActivity extends AppCompatActivity {
 
             FileOutputStream fOut = null;
             File file = new File(fullPath, filename);
-//            if (file.exists()){
-//            	file.delete(); //DELETE existing file
-//  	        fileName = "myfile.jpg";
-//            	file = new File(fullPath, filename);
-//
-//        	    }
-//            File file = new File(Environment.getExternalStorageDirectory(), "receipt.png");
             file.createNewFile();
             fOut = new FileOutputStream(file);
 

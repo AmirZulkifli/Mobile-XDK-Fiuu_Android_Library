@@ -2,8 +2,8 @@ package com.molpay.molpayxdkproject;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         paymentDetails.put(MOLPayActivity.mp_order_ID, Calendar.getInstance().getTimeInMillis());
         paymentDetails.put(MOLPayActivity.mp_currency, "MYR");
         paymentDetails.put(MOLPayActivity.mp_country, "MY");
-        paymentDetails.put(MOLPayActivity.mp_channel, "multi");
+        paymentDetails.put(MOLPayActivity.mp_channel, "credit");
         paymentDetails.put(MOLPayActivity.mp_bill_description, "bill description");
         paymentDetails.put(MOLPayActivity.mp_bill_name, "bill name");
         paymentDetails.put(MOLPayActivity.mp_bill_email, "example@gmail.com");
@@ -37,46 +37,10 @@ public class MainActivity extends AppCompatActivity {
         paymentDetails.put(MOLPayActivity.mp_channel_editing, false);
         paymentDetails.put(MOLPayActivity.mp_editing_enabled, true);
 
-        // 3.23.0
-//        paymentDetails.put(MOLPayActivity.mp_bill_name, "Clement`~!@#$%^&*()_-+={[}]|\\\\:;\\\"'<,>.?/");
+    //    paymentDetails.put(MOLPayActivity.mp_preferred_token, "new");
 
-//        paymentDetails.put(MOLPayActivity.mp_transaction_id, "");//8064815
-//        paymentDetails.put(MOLPayActivity.mp_request_type, "");
-
-//        String binlock[] = {"123456","234567"};
-//        paymentDetails.put(MOLPayActivity.mp_bin_lock, binlock);
-//        paymentDetails.put(MOLPayActivity.mp_bin_lock_err_msg, "Wrong BIN format");
-//
-//        paymentDetails.put(MOLPayActivity.mp_is_escrow, "");
-//        paymentDetails.put(MOLPayActivity.mp_filter, "1");
-//        paymentDetails.put(MOLPayActivity.mp_custom_css_url, "file:///android_asset/custom.css");
-//        paymentDetails.put(MOLPayActivity.mp_preferred_token, "");
-//        paymentDetails.put(MOLPayActivity.mp_tcctype, "SALS");//SALS //AUTH
-//        paymentDetails.put(MOLPayActivity.mp_is_recurring, false);
-
-//        String allowedChannels[] = {"credit","credit3"};
-//        paymentDetails.put(MOLPayActivity.mp_allowed_channels, allowedChannels);
-
-//        paymentDetails.put(MOLPayActivity.mp_sandbox_mode, true);
 //        paymentDetails.put(MOLPayActivity.mp_express_mode, true);
-//        paymentDetails.put(MOLPayActivity.mp_advanced_email_validation_enabled, true);
-//        paymentDetails.put(MOLPayActivity.mp_advanced_phone_validation_enabled, true);
-//        paymentDetails.put(MOLPayActivity.mp_bill_name_edit_disabled, true);
-//        paymentDetails.put(MOLPayActivity.mp_bill_email_edit_disabled, true);
-//        paymentDetails.put(MOLPayActivity.mp_bill_mobile_edit_disabled, true);
-//        paymentDetails.put(MOLPayActivity.mp_bill_description_edit_disabled, true);
-//        paymentDetails.put("is_submodule", true);
-//        paymentDetails.put("module_id", "abc.com");
-//        paymentDetails.put("wrapper_version", "99");
-//        paymentDetails.put(MOLPayActivity.mp_dev_mode, true);
-//        paymentDetails.put(MOLPayActivity.mp_language, "ZH");
-//        paymentDetails.put("mp_timeout", 300);
-//        paymentDetails.put(MOLPayActivity.mp_cash_waittime, 24);
-//        paymentDetails.put(MOLPayActivity.mp_non_3DS, true);
-//        paymentDetails.put(MOLPayActivity.mp_card_list_disabled, true);
 
-//        String disabledChannels[] = {"credit"};
-//        paymentDetails.put(MOLPayActivity.mp_disabled_channels, disabledChannels);
 
         Intent intent = new Intent(MainActivity.this, MOLPayActivity.class);
         intent.putExtra(MOLPayActivity.MOLPayPaymentDetails, paymentDetails);
