@@ -297,7 +297,7 @@ public class MOLPayActivity extends AppCompatActivity {
                     });
                     return true;
                 } else if (url.contains("atome-my.onelink.me") ||
-                        url.contains("boostappdeeplink://") ||
+                        url.contains("myboost.app") ||
                         url.contains("market://") ||
                         url.contains("intent://")) {
                     try {
