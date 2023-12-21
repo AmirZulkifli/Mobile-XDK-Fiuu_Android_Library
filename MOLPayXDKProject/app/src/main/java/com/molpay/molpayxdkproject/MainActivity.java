@@ -20,20 +20,20 @@ public class MainActivity extends AppCompatActivity {
         HashMap<String, Object> paymentDetails = new HashMap<>();
         paymentDetails.put(MOLPayActivity.mp_amount, "1.01");
 
-        paymentDetails.put(MOLPayActivity.mp_username, "api_zuspresso");
-        paymentDetails.put(MOLPayActivity.mp_password, "api_frhbwne10#");
-        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "zuspresso");
-        paymentDetails.put(MOLPayActivity.mp_app_name, "zuspresso");
-        paymentDetails.put(MOLPayActivity.mp_verification_key, "99abf61f1f9395effbb5dc29b35fe78c");
+        paymentDetails.put(MOLPayActivity.mp_username, "");
+        paymentDetails.put(MOLPayActivity.mp_password, "");
+        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "");
+        paymentDetails.put(MOLPayActivity.mp_app_name, "");
+        paymentDetails.put(MOLPayActivity.mp_verification_key, "");
 
         paymentDetails.put(MOLPayActivity.mp_order_ID, Calendar.getInstance().getTimeInMillis());
         paymentDetails.put(MOLPayActivity.mp_currency, "MYR");
         paymentDetails.put(MOLPayActivity.mp_country, "MY");
         paymentDetails.put(MOLPayActivity.mp_channel, "multi");
-        paymentDetails.put(MOLPayActivity.mp_bill_description, "ZUS Coffee billing");
-        paymentDetails.put(MOLPayActivity.mp_bill_name, "CHOOI KAM YOKE&KUA KOK PIM");
-        paymentDetails.put(MOLPayActivity.mp_bill_email, "tallnasran@gmail.com");
-        paymentDetails.put(MOLPayActivity.mp_bill_mobile, "176816278");
+        paymentDetails.put(MOLPayActivity.mp_bill_description, "");
+        paymentDetails.put(MOLPayActivity.mp_bill_name, "");
+        paymentDetails.put(MOLPayActivity.mp_bill_email, "");
+        paymentDetails.put(MOLPayActivity.mp_bill_mobile, "");
         paymentDetails.put(MOLPayActivity.mp_channel_editing, false);
         paymentDetails.put(MOLPayActivity.mp_editing_enabled, true);
 
