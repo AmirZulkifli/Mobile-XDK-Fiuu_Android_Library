@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">RazerMSXDKProject</string>
+    <string name="app_name">App to App Demo</string>
     <string name="action_settings">Settings</string>
-    <string name="restart">Start</string>
+    <string name="restart">Pay Now</string>
 </resources>

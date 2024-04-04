@@ -90,7 +90,7 @@ public class MOLPayActivity extends AppCompatActivity {
     public final static String mp_dpa_id = "mp_dpa_id";
     public final static String mp_company = "mp_company";
 
-    public final static String MOLPAY = "MOLPAY";
+    public final static String MOLPAY = "logDeeplink";
     private final static String mpopenmolpaywindow = "mpopenmolpaywindow://";
     private final static String mpcloseallwindows = "mpcloseallwindows://";
     private final static String mptransactionresults = "mptransactionresults://";
@@ -291,6 +291,8 @@ public class MOLPayActivity extends AppCompatActivity {
         public boolean shouldOverrideUrlLoading(final WebView view, String url) {
             Log.d(MOLPAY, "MPMOLPayUIWebClient shouldOverrideUrlLoading url = " + url);
             if (url != null) {
+                Intent intentDeeplink;
+
                 if (url.contains("scbeasy/easy_app_link.html")) {
                     try {
                         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
@@ -327,6 +329,56 @@ public class MOLPayActivity extends AppCompatActivity {
                         // Define what your app should do if no activity can handle the intent.
                         e.printStackTrace();
                     }
+                    return true;
+                }
+
+                else if (url.contains("novuscimboctouat://")) {
+
+                    int startIndexEndtoEndId = url.indexOf("EndtoEndId=") + 11; // Get index of '[' and add 1 to start after it
+                    int startIndexEndtoEndIdSignature = url.indexOf("EndtoEndIdSignature=") + 20; // Get index of '&' and add 1 to start after it
+                    int endIndexEndtoEndId = url.indexOf('&', startIndexEndtoEndId); // Get index of '&' starting from startIndex
+                    String EndtoEndId = "";
+                    String EndtoEndIdSignature = "";
+
+                    if (startIndexEndtoEndId != 0 && endIndexEndtoEndId != -1) { // Ensure both characters are found
+                        EndtoEndId = url.substring(startIndexEndtoEndId, endIndexEndtoEndId);
+                        Log.e("logDeeplink" , "EndtoEndId = " + EndtoEndId);
+                    }
+
+                    if (startIndexEndtoEndIdSignature != 0) {
+                        EndtoEndIdSignature = url.substring(startIndexEndtoEndIdSignature);
+                        Log.e("logDeeplink" , "EndtoEndIdSignature = " + EndtoEndIdSignature);
+                    }
+
+                    if (url.contains("?Result=99&EndtoEndId=")) {
+                        view.loadUrl("https://uat3.cimbclicks.com.my/dobb2c/RPP/MY/Redirect/RTP?EndtoEndId=" + EndtoEndId + "&EndtoEndIdSignature=" + EndtoEndIdSignature + "&DbtrAgt=CIBBMYKL");
+                        return true;
+                    }
+
+                    try {
+                        intentDeeplink = new Intent(Intent.ACTION_VIEW);
+                        intentDeeplink.setData(Uri.parse(url));
+                        startActivity(intentDeeplink);
+                    } catch (ActivityNotFoundException e) {
+                        // Define what your app should do if no activity can handle the intent
+                        view.loadUrl("https://uat3.cimbclicks.com.my/dobb2c/RPP/MY/Redirect/RTP?EndtoEndId=" + EndtoEndId + "&EndtoEndIdSignature=" + EndtoEndIdSignature + "&DbtrAgt=CIBBMYKL");
+                    }
+
+                    return true;
+                }
+
+                else if (url.contains("razervt://")) {
+
+                    try {
+                        intentDeeplink = new Intent(Intent.ACTION_VIEW);
+                        intentDeeplink.setData(Uri.parse(url));
+                        startActivity(intentDeeplink);
+                    } catch (ActivityNotFoundException e) {
+                        // Define what your app should do if no activity can handle the intent.
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.rms.mobile.razervt")));
+//                        e.printStackTrace();
+                    }
+
                     return true;
                 }
             }
