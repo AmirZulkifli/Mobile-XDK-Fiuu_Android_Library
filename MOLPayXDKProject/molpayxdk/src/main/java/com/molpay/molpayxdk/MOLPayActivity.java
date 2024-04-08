@@ -350,6 +350,8 @@ public class MOLPayActivity extends AppCompatActivity {
                         Log.e("logDeeplink" , "EndtoEndIdSignature = " + EndtoEndIdSignature);
                     }
 
+                    Log.e("logDeeplink" , "CIMB login url = " + "https://uat3.cimbclicks.com.my/dobb2c/RPP/MY/Redirect/RTP?EndtoEndId=" + EndtoEndId + "&EndtoEndIdSignature=" + EndtoEndIdSignature + "&DbtrAgt=CIBBMYKL");
+
                     if (url.contains("?Result=99&EndtoEndId=")) {
                         view.loadUrl("https://uat3.cimbclicks.com.my/dobb2c/RPP/MY/Redirect/RTP?EndtoEndId=" + EndtoEndId + "&EndtoEndIdSignature=" + EndtoEndIdSignature + "&DbtrAgt=CIBBMYKL");
                         return true;
