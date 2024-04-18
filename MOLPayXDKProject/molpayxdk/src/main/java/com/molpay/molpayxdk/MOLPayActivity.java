@@ -332,7 +332,9 @@ public class MOLPayActivity extends AppCompatActivity {
                     return true;
                 }
 
-                else if (url.contains("novuscimboctouat://")) {
+                else if ( url.contains("novuscimboctouat://") ) {
+
+//                    url = url.replace("novuscimboctouat" , "novuscimboctoreg"); // For novuscimboctoreg integration
 
                     int startIndexEndtoEndId = url.indexOf("EndtoEndId=") + 11; // Get index of '[' and add 1 to start after it
                     int startIndexEndtoEndIdSignature = url.indexOf("EndtoEndIdSignature=") + 20; // Get index of '&' and add 1 to start after it
