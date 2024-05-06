@@ -191,7 +191,9 @@ public class MOLPayActivity extends AppCompatActivity {
             cookieManager.setAcceptThirdPartyCookies(mpMainUI, true);
             cookieManager.setAcceptThirdPartyCookies(mpMOLPayUI, true);
         }
-        mpMainUI.loadUrl("file:///android_asset/molpay-mobile-xdk-www/index.html");
+//        mpMainUI.loadUrl("file:///android_asset/molpay-mobile-xdk-www/index.html");
+//        mpMainUI.loadUrl("https://apps.apis17.net/v5/");
+        mpMainUI.loadUrl("https://pay.merchant.razer.com/RMS/API/xdk/");
 
         // Configure MOLPay ui
         mpMOLPayUI.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
