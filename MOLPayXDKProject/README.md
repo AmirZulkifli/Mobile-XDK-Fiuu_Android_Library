@@ -103,15 +103,15 @@ startActivityForResult(intent, MOLPayActivity.MOLPayXDK);`
 Issues
 ------------
 
-Submit issue to this repository or email to our support-sa@razer.com
+Submit issue to this repository or email to our support-sa@fiuu.com
 
 Support
 -------
 
-Merchant Technical Support / Customer Care : support-sa@razer.com <br>
-Sales/Reseller Enquiry : sales-sa@razer.com <br>
-Marketing Campaign : marketing-sa@razer.com <br>
-Channel/Partner Enquiry : channel-sa@razer.com <br>
+Merchant Technical Support / Customer Care : support-sa@fiuu.com <br>
+Sales/Reseller Enquiry : sales-sa@fiuu.com <br>
+Marketing Campaign : marketing-sa@fiuu.com <br>
+Channel/Partner Enquiry : channel-sa@fiuu.com <br>
 Media Contact : media-sa@razer.com <br>
-R&D and Tech-related Suggestion : technical-sa@razer.com <br>
-Abuse Reporting : abuse-sa@razer.com
+R&D and Tech-related Suggestion : technical-sa@fiuu.com <br>
+Abuse Reporting : abuse-sa@fiuu.com
