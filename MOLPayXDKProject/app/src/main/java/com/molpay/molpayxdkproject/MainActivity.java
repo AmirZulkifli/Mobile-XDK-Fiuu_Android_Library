@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         paymentDetails.put(MOLPayActivity.mp_bill_mobile, "123456789");
 
         // TODO: Learn more about optional parameters here https://github.com/RazerMS/Mobile-XDK-RazerMS_Android_Studio/wiki/Installation-Guidance#prepare-the-payment-detail-object
+//        paymentDetails.put(MOLPayActivity.mp_extended_vcode, false); // For Google Pay Only - Set true if your account enabled extended Verify Payment
 //        paymentDetails.put(MOLPayActivity.mp_channel_editing, false);
 //        paymentDetails.put(MOLPayActivity.mp_editing_enabled, true);
 //        paymentDetails.put(MOLPayActivity.mp_express_mode, false);
@@ -95,10 +96,12 @@ public class MainActivity extends AppCompatActivity {
         Log.e("logGooglePay" , "onActivityResult requestCode = " + requestCode);
         Log.e("logGooglePay" , "onActivityResult resultCode = " + resultCode);
 
-        if (requestCode == MOLPayActivity.MOLPayXDK && resultCode == RESULT_OK){
-            Log.d(MOLPayActivity.MOLPAY, "MOLPay result = "+data.getStringExtra(MOLPayActivity.MOLPayTransactionResult));
-            TextView tw = findViewById(R.id.resultTV);
-            tw.setText(data.getStringExtra(MOLPayActivity.MOLPayTransactionResult));
+        if (requestCode == MOLPayActivity.MOLPayXDK && data != null){
+            if (data.getStringExtra(MOLPayActivity.MOLPayTransactionResult) != null) {
+                Log.d(MOLPayActivity.MOLPAY, "MOLPay result = " + data.getStringExtra(MOLPayActivity.MOLPayTransactionResult));
+                TextView tw = findViewById(R.id.resultTV);
+                tw.setText(data.getStringExtra(MOLPayActivity.MOLPayTransactionResult));
+            }
         }
 
     }
