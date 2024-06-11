@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (requestCode == MOLPayActivity.MOLPayXDK && resultCode == RESULT_OK){
             Log.d(MOLPayActivity.MOLPAY, "MOLPay result = "+data.getStringExtra(MOLPayActivity.MOLPayTransactionResult));
-            TextView tw = (TextView)findViewById(R.id.resultTV);
+            TextView tw = findViewById(R.id.resultTV);
             tw.setText(data.getStringExtra(MOLPayActivity.MOLPayTransactionResult));
         }
 
@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         // The Google Pay button is a layout file – take the root view
