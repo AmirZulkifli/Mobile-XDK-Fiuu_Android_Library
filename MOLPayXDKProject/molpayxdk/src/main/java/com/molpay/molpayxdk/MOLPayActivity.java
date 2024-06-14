@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Message;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
@@ -128,12 +129,6 @@ public class MOLPayActivity extends AppCompatActivity {
         }
     }
 
-    @SuppressLint("MissingSuperCall")
-    @Override
-    public void onBackPressed() {
-        closemolpay();
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -163,24 +158,26 @@ public class MOLPayActivity extends AppCompatActivity {
 
         // For submodule wrappers
         boolean is_submodule = false;
-        assert paymentDetails != null;
-        if (paymentDetails.containsKey("is_submodule")) {
-            is_submodule = Boolean.parseBoolean(Objects.requireNonNull(paymentDetails.get("is_submodule")).toString());
-        }
-        String submodule_module_id = null;
-        if (paymentDetails.containsKey("module_id")) {
-            submodule_module_id = Objects.requireNonNull(paymentDetails.get("module_id")).toString();
-        }
-        String submodule_wrapper_version = null;
-        if (paymentDetails.containsKey("wrapper_version")) {
-            submodule_wrapper_version = Objects.requireNonNull(paymentDetails.get("wrapper_version")).toString();
-        }
-        if (is_submodule && !Objects.equals(submodule_module_id, "") && !Objects.equals(submodule_wrapper_version, "")) {
-            paymentDetails.put(module_id, submodule_module_id);
-            paymentDetails.put(wrapper_version, wrapperVersion+"."+submodule_wrapper_version);
-        } else {
-            paymentDetails.put(module_id, "molpay-mobile-xdk-android");
-            paymentDetails.put(wrapper_version, wrapperVersion);
+
+        if (paymentDetails != null) {
+            if (paymentDetails.containsKey("is_submodule")) {
+                is_submodule = Boolean.parseBoolean(Objects.requireNonNull(paymentDetails.get("is_submodule")).toString());
+            }
+            String submodule_module_id = null;
+            if (paymentDetails.containsKey("module_id")) {
+                submodule_module_id = Objects.requireNonNull(paymentDetails.get("module_id")).toString();
+            }
+            String submodule_wrapper_version = null;
+            if (paymentDetails.containsKey("wrapper_version")) {
+                submodule_wrapper_version = Objects.requireNonNull(paymentDetails.get("wrapper_version")).toString();
+            }
+            if (is_submodule && !Objects.equals(submodule_module_id, "") && !Objects.equals(submodule_wrapper_version, "")) {
+                paymentDetails.put(module_id, submodule_module_id);
+                paymentDetails.put(wrapper_version, wrapperVersion+"."+submodule_wrapper_version);
+            } else {
+                paymentDetails.put(module_id, "molpay-mobile-xdk-android");
+                paymentDetails.put(wrapper_version, wrapperVersion);
+            }
         }
 
         // Bind resources
@@ -242,6 +239,17 @@ public class MOLPayActivity extends AppCompatActivity {
             return false;
         });
 
+        // Register a callback for handling the back press
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                Log.e("logGooglePay" , "WebCore onBackPressed");
+                closemolpay();
+            }
+        };
+
+        // Add the callback to the OnBackPressedDispatcher
+        getOnBackPressedDispatcher().addCallback(this, callback);
     }
 
     private void nativeWebRequestUrlUpdates(String url) {
