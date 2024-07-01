@@ -16,12 +16,19 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility(JavaVersion.VERSION_1_8)
-        targetCompatibility(JavaVersion.VERSION_1_8)
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     viewBinding {
         enabled = true
+    }
+
+    libraryVariants.configureEach { variant ->
+
+        variant.outputs.all { output ->
+            outputFileName = "/../../../../release/" + ("paymentxdk.aar")
+        }
     }
 }
 
@@ -52,4 +59,9 @@ afterEvaluate {
             }
         }
     }
+}
+tasks.register("prepareKotlinBuildScriptModel"){}
+
+tasks.register('wrapper', Wrapper) {
+    gradleVersion = '7.2'
 }
