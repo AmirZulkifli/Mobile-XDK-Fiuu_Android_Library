@@ -30,11 +30,11 @@ public class MainActivity extends AppCompatActivity {
         paymentDetails.put(MOLPayActivity.mp_amount, "1.01");
 
         // TODO: Enter your merchant account credentials before test run
-        paymentDetails.put(MOLPayActivity.mp_username, "");
-        paymentDetails.put(MOLPayActivity.mp_password, "");
-        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "");
-        paymentDetails.put(MOLPayActivity.mp_app_name, "");
-        paymentDetails.put(MOLPayActivity.mp_verification_key, "");
+        paymentDetails.put(MOLPayActivity.mp_username, "RMSxdk_2022");
+        paymentDetails.put(MOLPayActivity.mp_password, "RMSpwd@2022");
+        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "rmsxdk_mobile_Dev");
+        paymentDetails.put(MOLPayActivity.mp_app_name, "mobile");
+        paymentDetails.put(MOLPayActivity.mp_verification_key, "ee738b541eff7b6b495e44771f71c0ec");
 
         paymentDetails.put(MOLPayActivity.mp_order_ID, Calendar.getInstance().getTimeInMillis());
         paymentDetails.put(MOLPayActivity.mp_currency, "MYR");
@@ -71,8 +71,8 @@ public class MainActivity extends AppCompatActivity {
         paymentDetails.put(MOLPayActivity.mp_sandbox_mode, true); // Only set to false once you have request production access for your app
 
         // TODO: Enter your merchant account credentials before test run
-        paymentDetails.put(MOLPayActivity.mp_merchant_ID, ""); // Your sandbox / production merchant ID
-        paymentDetails.put(MOLPayActivity.mp_verification_key, ""); // Your sandbox / production verification key
+        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "SB_molpayxdk"); // Your sandbox / production merchant ID
+        paymentDetails.put(MOLPayActivity.mp_verification_key, "4445db44bdb60687a8e7f7903a59c3a9"); // Your sandbox / production verification key
 
         paymentDetails.put(MOLPayActivity.mp_amount, "1.01"); // Must be in 2 decimal points format
         paymentDetails.put(MOLPayActivity.mp_order_ID, Calendar.getInstance().getTimeInMillis()); // Must be unique
@@ -82,6 +82,8 @@ public class MainActivity extends AppCompatActivity {
         paymentDetails.put(MOLPayActivity.mp_bill_name, "The bill name");
         paymentDetails.put(MOLPayActivity.mp_bill_email, "payer.email@fiuu.com");
         paymentDetails.put(MOLPayActivity.mp_bill_mobile, "123456789");
+
+        paymentDetails.put(MOLPayActivity.mp_extended_vcode, false); // Optional : Set true if your account enabled extended Verify Payment
 
         Intent intent = new Intent(MainActivity.this, ActivityGP.class); // Used ActivityGP for Google Pay
         intent.putExtra(MOLPayActivity.MOLPayPaymentDetails, paymentDetails);
