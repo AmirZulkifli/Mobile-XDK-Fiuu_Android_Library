@@ -284,12 +284,14 @@ public class MOLPayActivity extends AppCompatActivity {
             Log.d(MOLPAY, "MPBankUIWebClient onPageStarted url = " + url);
 
             if (url != null) {
+                Log.e("logNativeWebReq" , "MPBankUIWebClient-onPageStarted url = " + url);
                 nativeWebRequestUrlUpdates(url);
             }
         }
         @Override
         public void onPageFinished (WebView view, String url) {
             Log.d(MOLPAY, "MPBankUIWebClient onPageFinished url = " + url);
+            Log.e("logNativeWebReq" , "MPBankUIWebClient-onPageFinished url = " + url);
             nativeWebRequestUrlUpdates(url);
         }
     }
@@ -300,6 +302,7 @@ public class MOLPayActivity extends AppCompatActivity {
             Log.d(MOLPAY, "MPMOLPayUIWebClient onPageStarted url = " + url);
 
             if (url != null) {
+                Log.e("logNativeWebReq" , "MPMOLPayUIWebClient-onPageStarted url = " + url);
                 nativeWebRequestUrlUpdates(url);
             }
         }
