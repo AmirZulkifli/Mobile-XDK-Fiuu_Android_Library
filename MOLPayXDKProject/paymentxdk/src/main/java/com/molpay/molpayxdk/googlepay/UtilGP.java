@@ -195,8 +195,7 @@ public class UtilGP {
     public static JSONObject getIsReadyToPayRequest() {
         try {
             JSONObject isReadyToPayRequest = getBaseRequest();
-            isReadyToPayRequest.put(
-                    "allowedPaymentMethods", new JSONArray().put(getBaseCardPaymentMethod()));
+            isReadyToPayRequest.put("allowedPaymentMethods", getAllPaymentMethods());
 
             return isReadyToPayRequest;
 
