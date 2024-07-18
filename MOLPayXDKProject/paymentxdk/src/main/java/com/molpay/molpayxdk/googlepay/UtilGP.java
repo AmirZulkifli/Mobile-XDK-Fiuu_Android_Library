@@ -122,6 +122,42 @@ public class UtilGP {
         return cardPaymentMethod;
     }
 
+    public static void printBasePaymentMethod() throws JSONException {
+        JSONObject paymentMethod = getBaseCardPaymentMethod();
+        Log.e("logGooglePay" , "print paymentMethod = " + paymentMethod.toString(4));
+    }
+
+    // TODO e-Wallet createEwallet
+    private static JSONObject createEwallet(String ewalletType) throws JSONException {
+        JSONObject ewallet = new JSONObject();
+        ewallet.put("type", "EWALLET");
+        JSONObject processingSpecification = new JSONObject();
+        processingSpecification.put("type", ewalletType);
+        ewallet.put("processingSpecification", processingSpecification);
+        return ewallet;
+    }
+
+    // TODO e-Wallet getAllPaymentMethods
+    public static JSONArray getAllPaymentMethods() throws JSONException {
+
+        // Create e-wallet JSON objects using the helper method
+        JSONObject touchNGo = createEwallet("TOUCH_N_GO");
+        JSONObject shopeePay = createEwallet("SHOPEE_PAY_MY");
+
+        // Add the all payment methods to a JSON array
+        JSONArray paymentMethodArray = new JSONArray();
+        paymentMethodArray.put(getBaseCardPaymentMethod());
+        paymentMethodArray.put(touchNGo);
+        paymentMethodArray.put(shopeePay);
+
+        return paymentMethodArray;
+    }
+
+    public static void printAllPaymentMethods() throws JSONException {
+        JSONArray ewallets = getAllPaymentMethods();
+        Log.e("logGooglePay" , "print AllPaymentMethods = " + ewallets.toString(4));
+    }
+
     /**
      * Describe the expected returned payment data for the CARD payment method
      *
