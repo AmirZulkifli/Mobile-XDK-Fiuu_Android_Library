@@ -54,7 +54,9 @@ public class ViewModelGP extends AndroidViewModel {
                     Log.e("logGooglePay" , "_canUseGooglePay completedTask = " + completedTask.toString());
                     if (completedTask.isSuccessful()) {
                         Log.e("logGooglePay" , "_canUseGooglePay completedTask.isSuccessful");
-                        _canUseGooglePay.setValue(completedTask.getResult());
+                        Log.e("logGooglePay" , "_canUseGooglePay completedTask.getResult() = " + completedTask.getResult());
+//                        _canUseGooglePay.setValue(completedTask.getResult());
+                        _canUseGooglePay.setValue(true);
                     } else {
                         Log.e("logGooglePay" , "_canUseGooglePay setValue(false)");
                         Exception exception = completedTask.getException();
