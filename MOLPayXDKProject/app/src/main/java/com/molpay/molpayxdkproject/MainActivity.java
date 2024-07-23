@@ -3,6 +3,7 @@ package com.molpay.molpayxdkproject;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -23,18 +24,19 @@ import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
-    private PayButton googlePayButton;
+//    private PayButton googlePayButton;
+    private AppCompatButton googlePayButton;
 
     private void restartmolpay() {
         HashMap<String, Object> paymentDetails = new HashMap<>();
         paymentDetails.put(MOLPayActivity.mp_amount, "1.01");
 
         // TODO: Enter your merchant account credentials before test run
-        paymentDetails.put(MOLPayActivity.mp_username, "");
-        paymentDetails.put(MOLPayActivity.mp_password, "");
-        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "");
-        paymentDetails.put(MOLPayActivity.mp_app_name, "");
-        paymentDetails.put(MOLPayActivity.mp_verification_key, "");
+        paymentDetails.put(MOLPayActivity.mp_username, "RMSxdk_2022");
+        paymentDetails.put(MOLPayActivity.mp_password, "RMSpwd@2022");
+        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "rmsxdk_mobile_Dev");
+        paymentDetails.put(MOLPayActivity.mp_app_name, "mobile");
+        paymentDetails.put(MOLPayActivity.mp_verification_key, "ee738b541eff7b6b495e44771f71c0ec");
 
         paymentDetails.put(MOLPayActivity.mp_order_ID, Calendar.getInstance().getTimeInMillis());
         paymentDetails.put(MOLPayActivity.mp_currency, "MYR");
@@ -58,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, MOLPayActivity.MOLPayXDK);
     }
 
-    private void googlePayPayment() {
+    private void googlePayPayment() throws JSONException {
         HashMap<String, Object> paymentDetails = new HashMap<>();
 
         /*
@@ -71,8 +73,8 @@ public class MainActivity extends AppCompatActivity {
         paymentDetails.put(MOLPayActivity.mp_sandbox_mode, true); // Only set to false once you have request production access for your app
 
         // TODO: Enter your merchant account credentials before test run
-        paymentDetails.put(MOLPayActivity.mp_merchant_ID, ""); // Your sandbox / production merchant ID
-        paymentDetails.put(MOLPayActivity.mp_verification_key, ""); // Your sandbox / production verification key
+        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "SB_molpayxdk"); // Your sandbox / production merchant ID
+        paymentDetails.put(MOLPayActivity.mp_verification_key, "4445db44bdb60687a8e7f7903a59c3a9"); // Your sandbox / production verification key
 
         paymentDetails.put(MOLPayActivity.mp_amount, "1.01"); // Must be in 2 decimal points format
         paymentDetails.put(MOLPayActivity.mp_order_ID, Calendar.getInstance().getTimeInMillis()); // Must be unique
@@ -123,21 +125,41 @@ public class MainActivity extends AppCompatActivity {
         googlePayButton = findViewById(R.id.googlePayButton);
 
         try {
-            // TODO: Choose your preferred Google Pay button : https://developers.google.com/pay/api/android/guides/brand-guidelines
-            googlePayButton.initialize(
-                    ButtonOptions.newBuilder()
-                            .setButtonTheme(ButtonConstants.ButtonTheme.DARK)
-                            .setButtonType(ButtonConstants.ButtonType.PAY)
-                            .setCornerRadius(99)
-                            .setAllowedPaymentMethods(UtilGP.getAllowedPaymentMethods().toString())
-                            .build()
-            );
-            googlePayButton.setOnClickListener(view -> {
-                googlePayPayment();
-            });
+            UtilGP.printPaymentDataRequest();
+            UtilGP.printIsReadyToPayRequest();
+            UtilGP.printAllPaymentToken();
+            Log.e("logGooglePay" , "getAllowedPaymentMethods = " + UtilGP.getAllowedPaymentMethods().toString());
+            Log.e("logGooglePay" , "getAllowedCardMethods = " + UtilGP.getAllowedCardMethods().toString());
         } catch (JSONException e) {
-            // Keep Google Pay button hidden (consider logging this to your app analytics service)
+            throw new RuntimeException(e);
         }
+
+        // TODO: Choose your preferred Google Pay button : https://developers.google.com/pay/api/android/guides/brand-guidelines
+//        try {
+//            googlePayButton.initialize(
+//                    ButtonOptions.newBuilder()
+//                            .setButtonTheme(ButtonConstants.ButtonTheme.DARK)
+//                            .setButtonType(ButtonConstants.ButtonType.PAY)
+//                            .setCornerRadius(99)
+//                            .setAllowedPaymentMethods(UtilGP.getAllowedPaymentMethods().toString())
+//                            .build()
+//            );
+//        } catch (JSONException e) {
+//            Log.e("logGooglePay" , "JSONException getMessage = " + e.getMessage());
+//            Log.e("logGooglePay" , "JSONException getLocalizedMessage = " + e.getLocalizedMessage());
+//            Log.e("logGooglePay" , "JSONException getCause = " + e.getCause());
+//            Log.e("logGooglePay" , "JSONException getStackTrace = " + e.getStackTrace());
+//            Log.e("logGooglePay" , "JSONException getSuppressed = " + e.getSuppressed());
+//            throw new RuntimeException(e);
+//        }
+
+        googlePayButton.setOnClickListener(view -> {
+            try {
+                googlePayPayment();
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     @Override
