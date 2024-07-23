@@ -1,6 +1,7 @@
 package com.molpay.molpayxdk.googlepay;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.google.android.gms.wallet.PaymentsClient;
 import com.google.android.gms.wallet.Wallet;
@@ -122,12 +123,37 @@ public class UtilGP {
         return cardPaymentMethod;
     }
 
-    public static void printBasePaymentMethod() throws JSONException {
-        JSONObject paymentMethod = getBaseCardPaymentMethod();
-        Log.e("logGooglePay" , "print paymentMethod = " + paymentMethod.toString(4));
+    private static JSONObject createEwalletDataRequest(String eWallet) throws JSONException {
+        JSONObject ewalletObject = new JSONObject();
+        ewalletObject.put("type", "EWALLET");
+
+        JSONObject processingSpecification = new JSONObject();
+        processingSpecification.put("type", eWallet);
+
+        JSONObject parameters = new JSONObject();
+        parameters.put("ewalletMerchantName", "exampleEwalletMerchantName");
+        parameters.put("ewalletMerchantAccount", "ewalletMerchantId");
+        parameters.put("pspTransactionReference", "787e-ad2df21e968e");
+
+        if (eWallet.equalsIgnoreCase("TOUCH_N_GO")) {
+            parameters.put("pspCallbackUrl", "https://google.com");
+        }
+
+        processingSpecification.put("parameters", parameters);
+        ewalletObject.put("processingSpecification", processingSpecification);
+
+        return ewalletObject;
     }
 
-    // TODO e-Wallet createEwallet
+    public static JSONArray createEwalletRequestArray() throws JSONException {
+        JSONArray jsonArray = new JSONArray();
+
+        jsonArray.put(createEwalletDataRequest("TOUCH_N_GO"));
+        jsonArray.put(createEwalletDataRequest("SHOPEE_PAY_MY"));
+
+        return jsonArray;
+    }
+
     private static JSONObject createEwallet(String ewalletType) throws JSONException {
         JSONObject ewallet = new JSONObject();
         ewallet.put("type", "EWALLET");
@@ -137,7 +163,6 @@ public class UtilGP {
         return ewallet;
     }
 
-    // TODO e-Wallet getAllPaymentMethods
     public static JSONArray getAllPaymentMethods() throws JSONException {
 
         // Create e-wallet JSON objects using the helper method
@@ -146,16 +171,32 @@ public class UtilGP {
 
         // Add the all payment methods to a JSON array
         JSONArray paymentMethodArray = new JSONArray();
-        paymentMethodArray.put(getBaseCardPaymentMethod());
+//        paymentMethodArray.put(getBaseCardPaymentMethod());
         paymentMethodArray.put(touchNGo);
         paymentMethodArray.put(shopeePay);
 
         return paymentMethodArray;
     }
 
-    public static void printAllPaymentMethods() throws JSONException {
-        JSONArray ewallets = getAllPaymentMethods();
-        Log.e("logGooglePay" , "print AllPaymentMethods = " + ewallets.toString(4));
+    private static JSONArray getAllPaymentMethodTokenization() throws JSONException {
+        JSONArray allPaymentMethod = getAllPaymentMethods();
+        allPaymentMethod.put(getGatewayTokenizationSpecification());
+        return allPaymentMethod;
+    }
+
+    public static void printAllPaymentToken() throws JSONException {
+        JSONArray ewallets = getAllPaymentMethodTokenization();
+        Log.e("logGooglePay" , "print printAllPaymentToken = " + ewallets.toString(4));
+    }
+
+    public static void printIsReadyToPayRequest() throws JSONException {
+        JSONObject ewallets = getIsReadyToPayRequest();
+        Log.e("logGooglePay" , "print getIsReadyToPayRequest = " + ewallets.toString(4));
+    }
+
+    public static void printPaymentDataRequest() throws JSONException {
+        JSONObject ewallets = getPaymentDataRequest(101);
+        Log.e("logGooglePay" , "printPaymentDataRequest = " + ewallets.toString(4));
     }
 
     /**
@@ -179,6 +220,13 @@ public class UtilGP {
      * @throws JSONException
      */
     public static JSONArray getAllowedPaymentMethods() throws JSONException {
+//        return new JSONArray() {{
+//            put(getCardPaymentMethod());
+//        }};
+        return createEwalletRequestArray();
+    }
+
+    public static JSONArray getAllowedCardMethods() throws JSONException {
         return new JSONArray() {{
             put(getCardPaymentMethod());
         }};
@@ -248,7 +296,8 @@ public class UtilGP {
 
         try {
             JSONObject paymentDataRequest = UtilGP.getBaseRequest();
-            paymentDataRequest.put("allowedPaymentMethods", new JSONArray().put(UtilGP.getCardPaymentMethod()));
+//            paymentDataRequest.put("allowedPaymentMethods", new JSONArray().put(UtilGP.getCardPaymentMethod()));
+            paymentDataRequest.put("allowedPaymentMethods", createEwalletRequestArray());
             paymentDataRequest.put("transactionInfo", UtilGP.getTransactionInfo(price));
             paymentDataRequest.put("merchantInfo", UtilGP.getMerchantInfo());
 
