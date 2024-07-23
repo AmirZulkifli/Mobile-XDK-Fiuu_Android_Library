@@ -251,7 +251,7 @@ public class ActivityGP extends AppCompatActivity {
                 });
 
             } catch (JSONException e) {
-//            Log.e(Constants.LOG_GOOGLE_PAY, "handlePaymentSuccess JSONException: " + e);
+            Log.e("logGooglePay", "handlePaymentSuccess JSONException: " + e);
             }
         }
 
@@ -267,7 +267,7 @@ public class ActivityGP extends AppCompatActivity {
      * WalletConstants#constant-summary">Wallet Constants Library</a>
      */
     private void handleError(int statusCode, @Nullable String message) {
-//        Log.e("loadPaymentData failed", String.format(Locale.getDefault(), "Error code: %d, Message: %s", statusCode, message));
+        Log.e("logGooglePay", "handleError = " + String.format(Locale.getDefault(), "Error code: %d, Message: %s", statusCode, message));
     }
 
     @Override
