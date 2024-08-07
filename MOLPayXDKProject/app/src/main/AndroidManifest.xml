@@ -21,6 +21,17 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <intent-filter android:label="filter_released">
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:scheme="testappurl"
+                    android:host="merchant.razer.com"/>
+<!--                    android:pathPrefix="/page"/>-->
+            </intent-filter>
+
         </activity>
 
         <activity android:name=".DeepLinkActivity"
@@ -34,7 +45,8 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:scheme="testappurl" />
+                    android:scheme="testappurl"
+                    android:host="merchant.razer.com"/>
             </intent-filter>
         </activity>
         <activity android:name="com.molpay.molpayxdk.MOLPayActivity"

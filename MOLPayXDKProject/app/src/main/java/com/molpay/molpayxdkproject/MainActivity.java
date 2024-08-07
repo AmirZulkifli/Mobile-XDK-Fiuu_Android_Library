@@ -29,7 +29,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void restartmolpay() {
         HashMap<String, Object> paymentDetails = new HashMap<>();
-        paymentDetails.put(MOLPayActivity.mp_amount, "1.01");
+//        paymentDetails.put(MOLPayActivity.mp_amount, "1.01");
+        paymentDetails.put(MOLPayActivity.mp_amount, "0.10");
 
         // TODO: Enter your merchant account credentials before test run
         paymentDetails.put(MOLPayActivity.mp_username, "RMSxdk_2022");
@@ -38,10 +39,21 @@ public class MainActivity extends AppCompatActivity {
         paymentDetails.put(MOLPayActivity.mp_app_name, "mobile");
         paymentDetails.put(MOLPayActivity.mp_verification_key, "ee738b541eff7b6b495e44771f71c0ec");
 
+//        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "i-city_Dev");
+//        paymentDetails.put(MOLPayActivity.mp_app_name, "i-city");
+//        paymentDetails.put(MOLPayActivity.mp_verification_key, "553b5aa7615ac1135c7702bc53c7ebe0");
+
+//        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "zuspresso");
+//        paymentDetails.put(MOLPayActivity.mp_app_name, "zuspresso");
+//        paymentDetails.put(MOLPayActivity.mp_verification_key, "99abf61f1f9395effbb5dc29b35fe78c");
+
         paymentDetails.put(MOLPayActivity.mp_order_ID, Calendar.getInstance().getTimeInMillis());
         paymentDetails.put(MOLPayActivity.mp_currency, "MYR");
         paymentDetails.put(MOLPayActivity.mp_country, "MY");
-        paymentDetails.put(MOLPayActivity.mp_channel, "multi");
+//        paymentDetails.put(MOLPayActivity.mp_channel, "multi");
+//        paymentDetails.put(MOLPayActivity.mp_channel, "credit");
+        paymentDetails.put(MOLPayActivity.mp_channel, "TNG-EWALLET");
+        paymentDetails.put(MOLPayActivity.mp_express_mode, true);
         paymentDetails.put(MOLPayActivity.mp_bill_description, "bill description");
         paymentDetails.put(MOLPayActivity.mp_bill_name, "bill name");
         paymentDetails.put(MOLPayActivity.mp_bill_email, "example@gmail.com");
