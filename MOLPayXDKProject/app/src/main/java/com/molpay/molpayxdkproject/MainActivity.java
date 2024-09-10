@@ -127,10 +127,10 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<ItemModel> selectedItems = new ArrayList<>();
 
         ArrayList<ItemModel> itemModelArrayList = new ArrayList<>();
-        itemModelArrayList.add(new ItemModel("Burger", R.drawable.burger));
-        itemModelArrayList.add(new ItemModel("Chicken", R.drawable.chicken));
-        itemModelArrayList.add(new ItemModel("Fries", R.drawable.fries));
-        itemModelArrayList.add(new ItemModel("Pizza", R.drawable.pizza));
+        itemModelArrayList.add(new ItemModel("Burger", R.drawable.burger, 5.00));
+        itemModelArrayList.add(new ItemModel("Chicken", R.drawable.chicken, 8.00));
+        itemModelArrayList.add(new ItemModel("Fries", R.drawable.fries, 6.00));
+        itemModelArrayList.add(new ItemModel("Pizza", R.drawable.pizza, 10.00));
 
         GVAdapter adapter = new GVAdapter(this, itemModelArrayList);
         itemGV.setAdapter(adapter);
@@ -169,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
                 // Create an ArrayList of item names and counters to pass
                 ArrayList<String> selectedItemDetails = new ArrayList<>();
                 for (ItemModel item : selectedItems) {
-                    selectedItemDetails.add(item.getItem_name() + "-" + item.getCounter());
+                    selectedItemDetails.add(item.getItem_name() + "-" + item.getCounter() + "-" + item.getItem_price());
                 }
 
                 // Pass the selected items as a string array list

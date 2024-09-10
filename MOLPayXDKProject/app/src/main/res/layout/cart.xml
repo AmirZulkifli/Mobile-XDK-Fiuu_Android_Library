@@ -29,6 +29,17 @@
         android:layout_below="@+id/resultTV"
         android:textSize="18sp" />
 
+    <TextView
+        android:id="@+id/totalPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_alignParentEnd="true"
+        android:text="Counter"
+        android:layout_below="@+id/itemCounter"
+        android:textSize="18sp" />
+
     <!-- google pay button -->
 
     <com.google.android.gms.wallet.button.PayButton

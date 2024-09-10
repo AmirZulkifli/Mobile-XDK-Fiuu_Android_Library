@@ -15,6 +15,7 @@ import com.molpay.molpayxdk.googlepay.ActivityGP;
 import com.molpay.molpayxdk.googlepay.UtilGP;
 
 import org.json.JSONException;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -139,6 +140,7 @@ public class CartActivity extends AppCompatActivity {
         // Find the TextView to display the selected item details
         TextView itemNameTV = findViewById(R.id.itemName);
         TextView itemCounterTV = findViewById(R.id.itemCounter);
+        TextView totalPriceTV = findViewById(R.id.totalPrice);
 
         // Retrieve the list of selected items from the Intent
         ArrayList<String> selectedItems = getIntent().getStringArrayListExtra("selectedItems");
@@ -146,6 +148,8 @@ public class CartActivity extends AppCompatActivity {
 
         ArrayList<String> itemNames = new ArrayList<>();
         ArrayList<Integer> itemCounter = new ArrayList<>();
+        ArrayList<Double> itemPrice = new ArrayList<>();
+        Double totalPrice = 0.0;
 
         StringBuilder displayText = new StringBuilder();
         StringBuilder displayCounter = new StringBuilder();
@@ -154,19 +158,22 @@ public class CartActivity extends AppCompatActivity {
         if (selectedItems != null && !selectedItems.isEmpty()) {
             for (String itemDetail : selectedItems) {
                 String[] parts = itemDetail.split("-");
-                if (parts.length == 2){
+                if (parts.length == 3){
                     itemNames.add(parts[0].trim());
                     itemCounter.add(Integer.parseInt(parts[1].trim()));
+                    itemPrice.add(Double.parseDouble(parts[2].trim()));
                 }
             }
 
             for (int i = 0; i < itemNames.size(); i++) {
-                displayText.append(itemNames.get(i)).append("\n");
-                displayCounter.append(itemCounter.get(i)).append("\n");
+                totalPrice = itemPrice.get(i) * itemCounter.get(i) + totalPrice;
+                displayText.append(itemNames.get(i)).append("\n\n");
+                displayCounter.append(itemCounter.get(i)).append("\n\n");
             }
 
             itemNameTV.setText(displayText.toString());
             itemCounterTV.setText(displayCounter.toString());
+            totalPriceTV.setText(totalPrice.toString());
         }
         else {
             itemNameTV.setText("No items selected.");
