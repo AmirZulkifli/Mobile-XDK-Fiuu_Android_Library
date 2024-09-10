@@ -18,11 +18,51 @@
         android:layout_height="wrap_content"
         android:text="Tap Google Pay button or START for other payments" />
 
+    <GridView
+        android:id="@+id/gridView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/resultTV"
+        android:layout_marginTop="20dp"
+        android:horizontalSpacing="6dp"
+        android:padding="10dp"
+        android:numColumns="2"
+        android:verticalSpacing="6dp" />
+
+    <ImageButton
+        android:id="@+id/cartButton"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="17dp"
+        android:layout_marginBottom="17dp"
+        android:contentDescription="icon"
+        android:padding="10dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/cart"
+        app:tint="@color/colorPrimary" />
+
+    <TextView
+        android:id="@+id/itemCounter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="50dp"
+        android:text="0"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:tint="@color/colorPrimaryDark"/>
+<!--
     <com.google.android.gms.wallet.button.PayButton
         android:id="@+id/googlePayButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_margin="19dp" />
+-->
 
 </RelativeLayout>

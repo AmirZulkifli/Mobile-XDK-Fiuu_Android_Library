@@ -7,19 +7,19 @@ import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.google.android.gms.wallet.button.ButtonConstants;
-import com.google.android.gms.wallet.button.ButtonOptions;
 import com.google.android.gms.wallet.button.PayButton;
 import com.molpay.molpayxdk.MOLPayActivity;
 import com.molpay.molpayxdk.googlepay.ActivityGP;
-import com.molpay.molpayxdk.googlepay.UtilGP;
 
-import org.json.JSONException;
-
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+
+import android.widget.GridView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -71,8 +71,8 @@ public class MainActivity extends AppCompatActivity {
         paymentDetails.put(MOLPayActivity.mp_sandbox_mode, true); // Only set to false once you have request production access for your app
 
         // TODO: Enter your merchant account credentials before test run
-        paymentDetails.put(MOLPayActivity.mp_merchant_ID, ""); // Your sandbox / production merchant ID
-        paymentDetails.put(MOLPayActivity.mp_verification_key, ""); // Your sandbox / production verification key
+        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "SB_molpayxdk"); // Your sandbox / production merchant ID
+        paymentDetails.put(MOLPayActivity.mp_verification_key, "4445db44bdb60687a8e7f7903a59c3a9");
 
         paymentDetails.put(MOLPayActivity.mp_amount, "1.01"); // Must be in 2 decimal points format
         paymentDetails.put(MOLPayActivity.mp_order_ID, Calendar.getInstance().getTimeInMillis()); // Must be unique
@@ -112,32 +112,72 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    GridView itemGV;
+    TextView itemCounter;
+    int counter = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        itemGV = findViewById(R.id.gridView);
+        itemCounter = findViewById(R.id.itemCounter);
+
+        ArrayList<ItemModel> selectedItems = new ArrayList<>();
+
+        ArrayList<ItemModel> itemModelArrayList = new ArrayList<>();
+        itemModelArrayList.add(new ItemModel("Burger", R.drawable.burger));
+        itemModelArrayList.add(new ItemModel("Chicken", R.drawable.chicken));
+        itemModelArrayList.add(new ItemModel("Fries", R.drawable.fries));
+        itemModelArrayList.add(new ItemModel("Pizza", R.drawable.pizza));
+
+        GVAdapter adapter = new GVAdapter(this, itemModelArrayList);
+        itemGV.setAdapter(adapter);
+
+        // Set an item click listener on the GridView
+        itemGV.setOnItemClickListener((parent, view, position, id) -> {
+            // Increment the counter on each click
+            counter++;
+
+            // Update the counter TextView
+            itemCounter.setText("" + counter);
+
+            ItemModel clickedItem = itemModelArrayList.get(position);
+            clickedItem.setCounter(clickedItem.getCounter() + 1);
+
+            if (!selectedItems.contains(clickedItem)) {
+                selectedItems.add(clickedItem);
+            }
+
+        });
+
+        //google pay button
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // The Google Pay button is a layout file – take the root view
-        googlePayButton = findViewById(R.id.googlePayButton);
+        //image button listener
+        ImageButton cartButton = findViewById(R.id.cartButton);
 
-        try {
-            // TODO: Choose your preferred Google Pay button : https://developers.google.com/pay/api/android/guides/brand-guidelines
-            googlePayButton.initialize(
-                    ButtonOptions.newBuilder()
-                            .setButtonTheme(ButtonConstants.ButtonTheme.DARK)
-                            .setButtonType(ButtonConstants.ButtonType.PAY)
-                            .setCornerRadius(99)
-                            .setAllowedPaymentMethods(UtilGP.getAllowedPaymentMethods().toString())
-                            .build()
-            );
-            googlePayButton.setOnClickListener(view -> {
-                googlePayPayment();
-            });
-        } catch (JSONException e) {
-            // Keep Google Pay button hidden (consider logging this to your app analytics service)
-        }
+        cartButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // Create an intent to navigate to CartActivity
+                Intent intent = new Intent(MainActivity.this, CartActivity.class);
+
+                // Create an ArrayList of item names and counters to pass
+                ArrayList<String> selectedItemDetails = new ArrayList<>();
+                for (ItemModel item : selectedItems) {
+                    selectedItemDetails.add(item.getItem_name() + "-" + item.getCounter());
+                }
+
+                // Pass the selected items as a string array list
+                intent.putStringArrayListExtra("selectedItems", selectedItemDetails);
+
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
