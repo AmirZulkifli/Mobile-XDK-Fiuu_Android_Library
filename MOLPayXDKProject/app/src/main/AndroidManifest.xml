@@ -40,6 +40,10 @@
         <activity android:name="com.molpay.molpayxdk.MOLPayActivity"
             android:label=""/>
 
+        <activity android:name=".CartActivity">
+
+        </activity>
+
         <!-- Enabling this flag is required in order to use the PaymentsClient -->
         <meta-data
             android:name="com.google.android.gms.wallet.api.enabled"
