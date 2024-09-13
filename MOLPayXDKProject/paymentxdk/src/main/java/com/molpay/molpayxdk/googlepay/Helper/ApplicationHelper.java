@@ -31,6 +31,8 @@ public class ApplicationHelper {
             hashData = AlgorithmHelper.md5(amount + merchantID + orderId + verifyKey);
         }
 
+        Log.e("logGooglePay" , "return GetVCode = " + String.format("%s", UtilityHelper.ByteArrayToHexString(hashData)));
+
         return String.format("%s", UtilityHelper.ByteArrayToHexString(hashData));
     }
 

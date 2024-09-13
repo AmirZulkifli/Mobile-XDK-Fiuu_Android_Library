@@ -6,6 +6,7 @@ package com.molpay.molpayxdk.googlepay;
 
 import android.net.Uri;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -76,8 +77,12 @@ public class ApiRequestService {
                 extendedVCode
             );
 
+            Log.e("logGooglePay" , "vCode = " + vCode);
+
             String GooglePayBase64 = Base64.getEncoder()
                                     .encodeToString(paymentInfo.getBytes());
+
+            Log.e("logGooglePay" , "GooglePayBase64 = " + GooglePayBase64);
 
             Uri.Builder builder = new Uri.Builder()
                     .appendQueryParameter("MerchantID", merchantId)
