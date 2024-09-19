@@ -1,9 +1,10 @@
 package com.molpay.molpayxdkproject;
 
-public class ItemModel {
+import android.os.Parcel;
+import android.os.Parcelable;
 
-    // string course_name for storing course_name
-    // and imgid for storing image id.
+public class ItemModel implements Parcelable {
+
     private String item_name;
     private int imgid;
     private int counter;
@@ -16,6 +17,40 @@ public class ItemModel {
         this.item_price = item_price;
     }
 
+    // Parcelable implementation
+    protected ItemModel(Parcel in) {
+        item_name = in.readString();
+        imgid = in.readInt();
+        counter = in.readInt();
+        item_price = in.readDouble();
+    }
+
+    public static final Creator<ItemModel> CREATOR = new Creator<ItemModel>() {
+        @Override
+        public ItemModel createFromParcel(Parcel in) {
+            return new ItemModel(in);
+        }
+
+        @Override
+        public ItemModel[] newArray(int size) {
+            return new ItemModel[size];
+        }
+    };
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(item_name);
+        dest.writeInt(imgid);
+        dest.writeInt(counter);
+        dest.writeDouble(item_price);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    // Getters and Setters
     public String getItem_name() {
         return item_name;
     }
@@ -44,8 +79,7 @@ public class ItemModel {
         return item_price;
     }
 
-    public double setItem_price(Double item_price) {
+    public void setItem_price(double item_price) {
         this.item_price = item_price;
-        return item_price;
     }
 }

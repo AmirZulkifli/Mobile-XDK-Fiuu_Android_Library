@@ -3,6 +3,8 @@ package com.molpay.molpayxdkproject;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,6 +26,8 @@ import java.util.HashMap;
 public class CartActivity extends AppCompatActivity {
 
     private PayButton googlePayButton;
+    private GridView cartView;
+    private TextView totalPriceTV;
 
     private void restartmolpay() {
         HashMap<String, Object> paymentDetails = new HashMap<>();
@@ -137,46 +141,42 @@ public class CartActivity extends AppCompatActivity {
             // Keep Google Pay button hidden (consider logging this to your app analytics service)
         }
 
-        // Find the TextView to display the selected item details
-        TextView itemNameTV = findViewById(R.id.itemName);
-        TextView itemCounterTV = findViewById(R.id.itemCounter);
-        TextView totalPriceTV = findViewById(R.id.totalPrice);
 
-        // Retrieve the list of selected items from the Intent
-        ArrayList<String> selectedItems = getIntent().getStringArrayListExtra("selectedItems");
+        cartView = findViewById(R.id.cartView);
+        totalPriceTV = findViewById(R.id.totalPrice);
 
+        ArrayList<String> selectedItemDetails = getIntent().getStringArrayListExtra("selectedItems");
 
         ArrayList<String> itemNames = new ArrayList<>();
-        ArrayList<Integer> itemCounter = new ArrayList<>();
-        ArrayList<Double> itemPrice = new ArrayList<>();
+        ArrayList<Integer> itemCounters = new ArrayList<>();
+        ArrayList<Double> itemPrices = new ArrayList<>();
         Double totalPrice = 0.0;
 
-        StringBuilder displayText = new StringBuilder();
-        StringBuilder displayCounter = new StringBuilder();
-
-        // Display the selected items
-        if (selectedItems != null && !selectedItems.isEmpty()) {
-            for (String itemDetail : selectedItems) {
+        if (selectedItemDetails != null && !selectedItemDetails.isEmpty()) {
+            for (String itemDetail : selectedItemDetails) {
                 String[] parts = itemDetail.split("-");
-                if (parts.length == 3){
+                if (parts.length == 3) {
                     itemNames.add(parts[0].trim());
-                    itemCounter.add(Integer.parseInt(parts[1].trim()));
-                    itemPrice.add(Double.parseDouble(parts[2].trim()));
+                    itemCounters.add(Integer.parseInt(parts[1].trim()));
+                    itemPrices.add(Double.parseDouble(parts[2].trim()));
                 }
             }
 
-            for (int i = 0; i < itemNames.size(); i++) {
-                totalPrice = itemPrice.get(i) * itemCounter.get(i) + totalPrice;
-                displayText.append(itemNames.get(i)).append("\n\n");
-                displayCounter.append(itemCounter.get(i)).append("\n\n");
+            // Set up your GridView adapter with the data
+            GridView cartView = findViewById(R.id.cartView);
+            CartAdapter cartAdapter = new CartAdapter(this, itemNames, itemCounters, itemPrices);
+            cartView.setAdapter(cartAdapter);
+
+            // Calculate total price
+            for (int i = 0; i < itemPrices.size(); i++) {
+                totalPrice += itemPrices.get(i) * itemCounters.get(i);
             }
 
-            itemNameTV.setText(displayText.toString());
-            itemCounterTV.setText(displayCounter.toString());
-            totalPriceTV.setText(totalPrice.toString());
+            TextView totalPriceTV = findViewById(R.id.totalPrice);
+            totalPriceTV.setText(String.format("Total: RM %.2f", totalPrice));
+        } else {
+            // Handle no items selected
         }
-        else {
-            itemNameTV.setText("No items selected.");
-        }
+
     }
 }
