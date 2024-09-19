@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
     GridView itemGV;
     TextView itemCounter;
-    int counter = 0;
+    int counter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
 
         itemGV = findViewById(R.id.gridView);
         itemCounter = findViewById(R.id.itemCounter);
+        counter = 0;
 
         ArrayList<ItemModel> selectedItems = new ArrayList<>();
 

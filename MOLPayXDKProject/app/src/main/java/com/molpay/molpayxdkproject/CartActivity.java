@@ -191,14 +191,18 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnIte
     public void onItemChanged() {
         updateTotalPrice();
     }
-
     private double updateTotalPrice() {
+        totalPrice = 0;
+
         for (ItemModel item : itemList) {
             totalPrice += item.getItem_price() * item.getCounter();
         }
-        //totalPriceTV.setText(String.format("RM %.2f", totalPrice));
+
+        totalPriceTV.setText(String.format("RM %.2f", totalPrice));
+
         totalPriceText = String.format("%.2f", totalPrice);
 
         return totalPrice;
     }
+
 }

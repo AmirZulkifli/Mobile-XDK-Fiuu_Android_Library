@@ -14,6 +14,8 @@ import com.bumptech.glide.Glide;
 
 public class SuccessPayment extends AppCompatActivity {
 
+    private Button btnExit;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -21,6 +23,17 @@ public class SuccessPayment extends AppCompatActivity {
         setContentView(R.layout.success_payment);
         Log.d("Transaction", "payment completed");
         successGif();
+
+        btnExit = findViewById(R.id.btnExit);
+        btnExit.setOnClickListener(view -> btnExitOnClick());
+
+    }
+
+    public void btnExitOnClick(){
+        Intent intent = new Intent(SuccessPayment.this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
     }
 
     public void successGif(){
