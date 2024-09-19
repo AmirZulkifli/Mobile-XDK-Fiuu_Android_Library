@@ -131,6 +131,10 @@ public class MainActivity extends AppCompatActivity {
         itemModelArrayList.add(new ItemModel("Chicken", R.drawable.chicken, 8.00));
         itemModelArrayList.add(new ItemModel("Fries", R.drawable.fries, 6.00));
         itemModelArrayList.add(new ItemModel("Pizza", R.drawable.pizza, 10.00));
+        itemModelArrayList.add(new ItemModel("Nugget", R.drawable.nugget, 4.00));
+        itemModelArrayList.add(new ItemModel("Porridge", R.drawable.porridge, 7.00));
+        itemModelArrayList.add(new ItemModel("Satay", R.drawable.satay, 10.00));
+        itemModelArrayList.add(new ItemModel("Wings", R.drawable.wings, 9.00));
 
         GVAdapter adapter = new GVAdapter(this, itemModelArrayList);
         itemGV.setAdapter(adapter);
