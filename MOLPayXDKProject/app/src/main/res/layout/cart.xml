@@ -31,8 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="end|center_vertical"
-        android:layout_marginBottom="10dp"
-        android:layout_above="@+id/googlePayButton">
+        android:layout_marginBottom="10dp">
 
     <TextView
         android:id="@+id/totalPrice"
@@ -52,7 +51,6 @@
         android:id="@+id/googlePayButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_marginBottom="20dp"/>
     </LinearLayout>
 

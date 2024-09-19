@@ -110,17 +110,25 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnIte
         Log.e("logGooglePay" , "onActivityResult requestCode = " + requestCode);
         Log.e("logGooglePay" , "onActivityResult resultCode = " + resultCode);
 
-        if (requestCode == MOLPayActivity.MOLPayXDK && data != null){
-            if (data.getStringExtra(MOLPayActivity.MOLPayTransactionResult) != null) {
+        if (resultCode == RESULT_OK){
+//            if (data.getStringExtra(MOLPayActivity.MOLPayTransactionResult) != null) {
                 Log.d(MOLPayActivity.MOLPAY, "MOLPay result = " + data.getStringExtra(MOLPayActivity.MOLPayTransactionResult));
 //                TextView tw = findViewById(R.id.resultTV);
 //                tw.setText(data.getStringExtra(MOLPayActivity.MOLPayTransactionResult));
                 //todo: redirect to success page
                 Intent intent = new Intent(CartActivity.this, SuccessPayment.class);
                 startActivity(intent);
-            }
-        } else if (requestCode == MOLPayActivity.MOLPayXDK && resultCode == MainActivity.RESULT_CANCELED && data == null) {
+//            }
+        } else if (resultCode == RESULT_CANCELED) {
+//            if (requestCode == MOLPayActivity.MOLPayXDK && resultCode == MainActivity.RESULT_CANCELED && data == null) {
             Log.e("logGooglePay" , "RESULT_CANCELED data == null");
+//            TextView tw = findViewById(R.id.resultTV);
+//            tw.setText("result = null");
+            Intent intent = new Intent(CartActivity.this, FailPayment.class);
+            startActivity(intent);
+        } else {
+//            if (requestCode == MOLPayActivity.MOLPayXDK && resultCode == MainActivity.RESULT_CANCELED && data == null) {
+            Log.e("logGooglePay", "RESULT_CANCELED data == null");
 //            TextView tw = findViewById(R.id.resultTV);
 //            tw.setText("result = null");
             Intent intent = new Intent(CartActivity.this, FailPayment.class);
