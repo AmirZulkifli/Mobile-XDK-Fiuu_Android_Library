@@ -134,7 +134,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 if(counter == 0 ){
+
                     Toast.makeText(MainActivity.this,"Your cart is empty", Toast.LENGTH_SHORT).show();
+
                 }else {
 
                     Intent intent = new Intent(MainActivity.this, CartActivity.class);

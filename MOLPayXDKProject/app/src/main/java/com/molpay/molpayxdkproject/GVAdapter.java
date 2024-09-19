@@ -28,10 +28,12 @@ public class GVAdapter extends ArrayAdapter<ItemModel> {
         }
 
         ItemModel itemModel = getItem(position);
-        TextView itemTV = listitemView.findViewById(R.id.itemTV);
+        TextView itemNameTV = listitemView.findViewById(R.id.itemNameTV);
+        TextView itemPriceTV = listitemView.findViewById(R.id.itemPriceTV);
         ImageView itemIV = listitemView.findViewById(R.id.itemIV);
 
-        itemTV.setText(itemModel.getItem_name());
+        itemNameTV.setText(itemModel.getItem_name());
+        itemPriceTV.setText(String.format("RM %.2f", itemModel.getItem_price()));
         itemIV.setImageResource(itemModel.getImgid());
         return listitemView;
     }

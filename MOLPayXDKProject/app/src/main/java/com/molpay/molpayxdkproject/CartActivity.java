@@ -169,14 +169,12 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnIte
                     int counter = Integer.parseInt(parts[1].trim());
                     double price = Double.parseDouble(parts[2].trim());
 
-                    // Create and add ItemModel object
-                    ItemModel item = new ItemModel(itemName, 0, price); // Image ID is not used in this context
+                    ItemModel item = new ItemModel(itemName, 0, price);
                     item.setCounter(counter);
                     itemList.add(item);
                 }
             }
 
-            // Set up adapter
             cartAdapter = new CartAdapter((Context) this, itemList, (CartAdapter.OnItemChangeListener) this);
             cartView.setAdapter(cartAdapter);
 
