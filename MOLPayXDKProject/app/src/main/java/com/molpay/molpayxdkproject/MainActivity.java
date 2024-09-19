@@ -20,10 +20,9 @@ import java.util.Calendar;
 import java.util.HashMap;
 
 import android.widget.GridView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
-
-    private PayButton googlePayButton;
 
     private void restartmolpay() {
         HashMap<String, Object> paymentDetails = new HashMap<>();
@@ -58,38 +57,6 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, MOLPayActivity.MOLPayXDK);
     }
 
-    private void googlePayPayment() {
-        HashMap<String, Object> paymentDetails = new HashMap<>();
-
-        /*
-            TODO: Follow Google’s instructions to request production access for your app: https://developers.google.com/pay/api/android/guides/test-and-deploy/request-prod-access
-            *
-             Choose the integration type Gateway when prompted, and provide screenshots of your app for review.
-             After your app has been approved, test your integration in production by set mp_sandbox_mode = false & use production mp_verification_key & mp_merchant_ID.
-             Then launching Google Pay from a signed, release build of your app.
-             */
-        paymentDetails.put(MOLPayActivity.mp_sandbox_mode, true); // Only set to false once you have request production access for your app
-
-        // TODO: Enter your merchant account credentials before test run
-        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "SB_molpayxdk"); // Your sandbox / production merchant ID
-        paymentDetails.put(MOLPayActivity.mp_verification_key, "4445db44bdb60687a8e7f7903a59c3a9");
-
-        paymentDetails.put(MOLPayActivity.mp_amount, "1.01"); // Must be in 2 decimal points format
-        paymentDetails.put(MOLPayActivity.mp_order_ID, Calendar.getInstance().getTimeInMillis()); // Must be unique
-        paymentDetails.put(MOLPayActivity.mp_currency, "MYR"); // Must matched mp_country
-        paymentDetails.put(MOLPayActivity.mp_country, "MY"); // Must matched mp_currency
-        paymentDetails.put(MOLPayActivity.mp_bill_description, "The bill description");
-        paymentDetails.put(MOLPayActivity.mp_bill_name, "The bill name");
-        paymentDetails.put(MOLPayActivity.mp_bill_email, "payer.email@fiuu.com");
-        paymentDetails.put(MOLPayActivity.mp_bill_mobile, "123456789");
-
-        paymentDetails.put(MOLPayActivity.mp_extended_vcode, false); // Optional : Set true if your account enabled extended Verify Payment
-
-        Intent intent = new Intent(MainActivity.this, ActivityGP.class); // Used ActivityGP for Google Pay
-        intent.putExtra(MOLPayActivity.MOLPayPaymentDetails, paymentDetails);
-        startActivityForResult(intent, MOLPayActivity.MOLPayXDK);
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
@@ -101,13 +68,15 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == MOLPayActivity.MOLPayXDK && data != null){
             if (data.getStringExtra(MOLPayActivity.MOLPayTransactionResult) != null) {
                 Log.d(MOLPayActivity.MOLPAY, "MOLPay result = " + data.getStringExtra(MOLPayActivity.MOLPayTransactionResult));
-                TextView tw = findViewById(R.id.resultTV);
-                tw.setText(data.getStringExtra(MOLPayActivity.MOLPayTransactionResult));
+
+                Intent intent = new Intent(MainActivity.this, SuccessPayment.class);
+                startActivity(intent);
             }
         } else if (requestCode == MOLPayActivity.MOLPayXDK && resultCode == MainActivity.RESULT_CANCELED && data == null) {
             Log.e("logGooglePay" , "RESULT_CANCELED data == null");
-            TextView tw = findViewById(R.id.resultTV);
-            tw.setText("result = null");
+
+            Intent intent = new Intent(MainActivity.this, FailPayment.class);
+            startActivity(intent);
         }
 
     }
@@ -131,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
         itemModelArrayList.add(new ItemModel("Chicken", R.drawable.chicken, 8.00));
         itemModelArrayList.add(new ItemModel("Fries", R.drawable.fries, 6.00));
         itemModelArrayList.add(new ItemModel("Pizza", R.drawable.pizza, 10.00));
-        itemModelArrayList.add(new ItemModel("Nugget", R.drawable.nugget, 4.00));
+        itemModelArrayList.add(new ItemModel("Nugget", R.drawable.nugget, 2.00));
         itemModelArrayList.add(new ItemModel("Porridge", R.drawable.porridge, 7.00));
         itemModelArrayList.add(new ItemModel("Satay", R.drawable.satay, 10.00));
         itemModelArrayList.add(new ItemModel("Wings", R.drawable.wings, 9.00));
@@ -139,12 +108,8 @@ public class MainActivity extends AppCompatActivity {
         GVAdapter adapter = new GVAdapter(this, itemModelArrayList);
         itemGV.setAdapter(adapter);
 
-        // Set an item click listener on the GridView
         itemGV.setOnItemClickListener((parent, view, position, id) -> {
-            // Increment the counter on each click
             counter++;
-
-            // Update the counter TextView
             itemCounter.setText("" + counter);
 
             ItemModel clickedItem = itemModelArrayList.get(position);
@@ -167,19 +132,21 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                // Create an intent to navigate to CartActivity
-                Intent intent = new Intent(MainActivity.this, CartActivity.class);
+                if(counter == 0 ){
+                    Toast.makeText(MainActivity.this,"Your cart is empty", Toast.LENGTH_SHORT).show();
+                }else {
 
-                // Create an ArrayList of item names and counters to pass
-                ArrayList<String> selectedItemDetails = new ArrayList<>();
-                for (ItemModel item : selectedItems) {
-                    selectedItemDetails.add(item.getItem_name() + "-" + item.getCounter() + "-" + item.getItem_price());
+                    Intent intent = new Intent(MainActivity.this, CartActivity.class);
+
+                    ArrayList<String> selectedItemDetails = new ArrayList<>();
+                    for (ItemModel item : selectedItems) {
+                        selectedItemDetails.add(item.getItem_name() + "-" + item.getCounter() + "-" + item.getItem_price());
+                    }
+
+                    intent.putStringArrayListExtra("selectedItems", selectedItemDetails);
+
+                    startActivity(intent);
                 }
-
-                // Pass the selected items as a string array list
-                intent.putStringArrayListExtra("selectedItems", selectedItemDetails);
-
-                startActivity(intent);
             }
         });
     }

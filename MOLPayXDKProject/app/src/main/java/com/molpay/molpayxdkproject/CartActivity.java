@@ -1,5 +1,6 @@
 package com.molpay.molpayxdkproject;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,11 +24,16 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
-public class CartActivity extends AppCompatActivity {
+public class CartActivity extends AppCompatActivity implements CartAdapter.OnItemChangeListener{
 
     private PayButton googlePayButton;
     private GridView cartView;
     private TextView totalPriceTV;
+    private ArrayList<ItemModel> itemList;
+    private CartAdapter cartAdapter;
+
+    private double totalPrice = 0.00;
+    private String totalPriceText;
 
     private void restartmolpay() {
         HashMap<String, Object> paymentDetails = new HashMap<>();
@@ -63,6 +69,7 @@ public class CartActivity extends AppCompatActivity {
     }
 
     private void googlePayPayment() {
+        Log.d("Cart", "Total price: " + totalPriceText);
         HashMap<String, Object> paymentDetails = new HashMap<>();
 
         /*
@@ -78,7 +85,8 @@ public class CartActivity extends AppCompatActivity {
         paymentDetails.put(MOLPayActivity.mp_merchant_ID, "SB_molpayxdk"); // Your sandbox / production merchant ID
         paymentDetails.put(MOLPayActivity.mp_verification_key, "4445db44bdb60687a8e7f7903a59c3a9");
 
-        paymentDetails.put(MOLPayActivity.mp_amount, "1.01"); // Must be in 2 decimal points format
+        paymentDetails.put(MOLPayActivity.mp_amount, totalPriceText); // Must be in 2 decimal points format
+        //paymentDetails.put(MOLPayActivity.mp_amount, "4.99"); // Must be in 2 decimal points format
         paymentDetails.put(MOLPayActivity.mp_order_ID, Calendar.getInstance().getTimeInMillis()); // Must be unique
         paymentDetails.put(MOLPayActivity.mp_currency, "MYR"); // Must matched mp_country
         paymentDetails.put(MOLPayActivity.mp_country, "MY"); // Must matched mp_currency
@@ -105,13 +113,18 @@ public class CartActivity extends AppCompatActivity {
         if (requestCode == MOLPayActivity.MOLPayXDK && data != null){
             if (data.getStringExtra(MOLPayActivity.MOLPayTransactionResult) != null) {
                 Log.d(MOLPayActivity.MOLPAY, "MOLPay result = " + data.getStringExtra(MOLPayActivity.MOLPayTransactionResult));
-                TextView tw = findViewById(R.id.resultTV);
-                tw.setText(data.getStringExtra(MOLPayActivity.MOLPayTransactionResult));
+//                TextView tw = findViewById(R.id.resultTV);
+//                tw.setText(data.getStringExtra(MOLPayActivity.MOLPayTransactionResult));
+                //todo: redirect to success page
+                Intent intent = new Intent(CartActivity.this, SuccessPayment.class);
+                startActivity(intent);
             }
         } else if (requestCode == MOLPayActivity.MOLPayXDK && resultCode == MainActivity.RESULT_CANCELED && data == null) {
             Log.e("logGooglePay" , "RESULT_CANCELED data == null");
-            TextView tw = findViewById(R.id.resultTV);
-            tw.setText("result = null");
+//            TextView tw = findViewById(R.id.resultTV);
+//            tw.setText("result = null");
+            Intent intent = new Intent(CartActivity.this, FailPayment.class);
+            startActivity(intent);
         }
 
     }
@@ -145,38 +158,47 @@ public class CartActivity extends AppCompatActivity {
         cartView = findViewById(R.id.cartView);
         totalPriceTV = findViewById(R.id.totalPrice);
 
-        ArrayList<String> selectedItemDetails = getIntent().getStringArrayListExtra("selectedItems");
+        ArrayList<String> selectedItems = getIntent().getStringArrayListExtra("selectedItems");
 
-        ArrayList<String> itemNames = new ArrayList<>();
-        ArrayList<Integer> itemCounters = new ArrayList<>();
-        ArrayList<Double> itemPrices = new ArrayList<>();
-        Double totalPrice = 0.0;
-
-        if (selectedItemDetails != null && !selectedItemDetails.isEmpty()) {
-            for (String itemDetail : selectedItemDetails) {
+        itemList = new ArrayList<>();
+        if (selectedItems != null && !selectedItems.isEmpty()) {
+            for (String itemDetail : selectedItems) {
                 String[] parts = itemDetail.split("-");
                 if (parts.length == 3) {
-                    itemNames.add(parts[0].trim());
-                    itemCounters.add(Integer.parseInt(parts[1].trim()));
-                    itemPrices.add(Double.parseDouble(parts[2].trim()));
+                    String itemName = parts[0].trim();
+                    int counter = Integer.parseInt(parts[1].trim());
+                    double price = Double.parseDouble(parts[2].trim());
+
+                    // Create and add ItemModel object
+                    ItemModel item = new ItemModel(itemName, 0, price); // Image ID is not used in this context
+                    item.setCounter(counter);
+                    itemList.add(item);
                 }
             }
 
-            // Set up your GridView adapter with the data
-            GridView cartView = findViewById(R.id.cartView);
-            CartAdapter cartAdapter = new CartAdapter(this, itemNames, itemCounters, itemPrices);
+            // Set up adapter
+            cartAdapter = new CartAdapter((Context) this, itemList, (CartAdapter.OnItemChangeListener) this);
             cartView.setAdapter(cartAdapter);
 
-            // Calculate total price
-            for (int i = 0; i < itemPrices.size(); i++) {
-                totalPrice += itemPrices.get(i) * itemCounters.get(i);
-            }
-
-            TextView totalPriceTV = findViewById(R.id.totalPrice);
-            totalPriceTV.setText(String.format("Total: RM %.2f", totalPrice));
+            totalPriceTV.setText(String.format("RM %.2f", updateTotalPrice()));
         } else {
-            // Handle no items selected
+            totalPriceTV.setText("No items selected.");
         }
 
+    }
+
+    @Override
+    public void onItemChanged() {
+        updateTotalPrice();
+    }
+
+    private double updateTotalPrice() {
+        for (ItemModel item : itemList) {
+            totalPrice += item.getItem_price() * item.getCounter();
+        }
+        //totalPriceTV.setText(String.format("RM %.2f", totalPrice));
+        totalPriceText = String.format("%.2f", totalPrice);
+
+        return totalPrice;
     }
 }

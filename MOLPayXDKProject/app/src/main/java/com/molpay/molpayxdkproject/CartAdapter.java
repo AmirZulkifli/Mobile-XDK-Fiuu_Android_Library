@@ -5,35 +5,31 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.molpay.molpayxdkproject.ItemModel;
-import com.molpay.molpayxdkproject.R;
 
 import java.util.ArrayList;
 
 public class CartAdapter extends BaseAdapter {
     private final Context context;
-    private final ArrayList<String> itemNames;
-    private final ArrayList<Integer> itemCounters;
-    private final ArrayList<Double> itemPrices;
+    private final ArrayList<ItemModel> items;
+    private final OnItemChangeListener onItemChangeListener;
 
-    public CartAdapter(Context context, ArrayList<String> itemNames, ArrayList<Integer> itemCounters, ArrayList<Double> itemPrices) {
+    public CartAdapter(Context context, ArrayList<ItemModel> items, OnItemChangeListener onItemChangeListener) {
         this.context = context;
-        this.itemNames = itemNames;
-        this.itemCounters = itemCounters;
-        this.itemPrices = itemPrices;
+        this.items = items;
+        this.onItemChangeListener = onItemChangeListener;
     }
 
     @Override
     public int getCount() {
-        return itemNames.size();
+        return items.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return itemNames.get(position);
+        return items.get(position);
     }
 
     @Override
@@ -50,16 +46,37 @@ public class CartAdapter extends BaseAdapter {
         ImageView itemPic = convertView.findViewById(R.id.itemPic);
         TextView itemName = convertView.findViewById(R.id.itemName);
         TextView itemCounter = convertView.findViewById(R.id.itemCounter);
+        Button itemPlus = convertView.findViewById(R.id.itemPlus);
+        Button itemMinus = convertView.findViewById(R.id.itemMinus);
 
-        // Set item details
-        itemName.setText(itemNames.get(position));
-        itemCounter.setText(String.valueOf(itemCounters.get(position)));
+        ItemModel item = items.get(position);
 
-        // Set item image
-        String imageName = itemNames.get(position).toLowerCase().replace(" ", "_");
+        itemName.setText(item.getItem_name());
+        itemCounter.setText(String.valueOf(item.getCounter()));
+
+        // Load image
+        String imageName = item.getItem_name().toLowerCase().replace(" ", "_");
         int imageResId = context.getResources().getIdentifier(imageName, "drawable", context.getPackageName());
         itemPic.setImageResource(imageResId);
 
+        itemPlus.setOnClickListener(v -> {
+            item.setCounter(item.getCounter() + 1);
+            itemCounter.setText(String.valueOf(item.getCounter()));
+            onItemChangeListener.onItemChanged();
+        });
+
+        itemMinus.setOnClickListener(v -> {
+            if (item.getCounter() > 0) {
+                item.setCounter(item.getCounter() - 1);
+                itemCounter.setText(String.valueOf(item.getCounter()));
+                onItemChangeListener.onItemChanged();
+            }
+        });
+
         return convertView;
+    }
+
+    public interface OnItemChangeListener {
+        void onItemChanged();
     }
 }
