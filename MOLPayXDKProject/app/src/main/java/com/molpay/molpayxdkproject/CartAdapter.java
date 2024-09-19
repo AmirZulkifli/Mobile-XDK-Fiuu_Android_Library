@@ -45,6 +45,7 @@ public class CartAdapter extends BaseAdapter {
 
         ImageView itemPic = convertView.findViewById(R.id.itemPic);
         TextView itemName = convertView.findViewById(R.id.itemName);
+        TextView itemPrice = convertView.findViewById(R.id.itemPrice);
         TextView itemCounter = convertView.findViewById(R.id.itemCounter);
         Button itemPlus = convertView.findViewById(R.id.itemPlus);
         Button itemMinus = convertView.findViewById(R.id.itemMinus);
@@ -52,6 +53,7 @@ public class CartAdapter extends BaseAdapter {
         ItemModel item = items.get(position);
 
         itemName.setText(item.getItem_name());
+        itemPrice.setText(String.format("RM %.2f", item.getItem_price()));
         itemCounter.setText(String.valueOf(item.getCounter()));
 
         // Load image
