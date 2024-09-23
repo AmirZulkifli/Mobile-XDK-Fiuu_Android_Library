@@ -23,8 +23,17 @@ public class FailPayment extends AppCompatActivity {
 
         Log.d("Transaction", "payment failed");
 
-        Toast.makeText(this,"Insufficient fund", Toast.LENGTH_LONG).show();
+        Toast.makeText(this,"Payment failed", Toast.LENGTH_LONG).show();
         failGif();
+        btnBackToMenu = findViewById(R.id.btnMenu);
+        btnBackToMenu.setOnClickListener(view -> btnMenuOnClick());
+    }
+
+    public void btnMenuOnClick(){
+        Intent intent = new Intent(FailPayment.this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
     }
 
     public void failGif(){

@@ -22,6 +22,8 @@ import java.util.HashMap;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 public class MainActivity extends AppCompatActivity {
 
     private void restartmolpay() {
@@ -147,12 +149,13 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     intent.putStringArrayListExtra("selectedItems", selectedItemDetails);
-
                     startActivity(intent);
+                    finish();
                 }
             }
         });
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
