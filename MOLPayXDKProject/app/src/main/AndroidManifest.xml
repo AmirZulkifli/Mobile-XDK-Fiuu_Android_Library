@@ -9,12 +9,11 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.Light">
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTask"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -40,14 +39,16 @@
         <activity android:name="com.molpay.molpayxdk.MOLPayActivity"
             android:label=""/>
 
-        <activity android:name=".CartActivity">
-
+        <activity
+            android:name=".CartActivity">
         </activity>
 
-        <activity android:name=".SuccessPayment"
+        <activity
+            android:name=".SuccessPayment"
             android:exported="true">
         </activity>
-        <activity android:name=".FailPayment"
+        <activity
+            android:name=".FailPayment"
             android:exported="true">
         </activity>
 
