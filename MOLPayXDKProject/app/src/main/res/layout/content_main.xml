@@ -19,33 +19,39 @@
         android:numColumns="2"
         android:verticalSpacing="6dp" />
 
-    <ImageButton
-        android:id="@+id/cartButton"
-        style="?android:attr/borderlessButtonStyle"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="17dp"
-        android:layout_marginBottom="17dp"
-        android:contentDescription="icon"
-        android:padding="10dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/cart"
-        app:tint="@color/colorPrimary" />
-
-    <TextView
-        android:id="@+id/itemCounter"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
+        android:layout_marginEnd="20dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="50dp"
-        android:text="0"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        app:tint="@color/colorPrimaryDark"/>
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/cartButton"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_marginBottom="17dp"
+            android:contentDescription="icon"
+            android:padding="10dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/cart" />
+
+        <TextView
+            android:id="@+id/itemCounter"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="-35dp"
+            android:gravity="center"
+            android:text="0"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:tint="@color/white"
+            android:background="@drawable/rounded_bg_neon"/>
+
+    </LinearLayout>
+
 <!--
     <com.google.android.gms.wallet.button.PayButton
         android:id="@+id/googlePayButton"
