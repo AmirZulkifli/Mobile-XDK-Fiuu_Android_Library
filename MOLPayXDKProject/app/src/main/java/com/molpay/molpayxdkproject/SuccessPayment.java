@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,6 +16,7 @@ import com.bumptech.glide.Glide;
 public class SuccessPayment extends AppCompatActivity {
 
     private Button btnExit;
+    private TextView amountTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -24,8 +26,14 @@ public class SuccessPayment extends AppCompatActivity {
         Log.d("Transaction", "payment completed");
         successGif();
 
+        Intent intent = getIntent();
+        String amount = intent.getStringExtra("amount");
+
         btnExit = findViewById(R.id.btnExit);
         btnExit.setOnClickListener(view -> btnExitOnClick());
+
+        amountTV = findViewById(R.id.amountPaid);
+        amountTV.setText("RM " + amount);
 
     }
 

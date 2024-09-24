@@ -26,6 +26,7 @@ import com.molpay.molpayxdk.googlepay.ActivityGP;
 import com.molpay.molpayxdk.googlepay.UtilGP;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
@@ -120,20 +121,47 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnIte
         Log.e("logGooglePay" , "onActivityResult resultCode = " + resultCode);
 
         if (resultCode == RESULT_OK){
-                Log.d(MOLPayActivity.MOLPAY, "MOLPay result = " + data.getStringExtra(MOLPayActivity.MOLPayTransactionResult));
-                //todo: redirect to success page
-                Intent intent = new Intent(CartActivity.this, SuccessPayment.class);
-                startActivity(intent);
+            //Log.d(MOLPayActivity.MOLPAY, "MOLPay result = " + data.getStringExtra(MOLPayActivity.MOLPayTransactionResult));
+
+            String molPayResult = data.getStringExtra(MOLPayActivity.MOLPayTransactionResult);
+
+            //todo: redirect to success page
+            Intent intent = new Intent(CartActivity.this, SuccessPayment.class);
+            intent.putExtra("amount",fetchAmount(molPayResult));
+            startActivity(intent);
+
         } else if (resultCode == RESULT_CANCELED) {
             Log.e("logGooglePay" , "RESULT_CANCELED exceed amount");
             Intent intent = new Intent(CartActivity.this, FailPayment.class);
+            intent.putExtra("amount",totalPriceTV.getText());
             startActivity(intent);
         } else {
             Log.e("logGooglePay", "RESULT_CANCELED data == null");
             Intent intent = new Intent(CartActivity.this, FailPayment.class);
+            intent.putExtra("amount",totalPriceTV.getText());
             startActivity(intent);
         }
 
+    }
+
+    public String fetchAmount(String molPayResult){
+        String amount = "null";
+
+        try {
+            JSONObject jsonResult = new JSONObject(molPayResult);
+            amount = jsonResult.getString("Amount"); // Extract the Amount
+            Log.d(MOLPayActivity.MOLPAY, "Amount received: " + amount);
+
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra("amount", amount);
+            setResult(RESULT_OK, resultIntent);
+            finish();
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Log.e(MOLPayActivity.MOLPAY, "JSON parsing error: " + e.getMessage());
+        }
+        return amount;
     }
 
     @Override

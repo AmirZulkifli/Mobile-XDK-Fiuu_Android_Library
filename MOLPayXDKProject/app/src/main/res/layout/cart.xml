@@ -28,12 +28,12 @@
         android:id="@+id/layoutTitle"
         android:layout_width="match_parent"
         android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="60dp"
         android:layout_height="wrap_content">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Shopping Cart"
+            android:text="Your Order"
             android:fontFamily="@font/coolvetica"
             android:textSize="30sp"
             android:textColor="#1a1a1a"/>
@@ -49,56 +49,115 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/layoutBottom"
+        android:layout_above="@+id/layoutPayment"
         android:layout_marginTop="20dp"
-        android:layout_below="@+id/layoutTitle">
+        android:layout_below="@+id/layoutTitle"
+        android:orientation="vertical">
 
     <GridView
         android:id="@+id/cartView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="300dp"
         android:horizontalSpacing="6dp"
         android:padding="10dp"
         android:numColumns="1"
         android:verticalSpacing="10dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end|center_vertical"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:text="Total: "
+                android:textSize="30sp"
+                android:fontFamily="@font/coolvetica"
+                android:textColor="#000000"/>
+
+            <TextView
+                android:id="@+id/totalPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:text="Price"
+                android:textSize="30sp"
+                android:fontFamily="@font/coolvetica"
+                android:textColor="#000000"/>
+
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/layoutBottom"
+        android:id="@+id/layoutPayment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="end|center_vertical"
-        android:layout_marginBottom="10dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/totalPrice"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
-            android:text="Price"
-            android:textSize="30sp"
-            android:fontFamily="@font/coolvetica"
-            android:textColor="#000000"/>
+            android:gravity="start|center_vertical"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Quick Pay"
+                android:textSize="24sp"
+                android:fontFamily="@font/coolvetica"
+                android:textColor="#000000"/>
+
+        </LinearLayout>
+        <!-- google pay button -->
+
+        <com.google.android.gms.wallet.button.PayButton
+            android:id="@+id/googlePayButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start|center_vertical"
+            android:layout_marginBottom="20dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Or Pay With"
+                android:textSize="24sp"
+                android:fontFamily="@font/coolvetica"
+                android:textColor="#000000"/>
+
+        </LinearLayout>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/rounded_bg_black"
+            android:text="MAE"
+            android:textColor="#FFFFFF"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/rounded_bg_black"
+            android:text="QR"
+            android:textColor="#FFFFFF"/>
 
     </LinearLayout>
-
-    <!-- google pay button -->
-
-    <com.google.android.gms.wallet.button.PayButton
-        android:id="@+id/googlePayButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"/>
-    </LinearLayout>
-
-
 
 </RelativeLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
