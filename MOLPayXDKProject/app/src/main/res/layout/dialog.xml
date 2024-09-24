@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="250dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@drawable/rounded_bg_white"
+    android:layout_gravity="center">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="20dp">
+
+        <TextView
+            android:id="@+id/dialogTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Overview"
+            android:fontFamily="@font/coolvetica"
+            android:textColor="#1a1a1a"
+            android:textSize="20sp"
+            />
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="20dp"
+            android:src="@drawable/info_icon"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/dialogMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="This demo application is designed to showcase the integration between a merchant's platform and the XDK payment system. Within the demo, users will navigate through a few sections where they can select items from the merchant's side. Once selections are made, the user will be directed to the XDK app, where the payment page will be displayed. \n\n To proceed, users are required to complete the payment process. This demonstrates the seamless transition and integration of the payment flow within the app."
+        android:fontFamily="@font/coolvetica"
+        android:textColor="#1a1a1a"
+        android:textSize="20sp"/>
+    
+    <Button
+        android:id="@+id/btnOK"
+        android:layout_width="50dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="20dp"
+        android:text="OK"
+        android:fontFamily="@font/coolvetica"
+        android:background="@android:color/transparent"
+        android:textColor="@color/colorNeon"
+        android:layout_gravity="end"/>
+</LinearLayout>
