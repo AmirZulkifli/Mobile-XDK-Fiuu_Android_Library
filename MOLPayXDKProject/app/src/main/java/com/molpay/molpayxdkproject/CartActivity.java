@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.gms.wallet.button.ButtonConstants;
 import com.google.android.gms.wallet.button.ButtonOptions;
@@ -39,7 +40,6 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnIte
     private ArrayList<ItemModel> itemList;
     private CartAdapter cartAdapter;
 
-    private int totalItem = 0;
     private double totalPrice = 0.00;
     private String totalPriceText;
 
@@ -140,6 +140,9 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnIte
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cart);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         // The Google Pay button is a layout file – take the root view
         googlePayButton = findViewById(R.id.googlePayButton);

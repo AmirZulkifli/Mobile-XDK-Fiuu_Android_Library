@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="150dp"
+    android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:layout_margin="5dp"
     app:cardCornerRadius="10dp"
@@ -15,12 +15,31 @@
         android:orientation="vertical"
         android:padding="10dp">
 
-        <ImageView
-            android:id="@+id/itemIV"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_gravity="center"
-            android:src="@mipmap/ic_launcher" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal">
+
+            <ImageView
+                android:id="@+id/itemIV"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/xdk_logo"/>
+            <Button
+                android:id="@+id/counterButton"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="-20dp"
+                android:background="@drawable/item_counter"
+                android:text="2"
+                android:textColor="#FFFFFF"
+                android:fontFamily="@font/coolvetica"
+                android:textSize="16sp"
+                android:visibility="visible"
+                android:enabled="false"/>
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

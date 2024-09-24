@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -31,10 +32,20 @@ public class GVAdapter extends ArrayAdapter<ItemModel> {
         TextView itemNameTV = listitemView.findViewById(R.id.itemNameTV);
         TextView itemPriceTV = listitemView.findViewById(R.id.itemPriceTV);
         ImageView itemIV = listitemView.findViewById(R.id.itemIV);
+        Button btnCounter = listitemView.findViewById(R.id.counterButton);
 
         itemNameTV.setText(itemModel.getItem_name());
         itemPriceTV.setText(String.format("RM %.2f", itemModel.getItem_price()));
         itemIV.setImageResource(itemModel.getImgid());
+
+        if(itemModel.getCounter() != 0){
+            btnCounter.setVisibility(View.VISIBLE);
+            btnCounter.setText(String.valueOf(itemModel.getCounter()));
+        }
+        else {
+            btnCounter.setVisibility(View.GONE);
+            btnCounter.setText("0");
+        }
         return listitemView;
     }
 }

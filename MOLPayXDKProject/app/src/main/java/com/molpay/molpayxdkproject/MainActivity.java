@@ -11,9 +11,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.google.android.gms.wallet.button.PayButton;
 import com.molpay.molpayxdk.MOLPayActivity;
-import com.molpay.molpayxdk.googlepay.ActivityGP;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -22,7 +20,6 @@ import java.util.HashMap;
 import android.widget.GridView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -113,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
 
         itemGV.setOnItemClickListener((parent, view, position, id) -> {
             counter++;
-            itemCounter.setText("" + counter);
+            itemCounter.setText(String.valueOf(counter));
 
             ItemModel clickedItem = itemModelArrayList.get(position);
             clickedItem.setCounter(clickedItem.getCounter() + 1);
@@ -121,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
             if (!selectedItems.contains(clickedItem)) {
                 selectedItems.add(clickedItem);
             }
-
+            adapter.notifyDataSetChanged();
         });
 
         //google pay button
