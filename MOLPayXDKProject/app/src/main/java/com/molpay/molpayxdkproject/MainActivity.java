@@ -1,8 +1,13 @@
 package com.molpay.molpayxdkproject;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -57,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = new Intent(MainActivity.this, MOLPayActivity.class);
         intent.putExtra(MOLPayActivity.MOLPayPaymentDetails, paymentDetails);
-        startActivityForResult(intent, MOLPayActivity.MOLPayXDK);
+        molPayLauncher.launch(intent);
     }
 
     @Override
@@ -157,6 +162,20 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    //ActivityResultLauncher replacing deprecated startActivityResult
+
+    ActivityResultLauncher<Intent> molPayLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    Intent data = result.getData();
+                    if (data != null) {
+                        String molpayResult = data.getStringExtra(MOLPayActivity.MOLPayTransactionResult);
+                        Log.d("MOLPay", "MOLPay result: " + molpayResult);
+                    }
+                }
+            }
+    );
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

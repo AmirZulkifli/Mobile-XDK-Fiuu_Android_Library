@@ -15,6 +15,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -107,9 +110,9 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnIte
 
         paymentDetails.put(MOLPayActivity.mp_extended_vcode, false); // Optional : Set true if your account enabled extended Verify Payment
 
-        Intent intent = new Intent(CartActivity.this, ActivityGP.class); // Used ActivityGP for Google Pay
+        Intent intent = new Intent(CartActivity.this, ActivityGP.class);
         intent.putExtra(MOLPayActivity.MOLPayPaymentDetails, paymentDetails);
-        startActivityForResult(intent, MOLPayActivity.MOLPayXDK);
+        molPayLauncher.launch(intent);
     }
 
     @Override
@@ -197,6 +200,8 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnIte
 
         ArrayList<String> selectedItems = getIntent().getStringArrayListExtra("selectedItems");
 
+        ItemDataManager.getInstance().setSelectedItems(selectedItems);
+
         itemList = new ArrayList<>();
         if (selectedItems != null && !selectedItems.isEmpty()) {
             for (String itemDetail : selectedItems) {
@@ -219,7 +224,34 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnIte
         } else {
             totalPriceTV.setText("No items selected.");
         }
+
+        ArrayList<ItemModel> itemModelArrayList = new ArrayList<>();
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                Intent intent = new Intent(CartActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
     }
+
+    //ActivityResultLauncher replacing deprecated startActivityResult
+
+    ActivityResultLauncher<Intent> molPayLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    Intent data = result.getData();
+                    if (data != null) {
+                        String molpayResult = data.getStringExtra(MOLPayActivity.MOLPayTransactionResult);
+                        Log.d("MOLPay", "MOLPay result: " + molpayResult);
+                    }
+                }
+            }
+    );
 
     @Override
     public void onItemChanged() {
