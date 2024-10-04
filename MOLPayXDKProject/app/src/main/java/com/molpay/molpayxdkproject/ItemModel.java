@@ -71,6 +71,10 @@ public class ItemModel implements Parcelable {
         return counter;
     }
 
+    public void resetCounter(){
+        this.counter = 0;
+    }
+
     public void setCounter(int counter) {
         this.counter = counter;
     }

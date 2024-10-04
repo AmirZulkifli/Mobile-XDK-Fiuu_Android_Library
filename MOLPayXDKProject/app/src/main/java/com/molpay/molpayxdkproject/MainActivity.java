@@ -2,6 +2,7 @@ package com.molpay.molpayxdkproject;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResult;
@@ -92,29 +93,40 @@ public class MainActivity extends AppCompatActivity {
     GridView itemGV;
     TextView itemCounter;
     int counter;
+    private GVAdapter adapter;
+    private SharedPreferenceManager preferenceManager;
+    private ArrayList<ItemModel> itemModelArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //shared preference test
+        preferenceManager = new SharedPreferenceManager(this);
+
         itemGV = findViewById(R.id.gridView);
         itemCounter = findViewById(R.id.itemCounter);
-        counter = 0;
 
         ArrayList<ItemModel> selectedItems = new ArrayList<>();
 
-        ArrayList<ItemModel> itemModelArrayList = new ArrayList<>();
-        itemModelArrayList.add(new ItemModel("Burger", R.drawable.burger, 5.00));
-        itemModelArrayList.add(new ItemModel("Chicken", R.drawable.chicken, 8.00));
-        itemModelArrayList.add(new ItemModel("Fries", R.drawable.fries, 6.00));
-        itemModelArrayList.add(new ItemModel("Pizza", R.drawable.pizza, 10.00));
-        itemModelArrayList.add(new ItemModel("Nugget", R.drawable.nugget, 2.00));
-        itemModelArrayList.add(new ItemModel("Porridge", R.drawable.porridge, 7.00));
-        itemModelArrayList.add(new ItemModel("Satay", R.drawable.satay, 10.00));
-        itemModelArrayList.add(new ItemModel("Wings", R.drawable.wings, 9.00));
+        Log.d("Main", "shared " +preferenceManager.getItemList());
 
-        GVAdapter adapter = new GVAdapter(this, itemModelArrayList);
+        if (preferenceManager.getItemList() == null){
+            itemModelArrayList = new ArrayList<>();
+            itemModelArrayList.add(new ItemModel("Burger", R.drawable.burger, 5.00));
+            itemModelArrayList.add(new ItemModel("Chicken", R.drawable.chicken, 8.00));
+            itemModelArrayList.add(new ItemModel("Fries", R.drawable.fries, 6.00));
+            itemModelArrayList.add(new ItemModel("Pizza", R.drawable.pizza, 10.00));
+            itemModelArrayList.add(new ItemModel("Nugget", R.drawable.nugget, 2.00));
+            itemModelArrayList.add(new ItemModel("Porridge", R.drawable.porridge, 7.00));
+            itemModelArrayList.add(new ItemModel("Satay", R.drawable.satay, 10.00));
+            itemModelArrayList.add(new ItemModel("Wings", R.drawable.wings, 9.00));
+        }else{
+            itemModelArrayList = preferenceManager.getItemList();
+        }
+
+        adapter = new GVAdapter(this, itemModelArrayList);
         itemGV.setAdapter(adapter);
 
         itemGV.setOnItemClickListener((parent, view, position, id) -> {
@@ -128,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
                 selectedItems.add(clickedItem);
             }
             adapter.notifyDataSetChanged();
+            preferenceManager.saveItemList(itemModelArrayList);
         });
 
         //google pay button
@@ -136,30 +149,57 @@ public class MainActivity extends AppCompatActivity {
 
         //image button listener
         ImageButton cartButton = findViewById(R.id.cartButton);
+        ImageButton deleteButton = findViewById(R.id.deleteButton);
 
-        cartButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if(counter == 0 ){
-
-                    Toast.makeText(MainActivity.this,"Your cart is empty", Toast.LENGTH_SHORT).show();
-
-                }else {
-
-                    Intent intent = new Intent(MainActivity.this, CartActivity.class);
-
-                    ArrayList<String> selectedItemDetails = new ArrayList<>();
-                    for (ItemModel item : selectedItems) {
-                        selectedItemDetails.add(item.getItem_name() + "-" + item.getCounter() + "-" + item.getItem_price());
-                    }
-
-                    intent.putStringArrayListExtra("selectedItems", selectedItemDetails);
-                    startActivity(intent);
-                    finish();
-                }
+        cartButton.setOnClickListener(v -> {
+            if(counter == 0 ){
+                Toast.makeText(MainActivity.this,"Your cart is empty", Toast.LENGTH_SHORT).show();
+            }else {
+                Intent intent = new Intent(MainActivity.this, CartActivity.class);
+                startActivity(intent);
             }
         });
+
+        deleteButton.setOnClickListener(v -> {
+            clearCart();
+        });
+    }
+
+    public void clearCart(){
+        preferenceManager.clearCart();
+        for (ItemModel item : itemModelArrayList) {
+            item.resetCounter();
+        }
+
+        adapter.notifyDataSetChanged();
+        counter = 0;
+        itemCounter.setText(String.valueOf(counter));
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (preferenceManager.getItemList() != null){
+            ArrayList<ItemModel> updatedList = preferenceManager.getItemList();
+            adapter.clear();
+            adapter.addAll(updatedList);
+            adapter.notifyDataSetChanged();
+
+            counter = getTotalItemCount(updatedList);
+
+            itemCounter.setText(String.valueOf(counter));
+        }
+    }
+
+    private int getTotalItemCount(ArrayList<ItemModel> itemList){
+        int totalCount = 0;
+
+        for(ItemModel item: itemList){
+            totalCount += item.getCounter();
+        }
+
+        return totalCount;
     }
 
     //ActivityResultLauncher replacing deprecated startActivityResult

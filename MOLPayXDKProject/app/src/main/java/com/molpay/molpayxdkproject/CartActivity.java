@@ -167,6 +167,8 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnIte
         return amount;
     }
 
+    MainActivity main = new MainActivity();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -174,6 +176,23 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnIte
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        //shared preference test
+        SharedPreferenceManager preferenceManager = new SharedPreferenceManager(this);
+
+        cartView = findViewById(R.id.cartView);
+        totalPriceTV = findViewById(R.id.totalPrice);
+
+        //ArrayList<String> selectedItems = getIntent().getStringArrayListExtra("selectedItems");
+        itemList =  preferenceManager.getItemList();
+
+        if(itemList != null && !itemList.isEmpty()){
+            cartAdapter = new CartAdapter((Context) this, itemList, (CartAdapter.OnItemChangeListener) this);
+            cartView.setAdapter(cartAdapter);
+            totalPriceTV.setText(String.format("RM %.2f", updateTotalPrice()));
+        }else{
+            totalPriceTV.setText("No items selected.");
+        }
 
         // The Google Pay button is a layout file – take the root view
         googlePayButton = findViewById(R.id.googlePayButton);
@@ -193,36 +212,6 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnIte
             });
         } catch (JSONException e) {
             // Keep Google Pay button hidden (consider logging this to your app analytics service)
-        }
-
-        cartView = findViewById(R.id.cartView);
-        totalPriceTV = findViewById(R.id.totalPrice);
-
-        ArrayList<String> selectedItems = getIntent().getStringArrayListExtra("selectedItems");
-
-        ItemDataManager.getInstance().setSelectedItems(selectedItems);
-
-        itemList = new ArrayList<>();
-        if (selectedItems != null && !selectedItems.isEmpty()) {
-            for (String itemDetail : selectedItems) {
-                String[] parts = itemDetail.split("-");
-                if (parts.length == 3) {
-                    String itemName = parts[0].trim();
-                    int counter = Integer.parseInt(parts[1].trim());
-                    double price = Double.parseDouble(parts[2].trim());
-
-                    ItemModel item = new ItemModel(itemName, 0, price);
-                    item.setCounter(counter);
-                    itemList.add(item);
-                }
-            }
-
-            cartAdapter = new CartAdapter((Context) this, itemList, (CartAdapter.OnItemChangeListener) this);
-            cartView.setAdapter(cartAdapter);
-
-            totalPriceTV.setText(String.format("RM %.2f", updateTotalPrice()));
-        } else {
-            totalPriceTV.setText("No items selected.");
         }
 
         ArrayList<ItemModel> itemModelArrayList = new ArrayList<>();

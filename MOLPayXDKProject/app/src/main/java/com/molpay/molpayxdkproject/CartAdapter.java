@@ -1,6 +1,8 @@
 package com.molpay.molpayxdkproject;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,17 +11,21 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 
 public class CartAdapter extends BaseAdapter {
     private final Context context;
     private final ArrayList<ItemModel> items;
     private final OnItemChangeListener onItemChangeListener;
+    private SharedPreferenceManager sharedPreferenceManager;
 
     public CartAdapter(Context context, ArrayList<ItemModel> items, OnItemChangeListener onItemChangeListener) {
         this.context = context;
         this.items = items;
         this.onItemChangeListener = onItemChangeListener;
+        this.sharedPreferenceManager = new SharedPreferenceManager(context);
     }
 
     @Override
@@ -39,6 +45,7 @@ public class CartAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.cart_item, parent, false);
         }
@@ -65,6 +72,7 @@ public class CartAdapter extends BaseAdapter {
             item.setCounter(item.getCounter() + 1);
             itemCounter.setText(String.valueOf(item.getCounter()));
             onItemChangeListener.onItemChanged();
+            sharedPreferenceManager.saveItemList(items);
         });
 
         itemMinus.setOnClickListener(v -> {
@@ -72,6 +80,7 @@ public class CartAdapter extends BaseAdapter {
                 item.setCounter(item.getCounter() - 1);
                 itemCounter.setText(String.valueOf(item.getCounter()));
                 onItemChangeListener.onItemChanged();
+                sharedPreferenceManager.saveItemList(items);
             }
         });
 
@@ -81,4 +90,5 @@ public class CartAdapter extends BaseAdapter {
     public interface OnItemChangeListener {
         void onItemChanged();
     }
+
 }
