@@ -147,6 +147,7 @@
             </LinearLayout>
 
             <Button
+                android:id="@+id/btnMAE"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
@@ -155,6 +156,7 @@
                 android:textColor="#FFFFFF"/>
 
             <Button
+                android:id="@+id/btnQR"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"

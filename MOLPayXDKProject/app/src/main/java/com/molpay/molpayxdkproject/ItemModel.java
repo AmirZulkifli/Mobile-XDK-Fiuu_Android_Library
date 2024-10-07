@@ -29,14 +29,14 @@ public class ItemModel implements Parcelable {
 
     public static ArrayList<ItemModel> itemList(){
         ArrayList<ItemModel> itemModelArrayList = new ArrayList<>();
-        itemModelArrayList.add(new ItemModel("Burger", R.drawable.burger, 5.00));
-        itemModelArrayList.add(new ItemModel("Chicken", R.drawable.chicken, 8.00));
-        itemModelArrayList.add(new ItemModel("Fries", R.drawable.fries, 6.00));
-        itemModelArrayList.add(new ItemModel("Pizza", R.drawable.pizza, 10.00));
-        itemModelArrayList.add(new ItemModel("Nugget", R.drawable.nugget, 2.00));
-        itemModelArrayList.add(new ItemModel("Porridge", R.drawable.porridge, 7.00));
-        itemModelArrayList.add(new ItemModel("Satay", R.drawable.satay, 10.00));
-        itemModelArrayList.add(new ItemModel("Wings", R.drawable.wings, 9.00));
+        itemModelArrayList.add(new ItemModel("Burger", R.drawable.burger, 0.50));
+        itemModelArrayList.add(new ItemModel("Chicken", R.drawable.chicken, 0.50));
+        itemModelArrayList.add(new ItemModel("Fries", R.drawable.fries, 0.50));
+        itemModelArrayList.add(new ItemModel("Pizza", R.drawable.pizza, 0.50));
+        itemModelArrayList.add(new ItemModel("Nugget", R.drawable.nugget, 0.50));
+        itemModelArrayList.add(new ItemModel("Porridge", R.drawable.porridge, 0.50));
+        itemModelArrayList.add(new ItemModel("Satay", R.drawable.satay, 0.50));
+        itemModelArrayList.add(new ItemModel("Wings", R.drawable.wings, 0.50));
         return itemModelArrayList;
     }
 

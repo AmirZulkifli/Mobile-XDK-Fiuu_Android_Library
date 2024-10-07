@@ -18,6 +18,7 @@ import android.widget.Toast;
 import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -39,6 +40,8 @@ import java.util.HashMap;
 public class CartActivity extends AppCompatActivity implements CartAdapter.OnItemChangeListener{
 
     private PayButton googlePayButton;
+    private Button MAEButton;
+    private Button QRButton;
     private GridView cartView;
     private TextView totalPriceTV;
     private ArrayList<ItemModel> itemList;
@@ -196,6 +199,8 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnIte
 
         // The Google Pay button is a layout file – take the root view
         googlePayButton = findViewById(R.id.googlePayButton);
+        MAEButton = findViewById(R.id.btnMAE);
+        QRButton = findViewById(R.id.btnQR);
 
         try {
             // TODO: Choose your preferred Google Pay button : https://developers.google.com/pay/api/android/guides/brand-guidelines
@@ -214,7 +219,8 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnIte
             // Keep Google Pay button hidden (consider logging this to your app analytics service)
         }
 
-        ArrayList<ItemModel> itemModelArrayList = new ArrayList<>();
+        MAEButton.setOnClickListener(view -> Toast.makeText(CartActivity.this,"This service is currently not available", Toast.LENGTH_SHORT).show());
+        QRButton.setOnClickListener(view -> Toast.makeText(CartActivity.this,"This service is currently not available", Toast.LENGTH_SHORT).show());
 
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
