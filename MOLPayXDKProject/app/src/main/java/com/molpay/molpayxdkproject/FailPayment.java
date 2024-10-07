@@ -15,6 +15,7 @@ public class FailPayment extends AppCompatActivity {
 
     private Button btnBackToMenu;
     private Button btnClose;
+    private SharedPreferenceManager preferenceManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -38,6 +39,9 @@ public class FailPayment extends AppCompatActivity {
     }
 
     public void btnCloseOnClick(){
+        preferenceManager = new SharedPreferenceManager(this);
+        preferenceManager.clearCart();
+
         Intent intent = new Intent(FailPayment.this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);

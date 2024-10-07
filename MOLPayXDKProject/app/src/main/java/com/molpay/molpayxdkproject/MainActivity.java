@@ -149,7 +149,6 @@ public class MainActivity extends AppCompatActivity {
 
         //image button listener
         ImageButton cartButton = findViewById(R.id.cartButton);
-        ImageButton deleteButton = findViewById(R.id.deleteButton);
 
         cartButton.setOnClickListener(v -> {
             if(counter == 0 ){
@@ -157,23 +156,9 @@ public class MainActivity extends AppCompatActivity {
             }else {
                 Intent intent = new Intent(MainActivity.this, CartActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
-
-        deleteButton.setOnClickListener(v -> {
-            clearCart();
-        });
-    }
-
-    public void clearCart(){
-        preferenceManager.clearCart();
-        for (ItemModel item : itemModelArrayList) {
-            item.resetCounter();
-        }
-
-        adapter.notifyDataSetChanged();
-        counter = 0;
-        itemCounter.setText(String.valueOf(counter));
     }
 
     @Override

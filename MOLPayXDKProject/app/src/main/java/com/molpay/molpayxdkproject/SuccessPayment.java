@@ -17,6 +17,7 @@ public class SuccessPayment extends AppCompatActivity {
 
     private Button btnExit;
     private TextView amountTV;
+    private SharedPreferenceManager preferenceManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -38,6 +39,9 @@ public class SuccessPayment extends AppCompatActivity {
     }
 
     public void btnExitOnClick(){
+        preferenceManager = new SharedPreferenceManager(this);
+        preferenceManager.clearCart();
+
         Intent intent = new Intent(SuccessPayment.this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);

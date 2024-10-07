@@ -46,7 +46,7 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnIte
 
     private double totalPrice = 0.00;
     private String totalPriceText;
-
+    private SharedPreferenceManager preferenceManager;
 
     private void restartmolpay() {
         HashMap<String, Object> paymentDetails = new HashMap<>();
@@ -178,7 +178,7 @@ public class CartActivity extends AppCompatActivity implements CartAdapter.OnIte
         setSupportActionBar(toolbar);
 
         //shared preference test
-        SharedPreferenceManager preferenceManager = new SharedPreferenceManager(this);
+        preferenceManager = new SharedPreferenceManager(this);
 
         cartView = findViewById(R.id.cartView);
         totalPriceTV = findViewById(R.id.totalPrice);
