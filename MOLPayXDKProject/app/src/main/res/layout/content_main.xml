@@ -25,13 +25,14 @@
 <!--        android:layout_alignParentBottom="true"-->
 <!--        android:layout_margin="19dp" />-->
 
-    <androidx.appcompat.widget.AppCompatButton
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/googlePayButton"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="GOOGLE PAY"
         android:layout_alignParentBottom="true"
-        android:padding="19dp"
-        android:textSize="19sp"/>
+        android:layout_centerHorizontal="true"
+        android:padding="9dp"
+        android:src="@drawable/pay_with_gpay"/>
 
 </RelativeLayout>
