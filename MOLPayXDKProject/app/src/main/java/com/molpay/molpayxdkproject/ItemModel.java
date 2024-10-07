@@ -3,6 +3,8 @@ package com.molpay.molpayxdkproject;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+
 public class ItemModel implements Parcelable {
 
     private String item_name;
@@ -23,6 +25,19 @@ public class ItemModel implements Parcelable {
         imgid = in.readInt();
         counter = in.readInt();
         item_price = in.readDouble();
+    }
+
+    public static ArrayList<ItemModel> itemList(){
+        ArrayList<ItemModel> itemModelArrayList = new ArrayList<>();
+        itemModelArrayList.add(new ItemModel("Burger", R.drawable.burger, 5.00));
+        itemModelArrayList.add(new ItemModel("Chicken", R.drawable.chicken, 8.00));
+        itemModelArrayList.add(new ItemModel("Fries", R.drawable.fries, 6.00));
+        itemModelArrayList.add(new ItemModel("Pizza", R.drawable.pizza, 10.00));
+        itemModelArrayList.add(new ItemModel("Nugget", R.drawable.nugget, 2.00));
+        itemModelArrayList.add(new ItemModel("Porridge", R.drawable.porridge, 7.00));
+        itemModelArrayList.add(new ItemModel("Satay", R.drawable.satay, 10.00));
+        itemModelArrayList.add(new ItemModel("Wings", R.drawable.wings, 9.00));
+        return itemModelArrayList;
     }
 
     public static final Creator<ItemModel> CREATOR = new Creator<ItemModel>() {

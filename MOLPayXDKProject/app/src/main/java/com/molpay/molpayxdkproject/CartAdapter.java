@@ -17,25 +17,25 @@ import java.util.ArrayList;
 
 public class CartAdapter extends BaseAdapter {
     private final Context context;
-    private final ArrayList<ItemModel> items;
+    private final ArrayList<ItemModel> filteredItems;
     private final OnItemChangeListener onItemChangeListener;
     private SharedPreferenceManager sharedPreferenceManager;
 
     public CartAdapter(Context context, ArrayList<ItemModel> items, OnItemChangeListener onItemChangeListener) {
         this.context = context;
-        this.items = items;
+        this.filteredItems = filterItems(items);
         this.onItemChangeListener = onItemChangeListener;
         this.sharedPreferenceManager = new SharedPreferenceManager(context);
     }
 
     @Override
     public int getCount() {
-        return items.size();
+        return filteredItems.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return items.get(position);
+        return filteredItems.get(position);
     }
 
     @Override
@@ -50,6 +50,8 @@ public class CartAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(context).inflate(R.layout.cart_item, parent, false);
         }
 
+        convertView.setVisibility(View.VISIBLE);
+
         ImageView itemPic = convertView.findViewById(R.id.itemPic);
         TextView itemName = convertView.findViewById(R.id.itemName);
         TextView itemPrice = convertView.findViewById(R.id.itemPrice);
@@ -57,7 +59,7 @@ public class CartAdapter extends BaseAdapter {
         Button itemPlus = convertView.findViewById(R.id.itemPlus);
         Button itemMinus = convertView.findViewById(R.id.itemMinus);
 
-        ItemModel item = items.get(position);
+        ItemModel item = filteredItems.get(position);
 
         itemName.setText(item.getItem_name());
         itemPrice.setText(String.format("RM %.2f", item.getItem_price()));
@@ -72,7 +74,7 @@ public class CartAdapter extends BaseAdapter {
             item.setCounter(item.getCounter() + 1);
             itemCounter.setText(String.valueOf(item.getCounter()));
             onItemChangeListener.onItemChanged();
-            sharedPreferenceManager.saveItemList(items);
+            sharedPreferenceManager.saveItemList(filteredItems);
         });
 
         itemMinus.setOnClickListener(v -> {
@@ -80,11 +82,21 @@ public class CartAdapter extends BaseAdapter {
                 item.setCounter(item.getCounter() - 1);
                 itemCounter.setText(String.valueOf(item.getCounter()));
                 onItemChangeListener.onItemChanged();
-                sharedPreferenceManager.saveItemList(items);
+                sharedPreferenceManager.saveItemList(filteredItems);
             }
         });
 
         return convertView;
+    }
+
+    private ArrayList<ItemModel> filterItems(ArrayList<ItemModel> allItems) {
+        ArrayList<ItemModel> filteredList = new ArrayList<>();
+        for (ItemModel item : allItems) {
+            if (item.getCounter() > 0) {
+                filteredList.add(item);
+            }
+        }
+        return filteredList;
     }
 
     public interface OnItemChangeListener {

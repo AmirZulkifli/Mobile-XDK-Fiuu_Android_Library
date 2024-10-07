@@ -31,6 +31,14 @@ public class SharedPreferenceManager {
         Log.d("Main", "json " + json);
     }
 
+    public void saveItemCounter(ArrayList<ItemModel> items){
+        editor = sharedPreferences.edit();
+        for(ItemModel item : items){
+            editor.putInt(item.getItem_name(), item.getCounter());
+        }
+        editor.apply();
+    }
+
     public ArrayList<ItemModel> getItemList(){
         String json = sharedPreferences.getString("cart_items",null);
         Type type  =new TypeToken<ArrayList<ItemModel>>() {}.getType();

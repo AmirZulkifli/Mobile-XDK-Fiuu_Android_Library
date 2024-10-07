@@ -14,6 +14,8 @@ import java.util.ArrayList;
 
 public class GVAdapter extends ArrayAdapter<ItemModel> {
 
+    private SharedPreferenceManager preferenceManager = new SharedPreferenceManager(this.getContext());
+
     public GVAdapter(@NonNull Context context, ArrayList<ItemModel> itemModelArrayList) {
         super(context, 0, itemModelArrayList);
     }

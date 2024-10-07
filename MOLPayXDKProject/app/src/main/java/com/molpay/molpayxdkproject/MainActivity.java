@@ -96,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
     private GVAdapter adapter;
     private SharedPreferenceManager preferenceManager;
     private ArrayList<ItemModel> itemModelArrayList;
+    private ItemModel itemModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
 
         //shared preference test
         preferenceManager = new SharedPreferenceManager(this);
+        itemModelArrayList = ItemModel.itemList();
 
         itemGV = findViewById(R.id.gridView);
         itemCounter = findViewById(R.id.itemCounter);
@@ -112,19 +114,11 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d("Main", "shared " +preferenceManager.getItemList());
 
-        if (preferenceManager.getItemList() == null){
-            itemModelArrayList = new ArrayList<>();
-            itemModelArrayList.add(new ItemModel("Burger", R.drawable.burger, 5.00));
-            itemModelArrayList.add(new ItemModel("Chicken", R.drawable.chicken, 8.00));
-            itemModelArrayList.add(new ItemModel("Fries", R.drawable.fries, 6.00));
-            itemModelArrayList.add(new ItemModel("Pizza", R.drawable.pizza, 10.00));
-            itemModelArrayList.add(new ItemModel("Nugget", R.drawable.nugget, 2.00));
-            itemModelArrayList.add(new ItemModel("Porridge", R.drawable.porridge, 7.00));
-            itemModelArrayList.add(new ItemModel("Satay", R.drawable.satay, 10.00));
-            itemModelArrayList.add(new ItemModel("Wings", R.drawable.wings, 9.00));
-        }else{
-            itemModelArrayList = preferenceManager.getItemList();
-        }
+//        if (preferenceManager.getItemList() == null){
+//
+//        }else{
+//            itemModelArrayList = preferenceManager.getItemList();
+//        }
 
         adapter = new GVAdapter(this, itemModelArrayList);
         itemGV.setAdapter(adapter);
@@ -140,7 +134,8 @@ public class MainActivity extends AppCompatActivity {
                 selectedItems.add(clickedItem);
             }
             adapter.notifyDataSetChanged();
-            preferenceManager.saveItemList(itemModelArrayList);
+           preferenceManager.saveItemList(itemModelArrayList);
+//            preferenceManager.saveItemCounter(itemModelArrayList);
         });
 
         //google pay button
@@ -164,15 +159,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
-        if (preferenceManager.getItemList() != null){
-            ArrayList<ItemModel> updatedList = preferenceManager.getItemList();
-            adapter.clear();
-            adapter.addAll(updatedList);
+        ArrayList<ItemModel> storedItems = preferenceManager.getItemList();
+        if(storedItems != null ){
+            for(ItemModel storedItem : storedItems){
+                for(ItemModel currentItem : itemModelArrayList){
+                    if(storedItem.getItem_name().equals(currentItem.getItem_name())){
+                        currentItem.setCounter(storedItem.getCounter());
+                    }
+                }
+            }
             adapter.notifyDataSetChanged();
 
-            counter = getTotalItemCount(updatedList);
-
+            counter = getTotalItemCount(itemModelArrayList);
             itemCounter.setText(String.valueOf(counter));
         }
     }
