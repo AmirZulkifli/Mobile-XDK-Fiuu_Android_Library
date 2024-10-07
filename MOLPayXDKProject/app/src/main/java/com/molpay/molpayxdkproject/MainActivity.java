@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -25,7 +26,7 @@ import java.util.HashMap;
 public class MainActivity extends AppCompatActivity {
 
 //    private PayButton googlePayButton;
-    private AppCompatButton googlePayButton;
+    private AppCompatImageView googlePayButton;
 
     private void restartmolpay() {
         HashMap<String, Object> paymentDetails = new HashMap<>();
