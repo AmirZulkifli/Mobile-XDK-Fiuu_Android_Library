@@ -1,4 +1,4 @@
-package com.molpay.molpayxdkproject;
+package com.fiuu.xdkandroid;
 
 import android.content.Intent;
 import android.os.Bundle;
