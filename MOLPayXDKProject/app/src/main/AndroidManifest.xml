@@ -32,8 +32,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data
-                    android:scheme="testappurl" />
+                <data android:scheme="superapp" />
             </intent-filter>
         </activity>
         <activity android:name="com.molpay.molpayxdk.MOLPayActivity"

@@ -54,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
         paymentDetails.put(MOLPayActivity.mp_dev_mode, false);
 //        paymentDetails.put(MOLPayActivity.mp_closebutton_display, true);
 //        paymentDetails.put(MOLPayActivity.mp_preferred_token, "new");
-        paymentDetails.put(MOLPayActivity.mp_closebutton_display, false);
 
         openStartActivityResult();
     }
