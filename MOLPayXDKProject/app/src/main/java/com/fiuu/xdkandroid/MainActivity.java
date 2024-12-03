@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private PayButton googlePayButton;
 
     private void restartmolpay() {
-        HashMap<String, Object> paymentDetails = new HashMap<>();
+        HashMap<Object, Object> paymentDetails = new HashMap<>();
         paymentDetails.put(MOLPayActivity.mp_amount, "1.01");
 
         // TODO: Enter your merchant account credentials before test run
@@ -52,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
 //        paymentDetails.put(MOLPayActivity.mp_express_mode, false);
 //        paymentDetails.put(MOLPayActivity.mp_dev_mode, false);
 //        paymentDetails.put(MOLPayActivity.mp_preferred_token, "new");
+
+        paymentDetails.put(MOLPayActivity.mp_closebutton_display, false);
 
         Intent intent = new Intent(MainActivity.this, MOLPayActivity.class);
         intent.putExtra(MOLPayActivity.MOLPayPaymentDetails, paymentDetails);

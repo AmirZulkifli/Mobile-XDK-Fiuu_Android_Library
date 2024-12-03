@@ -99,6 +99,7 @@ public class MOLPayActivity extends AppCompatActivity {
     public final static String mp_disabled_channels = "mp_disabled_channels";
     public final static String mp_dpa_id = "mp_dpa_id";
     public final static String mp_company = "mp_company";
+    public final static String mp_closebutton_display = "mp_closebutton_display";
 
     public final static String MOLPAY = "logMOLPAY";
     private final static String mpopenmolpaywindow = "mpopenmolpaywindow://";
@@ -109,9 +110,8 @@ public class MOLPayActivity extends AppCompatActivity {
     private final static String mpclickgpbutton = "mpclickgpbutton://";
     private final static String module_id = "module_id";
     private final static String wrapper_version = "wrapper_version";
-    private final static String wrapperVersion = "8a";
+    private final static String wrapperVersion = "9a";
 
-    private String base64Img;
     private String filename;
     private Bitmap imgBitmap;
 
@@ -119,6 +119,7 @@ public class MOLPayActivity extends AppCompatActivity {
     private HashMap<String, Object> paymentDetails;
     private Boolean isMainUILoaded = false;
     private Boolean isClosingReceipt = false;
+    private Boolean isClosebuttonDisplay = false;
 
     // Private API
     private void closemolpay() {
@@ -132,8 +133,21 @@ public class MOLPayActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_molpay, menu);
-        return super.onCreateOptionsMenu(menu);
+        JSONObject json = new JSONObject(paymentDetails);
+
+        try {
+            if (json.has("mp_closebutton_display")) {
+                isClosebuttonDisplay = json.getBoolean("mp_closebutton_display");
+            }
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+
+        if (isClosebuttonDisplay) {
+            getMenuInflater().inflate(R.menu.menu_molpay, menu);
+            return super.onCreateOptionsMenu(menu);
+        }
+        return false;
     }
 
     @Override
@@ -526,7 +540,7 @@ public class MOLPayActivity extends AppCompatActivity {
                     try {
                         JSONObject jsonResult = new JSONObject(dataString);
 
-                        base64Img = jsonResult.getString("base64ImageUrlData");
+                        String base64Img = jsonResult.getString("base64ImageUrlData");
                         filename = jsonResult.getString("filename");
                         Log.d(MOLPAY, "MPMainUIWebClient jsonResult = " + jsonResult);
 
