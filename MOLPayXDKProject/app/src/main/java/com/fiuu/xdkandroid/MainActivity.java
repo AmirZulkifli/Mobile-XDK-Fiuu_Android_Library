@@ -33,11 +33,11 @@ public class MainActivity extends AppCompatActivity {
         paymentDetails.put(MOLPayActivity.mp_amount, ".10");
 
         // TODO: Enter your merchant account credentials before test run
-        paymentDetails.put(MOLPayActivity.mp_username, "RMSxdk_2022");
-        paymentDetails.put(MOLPayActivity.mp_password, "RMSpwd@2022");
-        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "kenangancoffee_Dev");
-        paymentDetails.put(MOLPayActivity.mp_app_name, "kenangancoffee_Dev");
-        paymentDetails.put(MOLPayActivity.mp_verification_key, "b5956bb4d901053277e4e51ff0f63ab1");
+        paymentDetails.put(MOLPayActivity.mp_username, "");
+        paymentDetails.put(MOLPayActivity.mp_password, "");
+        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "");
+        paymentDetails.put(MOLPayActivity.mp_app_name, "");
+        paymentDetails.put(MOLPayActivity.mp_verification_key, "");
 
         paymentDetails.put(MOLPayActivity.mp_order_ID, Calendar.getInstance().getTimeInMillis());
         paymentDetails.put(MOLPayActivity.mp_currency, "MYR");
@@ -52,8 +52,9 @@ public class MainActivity extends AppCompatActivity {
 //        paymentDetails.put(MOLPayActivity.mp_extended_vcode, false); // For Google Pay Only - Set true if your account enabled extended Verify Payment
 //        paymentDetails.put(MOLPayActivity.mp_channel_editing, false);
 //        paymentDetails.put(MOLPayActivity.mp_editing_enabled, true);
-//        paymentDetails.put(MOLPayActivity.mp_express_mode, false);
-//        paymentDetails.put(MOLPayActivity.mp_dev_mode, false);
+        paymentDetails.put(MOLPayActivity.mp_express_mode, false);
+        paymentDetails.put(MOLPayActivity.mp_dev_mode, false);
+//        paymentDetails.put(MOLPayActivity.mp_closebutton_display, true);
 //        paymentDetails.put(MOLPayActivity.mp_preferred_token, "new");
         openStartActivityResult();
     }
