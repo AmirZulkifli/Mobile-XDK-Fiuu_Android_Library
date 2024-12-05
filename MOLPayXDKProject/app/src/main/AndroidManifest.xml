@@ -24,7 +24,6 @@
         </activity>
 
         <activity android:name=".DeepLinkActivity"
-            android:launchMode="singleTask"
             android:exported="true">
 
             <intent-filter>
