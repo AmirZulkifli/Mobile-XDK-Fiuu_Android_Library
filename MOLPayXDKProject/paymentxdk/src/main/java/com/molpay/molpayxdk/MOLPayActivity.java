@@ -362,20 +362,19 @@ public class MOLPayActivity extends AppCompatActivity {
 
 			view.evaluateJavascript("document.getElementById(\"systembrowserurl\").innerHTML", s -> {
                 Log.d(MOLPAY, "MPMOLPayUIWebClient base64String = " + s);
+                    // Decode base64
+                    byte[] data = Base64.decode(s, Base64.DEFAULT);
+                    String dataString = new String(data);
+                    Log.d(MOLPAY, "MPBankUIWebClient dataString = " + dataString);
 
-    //                // Decode base64
-                byte[] data = Base64.decode(s, Base64.DEFAULT);
-                String dataString = new String(data);
-                Log.d(MOLPAY, "MPBankUIWebClient dataString = " + dataString);
-
-                if (!s.isEmpty()) {
-                    Log.d(MOLPAY, "MPMOLPayUIWebClient success");
-                    Intent intent= new Intent(Intent.ACTION_VIEW, Uri.parse(dataString));
-                    startActivity(intent);
-                } else {
-                    Log.d(MOLPAY, "MPMOLPayUIWebClient empty dataString");
-                }
-                    });
+                    if (!s.isEmpty()) {
+                        Log.d(MOLPAY, "MPMOLPayUIWebClient success");
+                        Intent intent= new Intent(Intent.ACTION_VIEW, Uri.parse(dataString));
+                        startActivity(intent);
+                    } else {
+                        Log.d(MOLPAY, "MPMOLPayUIWebClient empty dataString");
+                    }
+                });
 
 		    }
 		}

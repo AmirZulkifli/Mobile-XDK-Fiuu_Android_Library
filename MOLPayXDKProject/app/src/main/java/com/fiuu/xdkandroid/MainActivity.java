@@ -28,7 +28,6 @@ public class MainActivity extends AppCompatActivity {
     HashMap<Object, Object> paymentDetails = new HashMap<>();
 
     private void restartmolpay() {
-        MOLPayXDKProject/app/src/main/java/com/fiuu/xdkandroid/MainActivity.java
         paymentDetails.put(MOLPayActivity.mp_amount, "1.01");
 
         // TODO: Enter your merchant account credentials before test run
