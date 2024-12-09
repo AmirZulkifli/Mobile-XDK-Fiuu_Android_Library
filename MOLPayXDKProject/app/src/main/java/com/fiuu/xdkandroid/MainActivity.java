@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     HashMap<Object, Object> paymentDetails = new HashMap<>();
 
     private void restartmolpay() {
-        paymentDetails.put(MOLPayActivity.mp_amount, "1.01");
+        paymentDetails.put(MOLPayActivity.mp_amount, "0.10");
 
         // TODO: Enter your merchant account credentials before test run
         paymentDetails.put(MOLPayActivity.mp_username, "");

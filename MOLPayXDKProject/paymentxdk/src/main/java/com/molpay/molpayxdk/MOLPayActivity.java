@@ -336,7 +336,7 @@ public class MOLPayActivity extends AppCompatActivity {
                         url.contains("intent://") ||
                         url.contains("alipays://") ||
                         url.contains("https://app.shopback.com/pay") ||
-                        url.contains("m.tngdigital.com.my")) {
+                        url.contains("ttps://m.tngdigital.com.my/s/cashier/")) {
                     try {
                         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                         startActivity(intent);
