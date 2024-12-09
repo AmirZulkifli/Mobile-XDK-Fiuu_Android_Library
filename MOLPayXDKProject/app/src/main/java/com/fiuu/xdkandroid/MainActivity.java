@@ -25,12 +25,10 @@ import java.util.Calendar;
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
-
     HashMap<Object, Object> paymentDetails = new HashMap<>();
 
     private void restartmolpay() {
-        paymentDetails = new HashMap<>();
-        paymentDetails.put(MOLPayActivity.mp_amount, ".10");
+        paymentDetails.put(MOLPayActivity.mp_amount, "0.10");
 
         // TODO: Enter your merchant account credentials before test run
         paymentDetails.put(MOLPayActivity.mp_username, "");
@@ -56,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
         paymentDetails.put(MOLPayActivity.mp_dev_mode, false);
 //        paymentDetails.put(MOLPayActivity.mp_closebutton_display, true);
 //        paymentDetails.put(MOLPayActivity.mp_preferred_token, "new");
+        paymentDetails.put(MOLPayActivity.mp_closebutton_display, false);
+
         openStartActivityResult();
     }
 

@@ -99,6 +99,7 @@ public class MOLPayActivity extends AppCompatActivity {
     public final static String mp_disabled_channels = "mp_disabled_channels";
     public final static String mp_dpa_id = "mp_dpa_id";
     public final static String mp_company = "mp_company";
+    public final static String mp_closebutton_display = "mp_closebutton_display";
 
     public final static String MOLPAY = "logMOLPAY";
     private final static String mpopenmolpaywindow = "mpopenmolpaywindow://";
@@ -111,7 +112,6 @@ public class MOLPayActivity extends AppCompatActivity {
     private final static String wrapper_version = "wrapper_version";
     private final static String wrapperVersion = "9a";
 
-//    private String base64Img;
     private String filename;
     private Bitmap imgBitmap;
 
@@ -119,6 +119,7 @@ public class MOLPayActivity extends AppCompatActivity {
     private HashMap<String, Object> paymentDetails;
     private Boolean isMainUILoaded = false;
     private Boolean isClosingReceipt = false;
+    private Boolean isClosebuttonDisplay = false;
 
     // Private API
     private void closemolpay() {
@@ -132,8 +133,21 @@ public class MOLPayActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_molpay, menu);
-        return super.onCreateOptionsMenu(menu);
+        JSONObject json = new JSONObject(paymentDetails);
+
+        try {
+            if (json.has("mp_closebutton_display")) {
+                isClosebuttonDisplay = json.getBoolean("mp_closebutton_display");
+            }
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+
+        if (isClosebuttonDisplay) {
+            getMenuInflater().inflate(R.menu.menu_molpay, menu);
+            return super.onCreateOptionsMenu(menu);
+        }
+        return false;
     }
 
     @Override
@@ -322,7 +336,7 @@ public class MOLPayActivity extends AppCompatActivity {
                         url.contains("intent://") ||
                         url.contains("alipays://") ||
                         url.contains("https://app.shopback.com/pay") ||
-                        url.contains("m.tngdigital.com.my")) {
+                        url.contains("ttps://m.tngdigital.com.my/s/cashier/")) {
                     try {
                         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                         startActivity(intent);
@@ -348,20 +362,19 @@ public class MOLPayActivity extends AppCompatActivity {
 
 			view.evaluateJavascript("document.getElementById(\"systembrowserurl\").innerHTML", s -> {
                 Log.d(MOLPAY, "MPMOLPayUIWebClient base64String = " + s);
+                    // Decode base64
+                    byte[] data = Base64.decode(s, Base64.DEFAULT);
+                    String dataString = new String(data);
+                    Log.d(MOLPAY, "MPBankUIWebClient dataString = " + dataString);
 
-    //                // Decode base64
-                byte[] data = Base64.decode(s, Base64.DEFAULT);
-                String dataString = new String(data);
-                Log.d(MOLPAY, "MPBankUIWebClient dataString = " + dataString);
-
-                if (!s.isEmpty()) {
-                    Log.d(MOLPAY, "MPMOLPayUIWebClient success");
-                    Intent intent= new Intent(Intent.ACTION_VIEW, Uri.parse(dataString));
-                    startActivity(intent);
-                } else {
-                    Log.d(MOLPAY, "MPMOLPayUIWebClient empty dataString");
-                }
-                    });
+                    if (!s.isEmpty()) {
+                        Log.d(MOLPAY, "MPMOLPayUIWebClient success");
+                        Intent intent= new Intent(Intent.ACTION_VIEW, Uri.parse(dataString));
+                        startActivity(intent);
+                    } else {
+                        Log.d(MOLPAY, "MPMOLPayUIWebClient empty dataString");
+                    }
+                });
 
 		    }
 		}
