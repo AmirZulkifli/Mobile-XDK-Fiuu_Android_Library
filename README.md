@@ -18,7 +18,7 @@ To do so you can contact us here : sales-sa@fiuu.com
 
 ### Example Demo App
 
-![image](https://git2u.fiuu.com/mobile/xdk/android/assets/sample app flow.png)
+![image](https://git2u.fiuu.com/mobile/xdk/android/assets/sample_app_flow.png)
 
 
 ## Getting Started
