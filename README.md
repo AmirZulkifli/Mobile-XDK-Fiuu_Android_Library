@@ -13,7 +13,7 @@ Add dependencies in build.gradle
         implementation 'com.github.FiuuPayment:Mobile-XDK-Fiuu_Android_Library:<latest_version>'
     }
 
-<!-- ![image](https://git2u.fiuu.com/mobile/xdk/android/assets/89504625/d660d61d-42f5-4f21-a9ee-ff4555e4c2fc) -->
+![image](https://git2u.fiuu.com/mobile/xdk/android/assets/89504625/d660d61d-42f5-4f21-a9ee-ff4555e4c2fc)
 
 1. User chooses the Payment option/Bank they wish to pay with
 2. Press "Proceed".
