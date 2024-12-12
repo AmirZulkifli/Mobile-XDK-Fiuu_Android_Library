@@ -1,4 +1,4 @@
-# [Mobile XDK] – RazerMS Android Library
+# [Mobile XDK] – Fiuu Android Library (JAVA)
 
 <img src="https://user-images.githubusercontent.com/38641542/74424311-a9d64000-4e8c-11ea-8d80-d811cfe66972.jpg">
 
@@ -13,7 +13,7 @@ Add dependencies in build.gradle
         implementation 'com.github.FiuuPayment:Mobile-XDK-Fiuu_Android_Library:<latest_version>'
     }
 
-![image](https://github.com/FiuuPayment/Mobile-XDK-Fiuu_Android_Library/assets/89504625/d660d61d-42f5-4f21-a9ee-ff4555e4c2fc)
+<!-- ![image](https://git2u.fiuu.com/mobile/xdk/android/assets/89504625/d660d61d-42f5-4f21-a9ee-ff4555e4c2fc) -->
 
 1. User chooses the Payment option/Bank they wish to pay with
 2. Press "Proceed".
@@ -62,15 +62,15 @@ Below is the installation guide to implement Fiuu Android XDK into your project.
 Issues
 ------------
 
-Submit issue to this repository or email to our support-sa@razer.com
+Submit issue to this repository or email to our support-sa@fiuu.com
 
 Support
 -------
 
-Merchant Technical Support / Customer Care : support-sa@razer.com <br>
-Sales/Reseller Enquiry : sales-sa@razer.com <br>
-Marketing Campaign : marketing-sa@razer.com <br>
-Channel/Partner Enquiry : channel-sa@razer.com <br>
-Media Contact : media-sa@razer.com <br>
-R&D and Tech-related Suggestion : technical-sa@razer.com <br>
-Abuse Reporting : abuse-sa@razer.com
+Merchant Technical Support / Customer Care : support-sa@fiuu.com <br>
+Sales/Reseller Enquiry : sales-sa@fiuu.com <br>
+Marketing Campaign : marketing-sa@fiuu.com <br>
+Channel/Partner Enquiry : channel-sa@fiuu.com <br>
+Media Contact : media-sa@fiuu.com <br>
+R&D and Tech-related Suggestion : technical-sa@fiuu.com <br>
+Abuse Reporting : abuse-sa@fiuu.com
