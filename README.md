@@ -5,16 +5,6 @@
 Quick Guides
 ------------
 
-### All Channels
-
-Add dependencies in build.gradle
-
-    dependencies {
-        implementation 'com.github.FiuuPayment:Mobile-XDK-Fiuu_Android_Library:<latest_version>'
-    }
-
-![image](https://git2u.fiuu.com/mobile/xdk/android/assets/89504625/d660d61d-42f5-4f21-a9ee-ff4555e4c2fc)
-
 1. User chooses the Payment option/Bank they wish to pay with
 2. Press "Proceed".
 3. input your bank credentials until finish payment.
@@ -25,6 +15,12 @@ Add dependencies in build.gradle
 You must be a registered Fiuu merchant to receive your own credentials for you to use or test this module.
 
 To do so you can contact us here : sales-sa@fiuu.com
+
+### Example Demo App
+
+![image](https://git2u.fiuu.com/mobile/xdk/android/assets/89504625/d660d61d-42f5-4f21-a9ee-ff4555e4c2fc)
+
+
 
 ## Getting Started
 
