@@ -187,11 +187,7 @@ public class MOLPayActivity extends AppCompatActivity {
         setContentView(R.layout.activity_molpay);
 
         paymentDetails = (HashMap<String, Object>) getIntent().getSerializableExtra(MOLPayPaymentDetails);
-//        contextXDKA = this;
 
-//        Log.d(TAG,"check context: "+ contextXDKA);
-
-//        Log.d(TAG,paymentDetails.toString());
         logTransactionDetails(LogEntity.REQUEST, paymentDetails);
 
         // For submodule wrappers
@@ -286,6 +282,8 @@ public class MOLPayActivity extends AppCompatActivity {
 
     private void nativeWebRequestUrlUpdates(String url) {
         Log.d(MOLPAY, "nativeWebRequestUrlUpdates url = " + url);
+
+        logTransactionDetails(LogEntity.REQUEST, paymentDetails);
 
         HashMap<String, String> data = new HashMap<>();
         data.put("requestPath", url);
@@ -384,6 +382,8 @@ public class MOLPayActivity extends AppCompatActivity {
 
 			Log.d(MOLPAY, "contains url");
 
+            logTransactionDetails(LogEntity.REQUEST, paymentDetails);
+
 			view.evaluateJavascript("document.getElementById(\"systembrowserurl\").innerHTML", s -> {
                 Log.d(MOLPAY, "MPMOLPayUIWebClient base64String = " + s);
                     // Decode base64
@@ -408,6 +408,8 @@ public class MOLPayActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+        logTransactionDetails(LogEntity.REQUEST, paymentDetails);
+
         if (mpMOLPayUI != null && !paymentDetails.isEmpty()) {
             closemolpay();
         }
@@ -419,6 +421,8 @@ public class MOLPayActivity extends AppCompatActivity {
         public boolean onCreateWindow(WebView view, boolean dialog, boolean userGesture, Message resultMsg) {
 
             Log.d(MOLPAY, "MPMOLPayUIWebChromeClient onCreateWindow resultMsg = " + resultMsg);
+
+            logTransactionDetails(LogEntity.REQUEST, paymentDetails);
 
             RelativeLayout container = findViewById(R.id.MPContainer);
 
@@ -452,6 +456,8 @@ public class MOLPayActivity extends AppCompatActivity {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             Log.d(MOLPAY, "MPMainUIWebClient shouldOverrideUrlLoading url = " + url);
+
+            logTransactionDetails(LogEntity.REQUEST, paymentDetails);
 
             if (url != null) {
                 if (url.startsWith(mpopenmolpaywindow)) {
@@ -609,6 +615,8 @@ public class MOLPayActivity extends AppCompatActivity {
         public void onPageFinished(WebView view, String url) {
             if (!isMainUILoaded && !url.equals("about:blank")) {
 
+                logTransactionDetails(LogEntity.REQUEST, paymentDetails);
+
                 isMainUILoaded = true;
 
                 // Create JSON object for Payment details
@@ -625,6 +633,7 @@ public class MOLPayActivity extends AppCompatActivity {
 
     private void openGPActivityWithResult(){
         Log.d(MOLPAY, "openGPActivityWithResult paymentDetails = " + paymentDetails);
+        logTransactionDetails(LogEntity.REQUEST, paymentDetails);
 
         Intent intent = new Intent(this, ActivityGP.class);
         intent.putExtra(MOLPayActivity.MOLPayPaymentDetails, paymentDetails);
@@ -636,6 +645,8 @@ public class MOLPayActivity extends AppCompatActivity {
             result -> {
                 Log.d("MOLPAYXDKLibrary", "result: "+result);
                 Log.d("MOLPAYXDKLibrary", "result: "+result.getResultCode());
+
+                logTransactionDetails(LogEntity.REQUEST, paymentDetails);
 
                 if (result.getResultCode() == MOLPayActivity.RESULT_OK && result.getData() != null) {
                     Intent data = result.getData();
@@ -732,14 +743,6 @@ public class MOLPayActivity extends AppCompatActivity {
             }
         }
     }
-
-//    private static void logTransactionDetails(LogEntity reqresp, Object outcome) {
-//        if (outcome != "") {
-//            outcome = gson.toJson(outcome);
-//        }
-//        LogDetails logDetails = new LogDetails(reqresp,  outcome.toString());
-//        logger.log(logDetails, contextXDKA);
-//    }
 
     private void logTransactionDetails(LogEntity reqresp, Object outcome) {
         try {
