@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -37,7 +38,15 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.molpay.molpayxdk.googlepay.ActivityGP;
+import com.molpay.molpayxdk.models.DeviceInfo;
+import com.molpay.molpayxdk.models.LogDetails;
+import com.molpay.molpayxdk.models.LogEntity;
+import com.molpay.molpayxdk.models.ProductInfo;
+import com.molpay.molpayxdk.service.Logger;
+import com.molpay.molpayxdk.utils.DeviceInfoUtil;
+import com.molpay.molpayxdk.utils.ProductInfoUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -47,6 +56,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.Objects;
+import static com.molpay.molpayxdk.utils.Constant.TAG;
 
 public class MOLPayActivity extends AppCompatActivity {
 
@@ -121,6 +131,14 @@ public class MOLPayActivity extends AppCompatActivity {
     private Boolean isClosingReceipt = false;
     private Boolean isClosebuttonDisplay = false;
 
+    //Logger
+    @SuppressLint("StaticFieldLeak")
+    private static Context contextXDKA;
+    private static Logger logger;
+    private static final Gson gson =  new Gson();
+    private static DeviceInfo deviceInfo;
+    private static ProductInfo productInfo;
+
     // Private API
     private void closemolpay() {
         mpMainUI.loadUrl("javascript:closemolpay()");
@@ -169,6 +187,12 @@ public class MOLPayActivity extends AppCompatActivity {
         setContentView(R.layout.activity_molpay);
 
         paymentDetails = (HashMap<String, Object>) getIntent().getSerializableExtra(MOLPayPaymentDetails);
+//        contextXDKA = this;
+
+//        Log.d(TAG,"check context: "+ contextXDKA);
+
+//        Log.d(TAG,paymentDetails.toString());
+        logTransactionDetails(LogEntity.REQUEST, paymentDetails);
 
         // For submodule wrappers
         boolean is_submodule = false;
@@ -708,4 +732,26 @@ public class MOLPayActivity extends AppCompatActivity {
             }
         }
     }
+
+//    private static void logTransactionDetails(LogEntity reqresp, Object outcome) {
+//        if (outcome != "") {
+//            outcome = gson.toJson(outcome);
+//        }
+//        LogDetails logDetails = new LogDetails(reqresp,  outcome.toString());
+//        logger.log(logDetails, contextXDKA);
+//    }
+
+    private void logTransactionDetails(LogEntity reqresp, Object outcome) {
+        try {
+            logger = new Logger(this);
+            contextXDKA = this;
+            String jsonOutcome = (outcome != null) ? gson.toJson(outcome) : "null";
+            LogDetails logDetails = new LogDetails(reqresp, jsonOutcome);
+            logger.log(logDetails, contextXDKA);
+        } catch (Exception e) {
+            Log.e("TransactionLogger", "Failed to log transaction details", e);
+        }
+    }
+
+
 }
