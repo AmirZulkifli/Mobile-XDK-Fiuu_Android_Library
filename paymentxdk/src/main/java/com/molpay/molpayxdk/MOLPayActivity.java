@@ -45,8 +45,6 @@ import com.molpay.molpayxdk.models.LogDetails;
 import com.molpay.molpayxdk.models.LogEntity;
 import com.molpay.molpayxdk.models.ProductInfo;
 import com.molpay.molpayxdk.service.Logger;
-import com.molpay.molpayxdk.utils.DeviceInfoUtil;
-import com.molpay.molpayxdk.utils.ProductInfoUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -56,11 +54,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.Objects;
-import static com.molpay.molpayxdk.utils.Constant.TAG;
 
 public class MOLPayActivity extends AppCompatActivity {
 
-//    public final static int MOLPayXDK = 9999;
+    public final static int MOLPayXDK = 9999;
     public final static String MOLPayPaymentDetails = "paymentDetails";
     public final static String MOLPayTransactionResult = "transactionResult";
     public final static String mp_amount = "mp_amount";
@@ -120,7 +117,7 @@ public class MOLPayActivity extends AppCompatActivity {
     private final static String mpclickgpbutton = "mpclickgpbutton://";
     private final static String module_id = "module_id";
     private final static String wrapper_version = "wrapper_version";
-    private final static String wrapperVersion = "9a";
+    private final static String wrapperVersion = "10a";
 
     private String filename;
     private Bitmap imgBitmap;
