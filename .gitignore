@@ -1,2 +1,5 @@
-.idea
-MOLPayXDKProject/paymentxdk/build/
+local.properties
+.gradle/*
+.idea/*
+paymentxdk/build/*
+paymentxdk/.idea/*
