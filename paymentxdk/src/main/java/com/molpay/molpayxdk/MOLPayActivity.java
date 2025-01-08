@@ -2,6 +2,7 @@ package com.molpay.molpayxdk;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -9,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Message;
@@ -129,10 +131,10 @@ public class MOLPayActivity extends AppCompatActivity {
     // Private API
     private void closemolpay() {
         mpMainUI.loadUrl("javascript:closemolpay()");
-//        if (isClosingReceipt) {
-//            isClosingReceipt = false;
+        if (isClosingReceipt) {
+            isClosingReceipt = false;
             finish();
-//        }
+        }
     }
 
     @Override
@@ -159,8 +161,8 @@ public class MOLPayActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        // closebtn clicked
-        if (id == R.id.closeBtn) {
+        Log.d("TAG: ", "Get Menu: " + item.getTitle());
+        if (Objects.equals(item.getTitle(), "Close")) {
             closemolpay();
         }
 
@@ -672,19 +674,26 @@ public class MOLPayActivity extends AppCompatActivity {
         }
     }
 
+    @TargetApi(23)
     public void isStoragePermissionGranted() {
-        if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-            Log.d(MOLPAY, "isStoragePermissionGranted Permission granted");
-            storeImage(imgBitmap);
-        } else {
-            Log.d(MOLPAY, "isStoragePermissionGranted Permission revoked");
-            ActivityCompat.requestPermissions(MOLPayActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_EXTERNAL_STORAGE);
-        }
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                Log.d(MOLPAY, "isStoragePermissionGranted Permission granted");
+                storeImage(imgBitmap);
+            } else {
+                Log.d(MOLPAY, "isStoragePermissionGranted Permission revoked");
+                ActivityCompat.requestPermissions(MOLPayActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_EXTERNAL_STORAGE);
+            }
 
+        }	else { //permission is automatically granted on sdk<23 upon installation
+            Log.d(MOLPAY, "isStoragePermissionGranted Permission granted on sdk<23");
+            storeImage(imgBitmap);
+        }
     }
 
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
 
+    @TargetApi(23)
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
