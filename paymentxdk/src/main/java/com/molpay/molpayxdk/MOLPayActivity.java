@@ -41,10 +41,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.molpay.molpayxdk.googlepay.ActivityGP;
 import com.molpay.molpayxdk.models.DeviceInfo;
-import com.molpay.molpayxdk.models.LogDetails;
-import com.molpay.molpayxdk.models.LogEntity;
-import com.molpay.molpayxdk.models.ProductInfo;
-import com.molpay.molpayxdk.service.Logger;
+import com.molpay.molpayxdk.utils.DeviceInfoUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -107,6 +104,7 @@ public class MOLPayActivity extends AppCompatActivity {
     public final static String mp_dpa_id = "mp_dpa_id";
     public final static String mp_company = "mp_company";
     public final static String mp_closebutton_display = "mp_closebutton_display";
+    public final static String device_info = "device_info";
 
     public final static String MOLPAY = "logMOLPAY";
     private final static String mpopenmolpaywindow = "mpopenmolpaywindow://";
@@ -117,7 +115,7 @@ public class MOLPayActivity extends AppCompatActivity {
     private final static String mpclickgpbutton = "mpclickgpbutton://";
     private final static String module_id = "module_id";
     private final static String wrapper_version = "wrapper_version";
-    private final static String wrapperVersion = "10a";
+    private final static String wrapperVersion = "11a";
 
     private String filename;
     private Bitmap imgBitmap;
@@ -128,30 +126,22 @@ public class MOLPayActivity extends AppCompatActivity {
     private Boolean isClosingReceipt = false;
     private Boolean isClosebuttonDisplay = false;
 
-    //LOGGER FUNCTION
-    @SuppressLint("StaticFieldLeak")
-    private static Context contextXDKA;
-    private static Logger logger;
     private static final Gson gson =  new Gson();
     private static DeviceInfo deviceInfo;
-    private static ProductInfo productInfo;
 
     // Private API
     private void closemolpay() {
         mpMainUI.loadUrl("javascript:closemolpay()");
-        if (isClosingReceipt) {
-            isClosingReceipt = false;
+//        if (isClosingReceipt) {
+//            isClosingReceipt = false;
             finish();
-        }
+//        }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         JSONObject json = new JSONObject(paymentDetails);
-
-        //LOGGER FUNCTION
-        logTransactionDetails(LogEntity.REQUEST, paymentDetails);
 
         try {
             if (json.has("mp_closebutton_display")) {
@@ -177,9 +167,6 @@ public class MOLPayActivity extends AppCompatActivity {
             closemolpay();
         }
 
-        //LOGGER FUNCTION
-        logTransactionDetails(LogEntity.REQUEST, paymentDetails);
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -191,15 +178,9 @@ public class MOLPayActivity extends AppCompatActivity {
 
         paymentDetails = (HashMap<String, Object>) getIntent().getSerializableExtra(MOLPayPaymentDetails);
 
-        //LOGGER FUNCTION
-        try {
-            logTransactionDetails(LogEntity.REQUEST, paymentDetails);
-        }catch (Exception e){
-            logTransactionDetails(LogEntity.ERROR, e.getLocalizedMessage());
-        }
-
         // For submodule wrappers
         boolean is_submodule = false;
+
 
         if (paymentDetails != null) {
             if (paymentDetails.containsKey("is_submodule")) {
@@ -220,6 +201,7 @@ public class MOLPayActivity extends AppCompatActivity {
                 paymentDetails.put(module_id, "molpay-mobile-xdk-android");
                 paymentDetails.put(wrapper_version, wrapperVersion);
             }
+            paymentDetails.put(device_info, gson.toJson(DeviceInfoUtil.getDeviceInfo(this)));
         }
 
         // Bind resources
@@ -242,7 +224,8 @@ public class MOLPayActivity extends AppCompatActivity {
         cookieManager.setAcceptThirdPartyCookies(mpMainUI, true);
         cookieManager.setAcceptThirdPartyCookies(mpMOLPayUI, true);
 
-        mpMainUI.loadUrl("https://pay.merchant.razer.com/RMS/API/xdk/");
+//        mpMainUI.loadUrl("https://pay.merchant.razer.com/RMS/API/xdk/");
+        mpMainUI.loadUrl("https://apps.apis17.net/v1/index.html");
 
         // Configure MOLPay ui
         mpMOLPayUI.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
@@ -291,9 +274,6 @@ public class MOLPayActivity extends AppCompatActivity {
     private void nativeWebRequestUrlUpdates(String url) {
         Log.d(MOLPAY, "nativeWebRequestUrlUpdates url = " + url);
 
-        //LOGGER FUNCTION
-        logTransactionDetails(LogEntity.REQUEST, paymentDetails);
-
         HashMap<String, String> data = new HashMap<>();
         data.put("requestPath", url);
 
@@ -322,9 +302,6 @@ public class MOLPayActivity extends AppCompatActivity {
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             Log.d(MOLPAY, "MPBankUIWebClient onPageStarted url = " + url);
 
-            //LOGGER FUNCTION
-            logTransactionDetails(LogEntity.REQUEST, paymentDetails);
-
             if (url != null) {
                 nativeWebRequestUrlUpdates(url);
             }
@@ -332,9 +309,6 @@ public class MOLPayActivity extends AppCompatActivity {
         @Override
         public void onPageFinished (WebView view, String url) {
             Log.d(MOLPAY, "MPBankUIWebClient onPageFinished url = " + url);
-
-            //LOGGER FUNCTION
-            logTransactionDetails(LogEntity.REQUEST, paymentDetails);
 
             nativeWebRequestUrlUpdates(url);
         }
@@ -345,9 +319,6 @@ public class MOLPayActivity extends AppCompatActivity {
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             Log.d(MOLPAY, "MPMOLPayUIWebClient onPageStarted url = " + url);
 
-            //LOGGER FUNCTION
-            logTransactionDetails(LogEntity.REQUEST, paymentDetails);
-
             if (url != null) {
                 nativeWebRequestUrlUpdates(url);
             }
@@ -356,8 +327,6 @@ public class MOLPayActivity extends AppCompatActivity {
         @Override
         public boolean shouldOverrideUrlLoading(final WebView view, String url) {
             Log.d(MOLPAY, "MPMOLPayUIWebClient shouldOverrideUrlLoading url = " + url);
-            //LOGGER FUNCTION
-            logTransactionDetails(LogEntity.REQUEST, paymentDetails);
 
             if (url != null) {
                 if (url.contains("scbeasy/easy_app_link.html")) {
@@ -400,14 +369,9 @@ public class MOLPayActivity extends AppCompatActivity {
 		    Log.d(MOLPAY, "MPMOLPayUIWebClient onPageFinished url = " + url);
 	//            nativeWebRequestUrlUpdates(url);
 
-            //LOGGER FUNCTION
-            logTransactionDetails(LogEntity.REQUEST, paymentDetails);
-
             if (url.contains("intermediate_appTNG-EWALLET.php") || url.contains("intermediate_app/processing.php")) {
 
 			Log.d(MOLPAY, "contains url");
-
-            logTransactionDetails(LogEntity.REQUEST, paymentDetails);
 
 			view.evaluateJavascript("document.getElementById(\"systembrowserurl\").innerHTML", s -> {
                 Log.d(MOLPAY, "MPMOLPayUIWebClient base64String = " + s);
@@ -433,9 +397,6 @@ public class MOLPayActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        //LOGGER FUNCTION
-        logTransactionDetails(LogEntity.REQUEST, paymentDetails);
-
         if (mpMOLPayUI != null && !paymentDetails.isEmpty()) {
             closemolpay();
         }
@@ -445,12 +406,6 @@ public class MOLPayActivity extends AppCompatActivity {
         @SuppressLint("SetJavaScriptEnabled")
         @Override
         public boolean onCreateWindow(WebView view, boolean dialog, boolean userGesture, Message resultMsg) {
-
-            Log.d(MOLPAY, "MPMOLPayUIWebChromeClient onCreateWindow resultMsg = " + resultMsg);
-
-            //LOGGER FUNCTION
-            logTransactionDetails(LogEntity.REQUEST, paymentDetails);
-
             RelativeLayout container = findViewById(R.id.MPContainer);
 
             mpBankUI = new WebView(MOLPayActivity.this);
@@ -483,9 +438,6 @@ public class MOLPayActivity extends AppCompatActivity {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             Log.d(MOLPAY, "MPMainUIWebClient shouldOverrideUrlLoading url = " + url);
-
-            //LOGGER FUNCTION
-            logTransactionDetails(LogEntity.REQUEST, paymentDetails);
 
             if (url != null) {
                 if (url.startsWith(mpopenmolpaywindow)) {
@@ -643,9 +595,6 @@ public class MOLPayActivity extends AppCompatActivity {
         public void onPageFinished(WebView view, String url) {
             if (!isMainUILoaded && !url.equals("about:blank")) {
 
-                //LOGGER FUNCTION
-                logTransactionDetails(LogEntity.REQUEST, paymentDetails);
-
                 isMainUILoaded = true;
 
                 // Create JSON object for Payment details
@@ -662,10 +611,6 @@ public class MOLPayActivity extends AppCompatActivity {
 
     private void openGPActivityWithResult(){
         Log.d(MOLPAY, "openGPActivityWithResult paymentDetails = " + paymentDetails);
-
-        //LOGGER FUNCTION
-        logTransactionDetails(LogEntity.REQUEST, paymentDetails);
-
         Intent intent = new Intent(this, ActivityGP.class);
         intent.putExtra(MOLPayActivity.MOLPayPaymentDetails, paymentDetails);
         gpActivityResultLauncher.launch(intent);
@@ -674,19 +619,12 @@ public class MOLPayActivity extends AppCompatActivity {
     ActivityResultLauncher<Intent> gpActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
-                Log.d("MOLPAYXDKLibrary", "result: "+result);
-                Log.d("MOLPAYXDKLibrary", "result: "+result.getResultCode());
-
-                //LOGGER FUNCTION
-                logTransactionDetails(LogEntity.REQUEST, paymentDetails);
 
                 if (result.getResultCode() == MOLPayActivity.RESULT_OK && result.getData() != null) {
                     Intent data = result.getData();
                     String transactionResult = data.getStringExtra(MOLPayActivity.MOLPayTransactionResult);
 
                     if (data.getData() != null && transactionResult != null) {
-                        Log.e("logGooglePay", "MOLPAY result = " + transactionResult);
-
                         Intent intent = new Intent();
                         intent.putExtra(MOLPayTransactionResult, transactionResult);
                         setResult(result.getResultCode(), intent);
@@ -738,26 +676,19 @@ public class MOLPayActivity extends AppCompatActivity {
         }
     }
 
-    @TargetApi(23)
     public void isStoragePermissionGranted() {
-        if (Build.VERSION.SDK_INT >= 23) {
-            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                Log.d(MOLPAY, "isStoragePermissionGranted Permission granted");
-                storeImage(imgBitmap);
-            } else {
-                Log.d(MOLPAY, "isStoragePermissionGranted Permission revoked");
-                ActivityCompat.requestPermissions(MOLPayActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_EXTERNAL_STORAGE);
-            }
-
-        }	else { //permission is automatically granted on sdk<23 upon installation
-            Log.d(MOLPAY, "isStoragePermissionGranted Permission granted on sdk<23");
+        if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            Log.d(MOLPAY, "isStoragePermissionGranted Permission granted");
             storeImage(imgBitmap);
+        } else {
+            Log.d(MOLPAY, "isStoragePermissionGranted Permission revoked");
+            ActivityCompat.requestPermissions(MOLPayActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_EXTERNAL_STORAGE);
         }
+
     }
 
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
 
-    @TargetApi(23)
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -773,19 +704,6 @@ public class MOLPayActivity extends AppCompatActivity {
                 Log.d(MOLPAY, "onRequestPermissionsResult EXTERNAL_STORAGE permission was NOT granted.");
                 Toast.makeText(this, "Image not saved", Toast.LENGTH_LONG).show();
             }
-        }
-    }
-
-    //LOGGER FUNCTION
-    private void logTransactionDetails(LogEntity reqresp, Object outcome) {
-        try {
-            logger = new Logger(this);
-            contextXDKA = this;
-            String jsonOutcome = (outcome != null) ? gson.toJson(outcome) : "null";
-            LogDetails logDetails = new LogDetails(reqresp, jsonOutcome);
-            logger.log(logDetails, contextXDKA);
-        } catch (Exception e) {
-            Log.e("TransactionLogger", "Failed to log transaction details", e);
         }
     }
 }
