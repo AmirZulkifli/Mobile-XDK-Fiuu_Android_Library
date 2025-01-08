@@ -25,11 +25,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.gms.wallet.AutoResolveHelper;
 import com.google.android.gms.wallet.PaymentData;
 import com.google.android.gms.wallet.WalletConstants;
-import com.google.gson.Gson;
 import com.molpay.molpayxdk.MOLPayActivity;
 import com.molpay.molpayxdk.R;
 import com.molpay.molpayxdk.databinding.ActivityGooglepayBinding;
-import com.molpay.molpayxdk.models.DeviceInfo;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -270,7 +268,7 @@ public class ActivityGP extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
 //        CharSequence response;
-        String response = "";
+        String response;
 
         if (requestCode == LOAD_TRANSACTION_DATA_REQUEST_CODE) {
 
