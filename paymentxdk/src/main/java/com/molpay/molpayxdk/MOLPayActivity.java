@@ -125,7 +125,6 @@ public class MOLPayActivity extends AppCompatActivity {
     private Boolean isClosingReceipt = false;
     private Boolean isClosebuttonDisplay = false;
 
-    private Boolean isTNGResult = false;
     private static final Gson gson =  new Gson();
     private static DeviceInfo deviceInfo;
 
@@ -180,8 +179,6 @@ public class MOLPayActivity extends AppCompatActivity {
 
         // For submodule wrappers
         boolean is_submodule = false;
-
-        isTNGResult = false;
 
         if (paymentDetails != null) {
             if (paymentDetails.containsKey("is_submodule")) {
@@ -398,7 +395,7 @@ public class MOLPayActivity extends AppCompatActivity {
         super.onResume();
 
         // Custom onResume condition for TNG only
-        if (mpMOLPayUI != null && !paymentDetails.isEmpty() && isTNGResult) {
+        if (mpMOLPayUI != null && !paymentDetails.isEmpty()) {
             //Log.d(MOLPAY , "onResume TNG condition");
             closemolpay();
         }
