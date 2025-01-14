@@ -439,7 +439,8 @@ public class MOLPayActivity extends AppCompatActivity {
         //LOGGER FUNCTION
         logTransactionDetails(LogEntity.REQUEST, paymentDetails);
 
-        if (mpMOLPayUI != null && !paymentDetails.isEmpty()) {
+        if (mpMOLPayUI != null && !paymentDetails.isEmpty() && isTNGResult) {
+            Log.d(MOLPAY , "onResume TNG condition");
             closemolpay();
         }
     }
