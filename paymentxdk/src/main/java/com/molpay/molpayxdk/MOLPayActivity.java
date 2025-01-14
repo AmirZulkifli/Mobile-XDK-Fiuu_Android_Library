@@ -201,6 +201,7 @@ public class MOLPayActivity extends AppCompatActivity {
 
         // For submodule wrappers
         boolean is_submodule = false;
+        isTNGResult = false;
 
         if (paymentDetails != null) {
             if (paymentDetails.containsKey("is_submodule")) {
