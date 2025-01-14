@@ -127,6 +127,7 @@ public class MOLPayActivity extends AppCompatActivity {
     private Boolean isMainUILoaded = false;
     private Boolean isClosingReceipt = false;
     private Boolean isClosebuttonDisplay = false;
+    private Boolean isTNGResult = false;
 
     //LOGGER FUNCTION
     @SuppressLint("StaticFieldLeak")
