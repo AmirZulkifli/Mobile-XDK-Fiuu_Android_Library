@@ -127,6 +127,7 @@ public class MOLPayActivity extends AppCompatActivity {
     private Boolean isMainUILoaded = false;
     private Boolean isClosingReceipt = false;
     private Boolean isClosebuttonDisplay = false;
+    private Boolean isTNGResult = false;
 
     //LOGGER FUNCTION
     @SuppressLint("StaticFieldLeak")
@@ -200,6 +201,7 @@ public class MOLPayActivity extends AppCompatActivity {
 
         // For submodule wrappers
         boolean is_submodule = false;
+        isTNGResult = false;
 
         if (paymentDetails != null) {
             if (paymentDetails.containsKey("is_submodule")) {
@@ -418,6 +420,7 @@ public class MOLPayActivity extends AppCompatActivity {
 
                     if (!s.isEmpty()) {
                         Log.d(MOLPAY, "MPMOLPayUIWebClient success");
+                        isTNGResult = true;
                         Intent intent= new Intent(Intent.ACTION_VIEW, Uri.parse(dataString));
                         startActivity(intent);
                     } else {
@@ -436,7 +439,8 @@ public class MOLPayActivity extends AppCompatActivity {
         //LOGGER FUNCTION
         logTransactionDetails(LogEntity.REQUEST, paymentDetails);
 
-        if (mpMOLPayUI != null && !paymentDetails.isEmpty()) {
+        if (mpMOLPayUI != null && !paymentDetails.isEmpty() && isTNGResult) {
+            Log.d(MOLPAY , "onResume TNG condition");
             closemolpay();
         }
     }
