@@ -16,13 +16,41 @@
         android:id="@+id/resultTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tap Google Pay button or START for other payments" />
+        android:text="Enter amount below (e.g. 1.01) : " />
 
-    <com.google.android.gms.wallet.button.PayButton
-        android:id="@+id/googlePayButton"
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/etAmount"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_below="@+id/resultTV"
+        android:inputType="numberDecimal"
+        android:hint="Amount (RM)"
+        />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/txtPaymentStatus"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/etAmount"
+        android:layout_marginTop="19dp"
+        android:text="Deeplink response (if app installed) : -"
+        android:visibility="gone"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/txtFullResponse"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtPaymentStatus"
+        android:layout_marginTop="19dp"
+        android:text="Full url scheme response will be displayed here" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnVTDeeplink"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TEST VT DEEPLINK"
+        android:layout_marginTop="19dp"
         android:layout_alignParentBottom="true"
-        android:layout_margin="19dp" />
+        android:visibility="gone"/>
 
 </RelativeLayout>
