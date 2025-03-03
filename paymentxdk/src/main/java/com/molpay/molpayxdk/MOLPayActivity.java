@@ -359,6 +359,72 @@ public class MOLPayActivity extends AppCompatActivity {
                     }
                     return true;
                 }
+                else if ( url.contains("novuscimbocto") ) {
+
+//                    url = url.replace("novuscimboctouat" , "novuscimboctoreg"); // For novuscimboctoreg integration
+
+//                    if (url.contains("novuscimboctouat://")) {
+//                        url = url.replace("novuscimboctouat" , "novuscimboctosit"); // For novuscimboctosit integration
+//                    } else if (url.contains("novuscimboctoreg://")) {
+//                        url = url.replace("novuscimboctoreg" , "novuscimboctosit"); // For novuscimboctosit integration
+//                    }
+
+                    Log.d(MOLPAY, "final cimb scheme = " + url);
+
+                    int startIndexEndtoEndId = url.indexOf("EndtoEndId=") + 11; // Get index of '[' and add 1 to start after it
+                    int startIndexEndtoEndIdSignature = url.indexOf("EndtoEndIdSignature=") + 20; // Get index of '&' and add 1 to start after it
+                    int endIndexEndtoEndId = url.indexOf('&', startIndexEndtoEndId); // Get index of '&' starting from startIndex
+                    String EndtoEndId = "";
+                    String EndtoEndIdSignature = "";
+
+                    if (startIndexEndtoEndId != 0 && endIndexEndtoEndId != -1) { // Ensure both characters are found
+                        EndtoEndId = url.substring(startIndexEndtoEndId, endIndexEndtoEndId);
+                        Log.e(MOLPAY , "EndtoEndId = " + EndtoEndId);
+                    }
+
+                    if (startIndexEndtoEndIdSignature != 0) {
+                        EndtoEndIdSignature = url.substring(startIndexEndtoEndIdSignature);
+                        Log.e(MOLPAY , "EndtoEndIdSignature = " + EndtoEndIdSignature);
+                    }
+
+                    Log.e(MOLPAY , "CIMB login url = " + "https://uat3.cimbclicks.com.my/dobb2c/RPP/MY/Redirect/RTP?EndtoEndId=" + EndtoEndId + "&EndtoEndIdSignature=" + EndtoEndIdSignature + "&DbtrAgt=CIBBMYKL");
+
+                    if (url.contains("?Result=99&EndtoEndId=")) {
+                        view.loadUrl("https://uat3.cimbclicks.com.my/dobb2c/RPP/MY/Redirect/RTP?EndtoEndId=" + EndtoEndId + "&EndtoEndIdSignature=" + EndtoEndIdSignature + "&DbtrAgt=CIBBMYKL");
+                        Log.d(MOLPAY, "final cimb URL = " + "https://uat3.cimbclicks.com.my/dobb2c/RPP/MY/Redirect/RTP?EndtoEndId=" + EndtoEndId + "&EndtoEndIdSignature=" + EndtoEndIdSignature + "&DbtrAgt=CIBBMYKL");
+                        return true;
+                    }
+
+                    try {
+                        Intent intentDeeplink;
+                        intentDeeplink = new Intent(Intent.ACTION_VIEW);
+                        Log.d(MOLPAY, "intentDeeplink.setData = " + Uri.parse(url));
+                        intentDeeplink.setData(Uri.parse(url));
+                        Log.d(MOLPAY, "startActivity intentDeeplink = " + intentDeeplink);
+                        startActivity(intentDeeplink);
+                    } catch (ActivityNotFoundException e) {
+                        // Define what your app should do if no activity can handle the intent
+                        view.loadUrl("https://uat3.cimbclicks.com.my/dobb2c/RPP/MY/Redirect/RTP?EndtoEndId=" + EndtoEndId + "&EndtoEndIdSignature=" + EndtoEndIdSignature + "&DbtrAgt=CIBBMYKL");
+                        Log.d(MOLPAY, "https://uat3.cimbclicks.com.my/dobb2c/RPP/MY/Redirect/RTP?EndtoEndId=" + EndtoEndId + "&EndtoEndIdSignature=" + EndtoEndIdSignature + "&DbtrAgt=CIBBMYKL");
+                    }
+
+                    return true;
+                }
+                else if (url.contains("razervt://")) {
+
+                    try {
+                        Intent intentDeeplink;
+                        intentDeeplink = new Intent(Intent.ACTION_VIEW);
+                        intentDeeplink.setData(Uri.parse(url));
+                        startActivity(intentDeeplink);
+                    } catch (ActivityNotFoundException e) {
+                        // Define what your app should do if no activity can handle the intent.
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.rms.mobile.razervt")));
+//                        e.printStackTrace();
+                    }
+
+                    return true;
+                }
             }
             return false;
         }
