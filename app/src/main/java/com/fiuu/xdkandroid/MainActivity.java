@@ -1,16 +1,22 @@
 package com.fiuu.xdkandroid;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatEditText;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.wallet.button.ButtonConstants;
 import com.google.android.gms.wallet.button.ButtonOptions;
@@ -23,28 +29,62 @@ import org.json.JSONException;
 
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     HashMap<Object, Object> paymentDetails = new HashMap<>();
+    AppCompatEditText etAmount;
+    AppCompatButton btnVTDeeplink;
+    Intent intentDeeplink;
+    AppCompatTextView txtPaymentStatus, txtFullResponse;
 
-    private void restartmolpay() {
+    private void restartmolpay(String strAmount) {
         paymentDetails.put(MOLPayActivity.mp_amount, "1.10");
 
-        // TODO: Enter your merchant account credentials before test run
-        paymentDetails.put(MOLPayActivity.mp_username, "");
-        paymentDetails.put(MOLPayActivity.mp_password, "");
-        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "");
-        paymentDetails.put(MOLPayActivity.mp_app_name, "");
-        paymentDetails.put(MOLPayActivity.mp_verification_key, "");
+        // --------------------------------- DEEPLINK CIMB -----------------------------------------
+
+//        paymentDetails.put(MOLPayActivity.mp_username, "RMSxdk_2022");
+//        paymentDetails.put(MOLPayActivity.mp_password, "RMSpwd@2022");
+//        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "rmsxdk_mobile_Dev");
+//        paymentDetails.put(MOLPayActivity.mp_app_name, "mobile");
+//        paymentDetails.put(MOLPayActivity.mp_verification_key, "ee738b541eff7b6b495e44771f71c0ec");
+
+        paymentDetails.put(MOLPayActivity.mp_amount, strAmount);
+
+        paymentDetails.put(MOLPayActivity.mp_username, "api_SB_southerautocapital");
+        paymentDetails.put(MOLPayActivity.mp_password, "UhO48Tv2LaNCqw");
+        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "SB_hafeez");
+        paymentDetails.put(MOLPayActivity.mp_app_name, "app2app");
+        paymentDetails.put(MOLPayActivity.mp_verification_key, "1bd95bd03061dca277aff58377de9399");
 
         paymentDetails.put(MOLPayActivity.mp_order_ID, Calendar.getInstance().getTimeInMillis());
         paymentDetails.put(MOLPayActivity.mp_currency, "MYR");
         paymentDetails.put(MOLPayActivity.mp_country, "MY");
+        paymentDetails.put(MOLPayActivity.mp_bill_description, "Testing App to App");
+        paymentDetails.put(MOLPayActivity.mp_bill_name, "App to App");
+        paymentDetails.put(MOLPayActivity.mp_bill_email, "apptoapp@gmail.com");
+        paymentDetails.put(MOLPayActivity.mp_bill_mobile, "01234567888");
         paymentDetails.put(MOLPayActivity.mp_channel, "multi");
-        paymentDetails.put(MOLPayActivity.mp_bill_description, "bill description");
-        paymentDetails.put(MOLPayActivity.mp_bill_name, "bill name");
-        paymentDetails.put(MOLPayActivity.mp_bill_email, "example@gmail.com");
-        paymentDetails.put(MOLPayActivity.mp_bill_mobile, "123456789");
+        paymentDetails.put(MOLPayActivity.mp_dev_mode, true);
+//        paymentDetails.put(MOLPayActivity.mp_dev_mode, false);
+
+        //------------------------------------------------------------------------------------------
+
+//        // TODO: Enter your merchant account credentials before test run
+//        paymentDetails.put(MOLPayActivity.mp_username, "");
+//        paymentDetails.put(MOLPayActivity.mp_password, "");
+//        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "");
+//        paymentDetails.put(MOLPayActivity.mp_app_name, "");
+//        paymentDetails.put(MOLPayActivity.mp_verification_key, "");
+//
+//        paymentDetails.put(MOLPayActivity.mp_order_ID, Calendar.getInstance().getTimeInMillis());
+//        paymentDetails.put(MOLPayActivity.mp_currency, "MYR");
+//        paymentDetails.put(MOLPayActivity.mp_country, "MY");
+//        paymentDetails.put(MOLPayActivity.mp_channel, "multi");
+//        paymentDetails.put(MOLPayActivity.mp_bill_description, "bill description");
+//        paymentDetails.put(MOLPayActivity.mp_bill_name, "bill name");
+//        paymentDetails.put(MOLPayActivity.mp_bill_email, "example@gmail.com");
+//        paymentDetails.put(MOLPayActivity.mp_bill_mobile, "123456789");
 
         // TODO: Learn more about optional parameters here https://github.com/RazerMS/Mobile-XDK-RazerMS_Android_Studio/wiki/Installation-Guidance#prepare-the-payment-detail-object
 //        paymentDetails.put(MOLPayActivity.mp_extended_vcode, false); // For Google Pay Only - Set true if your account enabled extended Verify Payment
@@ -144,27 +184,72 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // The Google Pay button is a layout file – take the root view
-        PayButton googlePayButton = findViewById(R.id.googlePayButton);
+        etAmount = findViewById(R.id.etAmount);
+        btnVTDeeplink = findViewById(R.id.btnVTDeeplink);
+        txtPaymentStatus = findViewById(R.id.txtPaymentStatus);
+        txtFullResponse = findViewById(R.id.txtFullResponse);
 
-        try {
-            // TODO: Choose your preferred Google Pay button : https://developers.google.com/pay/api/android/guides/brand-guidelines
-            googlePayButton.initialize(
-                    ButtonOptions.newBuilder()
-                            .setButtonTheme(ButtonConstants.ButtonTheme.DARK)
-                            .setButtonType(ButtonConstants.ButtonType.PAY)
-                            .setCornerRadius(99)
-                            .setAllowedPaymentMethods(UtilGP.getAllowedPaymentMethods().toString())
-                            .build()
-            );
-            googlePayButton.setOnClickListener(view -> {
-                googlePayPayment();
-            });
-        } catch (JSONException e) {
-            // Keep Google Pay button hidden (consider logging this to your app analytics service)
+        btnVTDeeplink.setOnClickListener(view -> {
+            try {
+                intentDeeplink = new Intent(Intent.ACTION_VIEW);
+//                intentDeeplink.setData(Uri.parse("razervt://merchant.razer.com?merchantUrlScheme=merchantapp&merchantHost=m erchant.example.com&opType=SALE&currency=MYR&amount=1.10&orderId=ABC D1234&channel=CARD"));
+                intentDeeplink.setData(Uri.parse("razervt://merchant.razer.com?merchantUrlScheme=merchantapp&merchantHost=merchant.example.com&opType=SALE&currency=MYR&amount=1.10&orderId=DT1707381972032&channel=CARD&payType=2"));
+                startActivity(intentDeeplink);
+            } catch (ActivityNotFoundException e) {
+                // Define what your app should do if no activity can handle the intent.
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.rms.mobile.razervt")));
+//                        e.printStackTrace();
+            }
+        });
+
+
+
+        Log.e("logDeeplink" , "before get intent");
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        Uri data = intent.getData();
+        if (data != null) {
+            Log.e("logDeeplink" , "action = " + action);
+            Log.e("logDeeplink" , "data = " + data);
+
+            if (data.getQueryParameter("opType") != null) {
+                if (data.getQueryParameter("opType").contains("SALE")){
+                    txtPaymentStatus.setText("Lastest Payment Status : " + "Successfully paid RM" + data.getQueryParameter("amount") + " on " + data.getQueryParameter("payDate"));
+                }
+            }
+
+            if (data.getQueryParameter("errorCode") != null) {
+                if (data.getQueryParameter("errorCode").contains("9999")) {
+                    txtPaymentStatus.setText("Lastest Payment Status : Payment has been cancelled");
+                }
+            }
+
+            if (data.toString().contains("?Result=99&EndtoEndId=")) {
+                int startIndexEndtoEndId = data.toString().indexOf("EndtoEndId=") + 11; // Get index of '[' and add 1 to start after it
+                int startIndexEndtoEndIdSignature = data.toString().indexOf("EndtoEndIdSignature=") + 20; // Get index of '&' and add 1 to start after it
+                int endIndexEndtoEndId = data.toString().indexOf('&', startIndexEndtoEndId); // Get index of '&' starting from startIndex
+                String EndtoEndId = "";
+                String EndtoEndIdSignature = "";
+
+                if (startIndexEndtoEndId != 0 && endIndexEndtoEndId != -1) { // Ensure both characters are found
+                    EndtoEndId = data.toString().substring(startIndexEndtoEndId, endIndexEndtoEndId);
+                    Log.e("logDeeplink" , "EndtoEndId = " + EndtoEndId);
+                }
+
+                if (startIndexEndtoEndIdSignature != 0) {
+                    EndtoEndIdSignature = data.toString().substring(startIndexEndtoEndIdSignature);
+                    Log.e("logDeeplink" , "EndtoEndIdSignature = " + EndtoEndIdSignature);
+                }
+
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://uat3.cimbclicks.com.my/dobb2c/RPP/MY/Redirect/RTP?EndtoEndId=" + EndtoEndId + "&EndtoEndIdSignature=" + EndtoEndIdSignature + "&DbtrAgt=CIBBMYKL"));
+                startActivity(browserIntent);
+            } else {
+                txtFullResponse.setText("Full url scheme response = " + data);
+            }
+
         }
     }
 
@@ -181,7 +266,12 @@ public class MainActivity extends AppCompatActivity {
 
         // START clicked
         if (id == R.id.newBtn) {
-            restartmolpay();
+            if (Objects.requireNonNull(etAmount.getText()).toString().isEmpty()) {
+                Toast.makeText(this, "Amount cannot be empty", Toast.LENGTH_SHORT).show();
+            } else {
+                restartmolpay(Objects.requireNonNull(etAmount.getText()).toString());
+            }
+
         }
 
         return super.onOptionsItemSelected(item);
