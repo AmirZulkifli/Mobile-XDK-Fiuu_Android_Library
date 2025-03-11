@@ -229,7 +229,11 @@ public class ActivityGP extends AppCompatActivity {
              Then launching Google Pay from a signed, release build of your app.
              Remember to use your live mode verificationKey & merchantId. Set isSandbox = false for production environment.
              */
-                paymentInput.put("isSandbox", Objects.requireNonNull(paymentDetails.get("mp_sandbox_mode")).toString()); // True = Testing ; False = Production
+                if (paymentDetails.get("mp_sandbox_mode") == null) {
+                    paymentInput.put("isSandbox", false);
+                } else {
+                    paymentInput.put("isSandbox", Objects.requireNonNull(paymentDetails.get("mp_sandbox_mode")));
+                }
 
                 JSONObject paymentInputObj = paymentInput;
 
