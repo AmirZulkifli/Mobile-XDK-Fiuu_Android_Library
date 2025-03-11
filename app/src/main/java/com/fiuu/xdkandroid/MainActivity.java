@@ -90,20 +90,20 @@ public class MainActivity extends AppCompatActivity {
              After your app has been approved, test your integration in production by set mp_sandbox_mode = false & use production mp_verification_key & mp_merchant_ID.
              Then launching Google Pay from a signed, release build of your app.
              */
-        paymentDetails.put(MOLPayActivity.mp_sandbox_mode, true); // Only set to false once you have request production access for your app
+        paymentDetails.put(MOLPayActivity.mp_sandbox_mode, false); // Only set to false once you have request production access for your app
 
         // TODO: Enter your merchant account credentials before test run
-        paymentDetails.put(MOLPayActivity.mp_merchant_ID, ""); // Your sandbox / production merchant ID
-        paymentDetails.put(MOLPayActivity.mp_verification_key, ""); // Your sandbox / production verification key
+        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "luckincoffeemy_Dev"); // Your sandbox / production merchant ID
+        paymentDetails.put(MOLPayActivity.mp_verification_key, "f78edf664c91fa8a483883a2f532bc76"); // Your sandbox / production verification key
 
         paymentDetails.put(MOLPayActivity.mp_amount, "1.01"); // Must be in 2 decimal points format
-        paymentDetails.put(MOLPayActivity.mp_order_ID, Calendar.getInstance().getTimeInMillis()); // Must be unique
+        paymentDetails.put(MOLPayActivity.mp_order_ID, "1116847558344867840"); // Must be unique
         paymentDetails.put(MOLPayActivity.mp_currency, "MYR"); // Must matched mp_country
         paymentDetails.put(MOLPayActivity.mp_country, "MY"); // Must matched mp_currency
-        paymentDetails.put(MOLPayActivity.mp_bill_description, "The bill description");
-        paymentDetails.put(MOLPayActivity.mp_bill_name, "The bill name");
-        paymentDetails.put(MOLPayActivity.mp_bill_email, "payer.email@fiuu.com");
-        paymentDetails.put(MOLPayActivity.mp_bill_mobile, "123456789");
+        paymentDetails.put(MOLPayActivity.mp_bill_description, "luckin coffee");
+        paymentDetails.put(MOLPayActivity.mp_bill_name, "3515275204609");
+        paymentDetails.put(MOLPayActivity.mp_bill_email, "tech@luckincoffee.com");
+        paymentDetails.put(MOLPayActivity.mp_bill_mobile, "12345");
 
         paymentDetails.put(MOLPayActivity.mp_extended_vcode, false); // Optional : Set true if your account enabled extended Verify Payment
         openGPActivityWithResult();
