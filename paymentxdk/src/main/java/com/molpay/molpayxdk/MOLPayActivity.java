@@ -630,7 +630,7 @@ public class MOLPayActivity extends AppCompatActivity {
                     Intent data = result.getData();
                     String transactionResult = data.getStringExtra(MOLPayActivity.MOLPayTransactionResult);
 
-                    if (data.getData() != null && transactionResult != null) {
+                    if (transactionResult != null) {
                         Intent intent = new Intent();
                         intent.putExtra(MOLPayTransactionResult, transactionResult);
                         setResult(result.getResultCode(), intent);
