@@ -99,12 +99,15 @@ public class ActivityGP extends AppCompatActivity {
             COUNTRY_CODE = Objects.requireNonNull(paymentDetails.get("mp_country")).toString();
             CURRENCY_CODE = Objects.requireNonNull(paymentDetails.get("mp_currency")).toString();
 
-            if (Boolean.parseBoolean(Objects.requireNonNull(paymentDetails.get("mp_sandbox_mode")).toString())) {
-                PAYMENTS_ENVIRONMENT = WalletConstants.ENVIRONMENT_TEST;
-            } else {
+            if (paymentDetails.get("mp_sandbox_mode") == null) {
                 PAYMENTS_ENVIRONMENT = WalletConstants.ENVIRONMENT_PRODUCTION;
+            } else {
+                if (Boolean.parseBoolean(Objects.requireNonNull(paymentDetails.get("mp_sandbox_mode")).toString())) {
+                    PAYMENTS_ENVIRONMENT = WalletConstants.ENVIRONMENT_TEST;
+                } else {
+                    PAYMENTS_ENVIRONMENT = WalletConstants.ENVIRONMENT_PRODUCTION;
+                }
             }
-
         }
 
         initializeUi();
