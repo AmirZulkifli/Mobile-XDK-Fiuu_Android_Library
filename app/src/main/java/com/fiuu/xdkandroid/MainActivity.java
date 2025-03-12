@@ -28,23 +28,25 @@ public class MainActivity extends AppCompatActivity {
     HashMap<Object, Object> paymentDetails = new HashMap<>();
 
     private void restartmolpay() {
-        paymentDetails.put(MOLPayActivity.mp_amount, "1.10");
 
-        // TODO: Enter your merchant account credentials before test run
-        paymentDetails.put(MOLPayActivity.mp_username, "");
-        paymentDetails.put(MOLPayActivity.mp_password, "");
-        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "");
-        paymentDetails.put(MOLPayActivity.mp_app_name, "");
-        paymentDetails.put(MOLPayActivity.mp_verification_key, "");
+        // Mandatory String. Values obtained from Fiuu.
+        paymentDetails.put(MOLPayActivity.mp_username, "RMSxdk_2022");
+        paymentDetails.put(MOLPayActivity.mp_password, "RMSpwd@2022");
+        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "rmsxdk_mobile_Dev");
+        paymentDetails.put(MOLPayActivity.mp_app_name, "mobile");
+        paymentDetails.put(MOLPayActivity.mp_verification_key, "ee738b541eff7b6b495e44771f71c0ec");
 
-        paymentDetails.put(MOLPayActivity.mp_order_ID, Calendar.getInstance().getTimeInMillis());
-        paymentDetails.put(MOLPayActivity.mp_currency, "MYR");
-        paymentDetails.put(MOLPayActivity.mp_country, "MY");
-        paymentDetails.put(MOLPayActivity.mp_channel, "multi");
-        paymentDetails.put(MOLPayActivity.mp_bill_description, "bill description");
-        paymentDetails.put(MOLPayActivity.mp_bill_name, "bill name");
-        paymentDetails.put(MOLPayActivity.mp_bill_email, "example@gmail.com");
+        // Mandatory String. Payment info.
+        paymentDetails.put(MOLPayActivity.mp_amount, "1.01"); // Must be in 2 decimal points format
+        paymentDetails.put(MOLPayActivity.mp_order_ID, Calendar.getInstance().getTimeInMillis()); // Any String but must be unique
+        paymentDetails.put(MOLPayActivity.mp_currency, "MYR"); // Must matched mp_country
+        paymentDetails.put(MOLPayActivity.mp_country, "MY"); // Must matched mp_currency
+        paymentDetails.put(MOLPayActivity.mp_bill_description, "The bill description");
+        paymentDetails.put(MOLPayActivity.mp_bill_name, "The bill name");
+        paymentDetails.put(MOLPayActivity.mp_bill_email, "payer.email@fiuu.com");
         paymentDetails.put(MOLPayActivity.mp_bill_mobile, "123456789");
+
+        paymentDetails.put(MOLPayActivity.mp_channel, "multi"); // Use 'multi' for all available channels option. For individual channel selection, please refer to https://github.com/RazerMS/Mobile-XDK-RazerMS_Examples/blob/master/channel-list.md
 
         // TODO: Learn more about optional parameters here https://github.com/RazerMS/Mobile-XDK-RazerMS_Android_Studio/wiki/Installation-Guidance#prepare-the-payment-detail-object
 //        paymentDetails.put(MOLPayActivity.mp_extended_vcode, false); // For Google Pay Only - Set true if your account enabled extended Verify Payment
