@@ -29,18 +29,21 @@ public class MainActivity extends AppCompatActivity {
 
     private void restartmolpay() {
 
-        // Mandatory String. Values obtained from Fiuu.
+        // Compulsory String. Values obtained from Fiuu.
         paymentDetails.put(MOLPayActivity.mp_username, "RMSxdk_2022");
         paymentDetails.put(MOLPayActivity.mp_password, "RMSpwd@2022");
-        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "rmsxdk_mobile_Dev");
         paymentDetails.put(MOLPayActivity.mp_app_name, "mobile");
-        paymentDetails.put(MOLPayActivity.mp_verification_key, "ee738b541eff7b6b495e44771f71c0ec");
+//        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "rmsxdk_mobile_Dev");
+//        paymentDetails.put(MOLPayActivity.mp_verification_key, "ee738b541eff7b6b495e44771f71c0ec");
+        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "SB_molpayxdk");
+        paymentDetails.put(MOLPayActivity.mp_verification_key, "4445db44bdb60687a8e7f7903a59c3a9");
+        paymentDetails.put(MOLPayActivity.mp_sandbox_mode, true);
 
-        // Mandatory String. Payment info.
-        paymentDetails.put(MOLPayActivity.mp_amount, "1.01"); // Must be in 2 decimal points format
-        paymentDetails.put(MOLPayActivity.mp_order_ID, Calendar.getInstance().getTimeInMillis()); // Any String but must be unique
-        paymentDetails.put(MOLPayActivity.mp_currency, "MYR"); // Must matched mp_country
-        paymentDetails.put(MOLPayActivity.mp_country, "MY"); // Must matched mp_currency
+        // Compulsory String. Payment info.
+        paymentDetails.put(MOLPayActivity.mp_amount, "1.10"); // 2 decimal points format
+        paymentDetails.put(MOLPayActivity.mp_order_ID, Calendar.getInstance().getTimeInMillis()); // Any unique String
+        paymentDetails.put(MOLPayActivity.mp_currency, "MYR");
+        paymentDetails.put(MOLPayActivity.mp_country, "SG");
         paymentDetails.put(MOLPayActivity.mp_bill_description, "The bill description");
         paymentDetails.put(MOLPayActivity.mp_bill_name, "The bill name");
         paymentDetails.put(MOLPayActivity.mp_bill_email, "payer.email@fiuu.com");
@@ -48,16 +51,45 @@ public class MainActivity extends AppCompatActivity {
 
         // ------------------------------------ OPTIONAL -------------------------------------------
 
-//        paymentDetails.put(MOLPayActivity.mp_channel, "multi"); // Use 'multi' for all available channels option. For individual channel selection, please refer to https://github.com/RazerMS/Mobile-XDK-RazerMS_Examples/blob/master/channel-list.md
-
         // TODO: Learn more about optional parameters here https://github.com/RazerMS/Mobile-XDK-RazerMS_Android_Studio/wiki/Installation-Guidance#prepare-the-payment-detail-object
-//        paymentDetails.put(MOLPayActivity.mp_extended_vcode, false); // For Google Pay Only - Set true if your account enabled extended Verify Payment
-//        paymentDetails.put(MOLPayActivity.mp_channel_editing, false);
-//        paymentDetails.put(MOLPayActivity.mp_editing_enabled, true);
-//        paymentDetails.put(MOLPayActivity.mp_express_mode, false);
-//        paymentDetails.put(MOLPayActivity.mp_dev_mode, false);
+
+        // -------------------------------- Most commonly used -------------------------------------
+
+        // Optional, Use 'multi' for all available channels option.
+        // For individual channel selection, please refer to column mp_channel in https://github.com/RazerMS/Mobile-XDK-RazerMS_Examples/blob/master/channel-list.md
+//        paymentDetails.put(MOLPayActivity.mp_channel, "multi");
+
+        // Optional, required a valid mp_channel value, this will skip the payment info page and go direct to the payment screen.
+//        paymentDetails.put(MOLPayActivity.mp_express_mode, true);
+
+        // Optional, show selected channels only.
+//        String allowedchannels[] = {"TNG-EWALLET","maybank2u"}; // Refer to column mp_channel in https://github.com/RazerMS/Mobile-XDK-RazerMS_Examples/blob/master/channel-list.md
+//        paymentDetails.put(MOLPayActivity.mp_allowed_channels, allowedchannels);
+
+        // Optional, simulate offline payment, set boolean value to enable.
+        // Need set true for Google Pay production access application screenshot (Test Environment).
+//        paymentDetails.put(MOLPayActivity.mp_sandbox_mode, true);
+
+        // Optional, For Google Pay Only - Set true if your account enabled extended Verify Payment
+//        paymentDetails.put(MOLPayActivity.mp_extended_vcode, false);
+
+        // Optional, show close button.
 //        paymentDetails.put(MOLPayActivity.mp_closebutton_display, true);
-//        paymentDetails.put(MOLPayActivity.mp_preferred_token, "new");
+
+        // Optional, allow channel selection for preset mp_channel
+//        paymentDetails.put(MOLPayActivity.mp_channel_editing, true);
+
+        // Optional, allow billing information editing.
+//        paymentDetails.put(MOLPayActivity.mp_editing_enabled, false);
+
+        // Optional, explicitly force disable user input by field.
+//        paymentDetails.put(MOLPayActivity.mp_bill_name_edit_disabled, true);
+//        paymentDetails.put(MOLPayActivity.mp_bill_email_edit_disabled, false);
+//        paymentDetails.put(MOLPayActivity.mp_bill_mobile_edit_disabled, true);
+//        paymentDetails.put(MOLPayActivity.mp_bill_description_edit_disabled, false);
+
+        // Optional, EN, MS, VI, TH, FIL, MY, KM, ID, ZH.
+//        paymentDetails.put(MOLPayActivity.mp_language, "MS");
 
         openStartActivityResult();
     }
