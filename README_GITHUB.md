@@ -1,4 +1,4 @@
-# [Mobile XDK] – Fiuu Android Java
+# [Fiuu Mobile XDK] – Android Payment Library
 
 <img alt="" src="https://user-images.githubusercontent.com/38641542/74424311-a9d64000-4e8c-11ea-8d80-d811cfe66972.jpg">
 
