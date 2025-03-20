@@ -31,11 +31,11 @@ Follow the "get started" guide to start on Android Development here :https://dev
 For the module to work, below are the minimum requirements needed :
 
 
-- Android SDK Version: 29 ++
+- compileSdk: >= 34 
 
-- Android API level: 19 ++
+- minSdkVersion: >= 26
 
-- Android target version: Android 4.4
+- targetSdkVersion: >= 34
 
 ## How to Install ?
 
