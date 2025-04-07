@@ -65,8 +65,8 @@ public class MainActivity extends AppCompatActivity {
         paymentDetails.put(MOLPayActivity.mp_bill_email, "apptoapp@gmail.com");
         paymentDetails.put(MOLPayActivity.mp_bill_mobile, "01234567888");
         paymentDetails.put(MOLPayActivity.mp_channel, "multi");
+
         paymentDetails.put(MOLPayActivity.mp_dev_mode, true);
-//        paymentDetails.put(MOLPayActivity.mp_dev_mode, false);
 
         //------------------------------------------------------------------------------------------
 
