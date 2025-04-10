@@ -39,7 +39,6 @@ public class ApiRequestService {
     public ApiRequestService() {
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public Object GetPaymentRequest(JSONObject paymentInput, String paymentInfo ) {
 
         try {
