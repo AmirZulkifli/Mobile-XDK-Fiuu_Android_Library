@@ -130,6 +130,7 @@ public class ActivityGP extends AppCompatActivity {
     }
 
     private void initializeUi() {
+        Log.e("logGooglePay", "initializeUi");
 
         // Use view binding to access the UI elements
         ActivityGooglepayBinding layoutBinding = ActivityGooglepayBinding.inflate(getLayoutInflater());
@@ -147,6 +148,8 @@ public class ActivityGP extends AppCompatActivity {
      * @param available isReadyToPay API response.
      */
     private void setGooglePayAvailable(boolean available) {
+        Log.e("logGooglePay", "setGooglePayAvailable");
+
         if (available) {
             requestPayment();
         } else {

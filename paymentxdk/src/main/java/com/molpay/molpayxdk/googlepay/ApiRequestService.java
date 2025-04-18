@@ -6,6 +6,7 @@ package com.molpay.molpayxdk.googlepay;
 
 import android.net.Uri;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -155,6 +156,9 @@ public class ApiRequestService {
             httpConnection.setDoInput(true);
 
             String query = params.build().getEncodedQuery();
+
+            Log.e("logGooglePay", "url = " + url.toString());
+            Log.e("logGooglePay", "query = " + query.toString());
 
             OutputStream outputStream = httpConnection.getOutputStream();
 

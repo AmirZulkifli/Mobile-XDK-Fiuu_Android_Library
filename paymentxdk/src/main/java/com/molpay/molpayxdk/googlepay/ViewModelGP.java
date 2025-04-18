@@ -43,6 +43,8 @@ public class ViewModelGP extends AndroidViewModel {
             Log.e("logGooglePay" , "_canUseGooglePay isReadyToPayJson == null");
             _canUseGooglePay.setValue(false);
             return;
+        } else {
+            Log.e("logGooglePay" , "fetchCanUseGooglePay TRUE");
         }
 
         // The call to isReadyToPay is asynchronous and returns a Task. We need to provide an
@@ -75,8 +77,6 @@ public class ViewModelGP extends AndroidViewModel {
      */
     public Task<PaymentData> getLoadPaymentDataTask(final long priceCents) {
 
-        Log.e("logGooglePay" , "getLoadPaymentDataTask");
-
         JSONObject paymentDataRequestJson = UtilGP.getPaymentDataRequest(priceCents);
 
         if (paymentDataRequestJson == null) {
@@ -84,6 +84,8 @@ public class ViewModelGP extends AndroidViewModel {
         }
 
         PaymentDataRequest request = PaymentDataRequest.fromJson(paymentDataRequestJson.toString());
+
+        Log.e("logGooglePay" , "### 4 loadPaymentData");
 
         return paymentsClient.loadPaymentData(request);
     }

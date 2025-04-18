@@ -1,6 +1,7 @@
 package com.molpay.molpayxdk.googlepay;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.google.android.gms.wallet.PaymentsClient;
 import com.google.android.gms.wallet.Wallet;
@@ -143,9 +144,131 @@ public class UtilGP {
      * @throws JSONException
      */
     public static JSONArray getAllowedPaymentMethods() throws JSONException {
+        // ### TODO : Get channels from API createTxn.php & return in JSONArray
+
+        Log.e("logGooglePay", "getAllowedPaymentMethods");
+
         return new JSONArray() {{
-            put(getCardPaymentMethod());
+//            put(getCardPaymentMethod());
+            put(getCardPaymentMethod2()); // Success tested new Card Json Array
         }};
+
+//        return getPaymentMethods(); // Test new Card + e-wallets
+
+//        return getPaymentMethodsGoogle();
+    }
+
+    public static JSONObject getCardPaymentMethod2() throws JSONException {
+        return new JSONObject() {{
+            put("type", "CARD");
+            put("parameters", new JSONObject() {{
+                put("allowedAuthMethods", new JSONArray().put("PAN_ONLY").put("CRYPTOGRAM_3DS"));
+                put("allowedCardNetworks", new JSONArray().put("MASTERCARD").put("VISA"));
+                put("assuranceDetailsRequired", true);
+            }});
+            put("tokenizationSpecification", new JSONObject() {{
+                put("type", "PAYMENT_GATEWAY");
+                put("parameters", new JSONObject() {{
+                    put("gateway", "molpay");
+                    put("gatewayMerchantId", "molpay");
+                }});
+            }});
+        }};
+    }
+
+    public static JSONArray getPaymentMethods() throws JSONException {
+        JSONArray paymentMethods = new JSONArray();
+
+        // Card Payment Method
+        JSONObject cardMethod = new JSONObject();
+        cardMethod.put("type", "CARD");
+        cardMethod.put("parameters", new JSONObject()
+                .put("allowedAuthMethods", new JSONArray().put("PAN_ONLY").put("CRYPTOGRAM_3DS"))
+                .put("allowedCardNetworks", new JSONArray().put("MASTERCARD").put("VISA"))
+                .put("assuranceDetailsRequired", true)
+        );
+        cardMethod.put("tokenizationSpecification", new JSONObject()
+                .put("type", "PAYMENT_GATEWAY")
+                .put("parameters", new JSONObject()
+                        .put("gateway", "molpay")
+                        .put("gatewayMerchantId", "molpay")
+                )
+        );
+        paymentMethods.put(cardMethod);
+
+        // ShopeePay E-wallet
+        JSONObject shopeePay = new JSONObject();
+        shopeePay.put("type", "EWALLET");
+        shopeePay.put("processingSpecification", new JSONObject()
+                .put("type", "SHOPEE_PAY")
+                .put("parameters", new JSONObject()
+                        .put("clientId", "rms-uat")
+                        .put("ewalletMerchantAccount", "rms-uat")
+                        .put("ewalletMerchantName", "Razer Merchant Services")
+                        .put("merchantExtId", "naery_Dev")
+                        .put("pspTransactionReference", "100384")
+                        .put("storeExtId", "naery_Dev")
+                )
+        );
+        paymentMethods.put(shopeePay);
+
+        // Touch 'n Go E-wallet
+        JSONObject tngPay = new JSONObject();
+        tngPay.put("type", "EWALLET");
+        tngPay.put("processingSpecification", new JSONObject()
+                .put("type", "TOUCH_N_GO")
+                .put("parameters", new JSONObject()
+                        .put("ewalletMerchantAccount", "217120000033045876753")
+                        .put("ewalletMerchantName", "Razer Merchant Services")
+                        .put("pspCallbackUrl", "https://sandbox-payment.fiuu.com/RMS/TNG-EWALLET-GooglePay/notification.php")
+                        .put("pspOrderExpiration", "1744181519728")
+                        .put("pspOrderMcc", "2741")
+                        .put("pspOrderTimestamp", "1744180919728")
+                        .put("pspTransactionReference", "100384")
+                )
+        );
+        paymentMethods.put(tngPay);
+
+        return paymentMethods;
+    }
+
+    public static JSONArray getPaymentMethodsGoogle() throws JSONException {
+        JSONArray paymentMethods = new JSONArray();
+
+        // Card Payment Method
+        JSONObject cardMethod = new JSONObject();
+        cardMethod.put("type", "CARD");
+        cardMethod.put("parameters", new JSONObject()
+                .put("allowedAuthMethods", new JSONArray()
+                        .put("PAN_ONLY")
+                        .put("CRYPTOGRAM_3DS"))
+                .put("allowedCardNetworks", new JSONArray()
+                        .put("AMEX")
+                        .put("DISCOVER")
+                        .put("INTERAC")
+                        .put("JCB")
+                        .put("MASTERCARD")
+                        .put("VISA"))
+        );
+        paymentMethods.put(cardMethod);
+
+        // ShopeePay E-wallet
+        JSONObject shopeePay = new JSONObject();
+        shopeePay.put("type", "EWALLET");
+        shopeePay.put("processingSpecification", new JSONObject()
+                .put("type", "SHOPEE_PAY")
+        );
+        paymentMethods.put(shopeePay);
+
+        // Touch 'n Go E-wallet
+        JSONObject tngPay = new JSONObject();
+        tngPay.put("type", "EWALLET");
+        tngPay.put("processingSpecification", new JSONObject()
+                .put("type", "TOUCH_N_GO")
+        );
+        paymentMethods.put(tngPay);
+
+        return paymentMethods;
     }
 
     /**
@@ -157,10 +280,12 @@ public class UtilGP {
      * href="https://developers.google.com/pay/api/android/reference/object#IsReadyToPayRequest">IsReadyToPayRequest</a>
      */
     public static JSONObject getIsReadyToPayRequest() {
+        Log.e("logGooglePay", "### 2 IsReadyToPayRequest");
+
         try {
             JSONObject isReadyToPayRequest = getBaseRequest();
-            isReadyToPayRequest.put(
-                    "allowedPaymentMethods", new JSONArray().put(getBaseCardPaymentMethod()));
+//            isReadyToPayRequest.put("allowedPaymentMethods", new JSONArray().put(getBaseCardPaymentMethod()));
+            isReadyToPayRequest.put("allowedPaymentMethods", getAllowedPaymentMethods());
 
             return isReadyToPayRequest;
 
@@ -209,11 +334,14 @@ public class UtilGP {
      */
     public static JSONObject getPaymentDataRequest(long priceCents) {
 
+        Log.e("logGooglePay", "### 5 PaymentDataRequest");
+
         final String price = UtilGP.centsToString(priceCents);
 
         try {
             JSONObject paymentDataRequest = UtilGP.getBaseRequest();
-            paymentDataRequest.put("allowedPaymentMethods", new JSONArray().put(UtilGP.getCardPaymentMethod()));
+//            paymentDataRequest.put("allowedPaymentMethods", new JSONArray().put(UtilGP.getCardPaymentMethod()));
+            paymentDataRequest.put("allowedPaymentMethods", getAllowedPaymentMethods());
             paymentDataRequest.put("transactionInfo", UtilGP.getTransactionInfo(price));
             paymentDataRequest.put("merchantInfo", UtilGP.getMerchantInfo());
 
