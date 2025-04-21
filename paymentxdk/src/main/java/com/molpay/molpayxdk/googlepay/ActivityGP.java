@@ -57,6 +57,8 @@ public class ActivityGP extends AppCompatActivity {
     public static String CURRENCY_CODE = "MYR";
     public static int PAYMENTS_ENVIRONMENT = WalletConstants.ENVIRONMENT_TEST; // 3 = TEST & 1 = PRODUCTION
 
+    public static String[] gpayAllowedChannels = null;
+
     // Handle potential conflict from calling loadPaymentData.
     ActivityResultLauncher<IntentSenderRequest> resolvePaymentForResult = registerForActivityResult(
             new ActivityResultContracts.StartIntentSenderForResult(),
@@ -113,6 +115,8 @@ public class ActivityGP extends AppCompatActivity {
 
         initializeUi();
 
+        gpayAllowedChannels = (String[]) paymentDetails.get(MOLPayActivity.mp_gpay_channel);
+
         // Check Google Pay availability
         model = new ViewModelProvider(this).get(ViewModelGP.class);
         model.canUseGooglePay.observe(this, this::setGooglePayAvailable);
@@ -167,10 +171,7 @@ public class ActivityGP extends AppCompatActivity {
         // This price is not displayed to the user.
         long totalPriceCents = Long.parseLong(Objects.requireNonNull(paymentDetails.get("mp_amount")).toString().replaceAll("[.,]", ""));
 
-        String[] gpayChannels = (String[]) paymentDetails.get(MOLPayActivity.mp_gpay_channel);
-        Log.e("logGooglePay", "gpayChannels = " + Arrays.toString(gpayChannels));
-
-        final Task<PaymentData> task = model.getLoadPaymentDataTask(totalPriceCents , gpayChannels); // TODO : Add gpay channels
+        final Task<PaymentData> task = model.getLoadPaymentDataTask(totalPriceCents);
 
         task.addOnCompleteListener(completedTask -> {
             Log.e("logGooglePay", "addOnCompleteListener");

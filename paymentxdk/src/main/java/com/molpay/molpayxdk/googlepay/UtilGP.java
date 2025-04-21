@@ -24,7 +24,7 @@ public class UtilGP {
 
     public static final BigDecimal CENTS_IN_A_UNIT = new BigDecimal(100);
 
-    public static String[] gpayAllowedChannels = null;
+//    public static String[] gpayAllowedChannels = null;
 
     /**
      * Create a Google Pay API base request object with properties used in all requests.
@@ -185,11 +185,11 @@ public class UtilGP {
     public static JSONArray getPaymentMethods() throws JSONException {
         JSONArray paymentMethods = new JSONArray();
 
-        if (gpayAllowedChannels != null) {
-            Log.e("logGooglePay", "gpayAllowedChannels not null");
+        if (ActivityGP.gpayAllowedChannels != null) {
+            Log.e("logGooglePay", "ActivityGP.gpayAllowedChannels not null");
 
-            for (String channel : gpayAllowedChannels) {
-                Log.e("logGooglePay", "gpayAllowedChannels: " + channel);
+            for (String channel : ActivityGP.gpayAllowedChannels) {
+                Log.e("logGooglePay", "ActivityGP.gpayAllowedChannels: " + channel);
 
                 switch (channel) {
                     case "CARD":
@@ -250,7 +250,7 @@ public class UtilGP {
                 }
             }
         } else {
-            Log.e("logGooglePay", "gpayAllowedChannels NULL");
+            Log.e("logGooglePay", "ActivityGP.gpayAllowedChannels NULL");
 
             // Card Payment Method Only
             JSONObject cardMethod = new JSONObject();
@@ -373,11 +373,11 @@ public class UtilGP {
      * @see <a
      * href="https://developers.google.com/pay/api/android/reference/object#PaymentDataRequest">PaymentDataRequest</a>
      */
-    public static JSONObject getPaymentDataRequest(long priceCents , String[] allowedChannels) {
+    public static JSONObject getPaymentDataRequest(long priceCents) {
 
         Log.e("logGooglePay", "### 5 PaymentDataRequest");
 
-        gpayAllowedChannels = allowedChannels;
+//        gpayAllowedChannels = allowedChannels;
 
         final String price = UtilGP.centsToString(priceCents);
 
