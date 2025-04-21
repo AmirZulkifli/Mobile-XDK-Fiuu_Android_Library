@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_margin="19dp"
-        android:visibility="visible"/>
+        android:visibility="gone"/>
 
     <ImageView
         android:id="@+id/btnGPay"
@@ -32,6 +32,6 @@
         android:layout_height="wrap_content"
         android:src="@drawable/btn_gpay"
         android:layout_alignParentBottom="true"
-        android:visibility="gone"/>
+        android:visibility="visible"/>
 
 </RelativeLayout>
