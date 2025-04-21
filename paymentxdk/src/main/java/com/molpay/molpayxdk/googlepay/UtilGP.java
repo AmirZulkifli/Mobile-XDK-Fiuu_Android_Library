@@ -148,12 +148,16 @@ public class UtilGP {
 
         Log.e("logGooglePay", "getAllowedPaymentMethods");
 
-        return new JSONArray() {{
-//            put(getCardPaymentMethod());
-            put(getCardPaymentMethod2()); // Success tested new Card Json Array
-        }};
+//        return new JSONArray() {{
+////            put(getCardPaymentMethod());
+//            put(getCardPaymentMethod2()); // Success tested new Card Json Array
+//        }};
 
-//        return getPaymentMethods(); // Test new Card + e-wallets
+// -------
+
+        return getPaymentMethods(); // Test new Card + e-wallets
+
+// -------
 
 //        return getPaymentMethodsGoogle();
     }
