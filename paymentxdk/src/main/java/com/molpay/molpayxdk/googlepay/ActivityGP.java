@@ -32,6 +32,7 @@ import com.molpay.molpayxdk.databinding.ActivityGooglepayBinding;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -166,7 +167,10 @@ public class ActivityGP extends AppCompatActivity {
         // This price is not displayed to the user.
         long totalPriceCents = Long.parseLong(Objects.requireNonNull(paymentDetails.get("mp_amount")).toString().replaceAll("[.,]", ""));
 
-        final Task<PaymentData> task = model.getLoadPaymentDataTask(totalPriceCents);
+        String[] gpayChannels = (String[]) paymentDetails.get(MOLPayActivity.mp_gpay_channel);
+        Log.e("logGooglePay", "gpayChannels = " + Arrays.toString(gpayChannels));
+
+        final Task<PaymentData> task = model.getLoadPaymentDataTask(totalPriceCents , gpayChannels); // TODO : Add gpay channels
 
         task.addOnCompleteListener(completedTask -> {
             Log.e("logGooglePay", "addOnCompleteListener");

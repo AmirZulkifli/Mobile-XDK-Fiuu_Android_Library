@@ -75,9 +75,9 @@ public class ViewModelGP extends AndroidViewModel {
      * @return a Task with the payment information.
      * )
      */
-    public Task<PaymentData> getLoadPaymentDataTask(final long priceCents) {
+    public Task<PaymentData> getLoadPaymentDataTask(final long priceCents , String[] allowedChannels) {
 
-        JSONObject paymentDataRequestJson = UtilGP.getPaymentDataRequest(priceCents);
+        JSONObject paymentDataRequestJson = UtilGP.getPaymentDataRequest(priceCents , allowedChannels);
 
         if (paymentDataRequestJson == null) {
             return null;

@@ -24,6 +24,8 @@ public class UtilGP {
 
     public static final BigDecimal CENTS_IN_A_UNIT = new BigDecimal(100);
 
+    public static String[] gpayAllowedChannels = null;
+
     /**
      * Create a Google Pay API base request object with properties used in all requests.
      *
@@ -183,55 +185,90 @@ public class UtilGP {
     public static JSONArray getPaymentMethods() throws JSONException {
         JSONArray paymentMethods = new JSONArray();
 
-        // Card Payment Method
-        JSONObject cardMethod = new JSONObject();
-        cardMethod.put("type", "CARD");
-        cardMethod.put("parameters", new JSONObject()
-                .put("allowedAuthMethods", new JSONArray().put("PAN_ONLY").put("CRYPTOGRAM_3DS"))
-                .put("allowedCardNetworks", new JSONArray().put("MASTERCARD").put("VISA"))
-                .put("assuranceDetailsRequired", true)
-        );
-        cardMethod.put("tokenizationSpecification", new JSONObject()
-                .put("type", "PAYMENT_GATEWAY")
-                .put("parameters", new JSONObject()
-                        .put("gateway", "molpay")
-                        .put("gatewayMerchantId", "molpay")
-                )
-        );
-        paymentMethods.put(cardMethod);
+        if (gpayAllowedChannels != null) {
+            Log.e("logGooglePay", "gpayAllowedChannels not null");
 
-        // ShopeePay E-wallet
-        JSONObject shopeePay = new JSONObject();
-        shopeePay.put("type", "EWALLET");
-        shopeePay.put("processingSpecification", new JSONObject()
-                .put("type", "SHOPEE_PAY")
-                .put("parameters", new JSONObject()
-                        .put("clientId", "rms-uat")
-                        .put("ewalletMerchantAccount", "rms-uat")
-                        .put("ewalletMerchantName", "Razer Merchant Services")
-                        .put("merchantExtId", "naery_Dev")
-                        .put("pspTransactionReference", "100384")
-                        .put("storeExtId", "naery_Dev")
-                )
-        );
-        paymentMethods.put(shopeePay);
+            for (String channel : gpayAllowedChannels) {
+                Log.e("logGooglePay", "gpayAllowedChannels: " + channel);
 
-        // Touch 'n Go E-wallet
-        JSONObject tngPay = new JSONObject();
-        tngPay.put("type", "EWALLET");
-        tngPay.put("processingSpecification", new JSONObject()
-                .put("type", "TOUCH_N_GO")
-                .put("parameters", new JSONObject()
-                        .put("ewalletMerchantAccount", "217120000033045876753")
-                        .put("ewalletMerchantName", "Razer Merchant Services")
-                        .put("pspCallbackUrl", "https://sandbox-payment.fiuu.com/RMS/TNG-EWALLET-GooglePay/notification.php")
-                        .put("pspOrderExpiration", "1744181519728")
-                        .put("pspOrderMcc", "2741")
-                        .put("pspOrderTimestamp", "1744180919728")
-                        .put("pspTransactionReference", "100384")
-                )
-        );
-        paymentMethods.put(tngPay);
+                switch (channel) {
+                    case "CARD":
+                        // Card Payment Method
+                        JSONObject cardMethod = new JSONObject();
+                        cardMethod.put("type", "CARD");
+                        cardMethod.put("parameters", new JSONObject()
+                                .put("allowedAuthMethods", new JSONArray().put("PAN_ONLY").put("CRYPTOGRAM_3DS"))
+                                .put("allowedCardNetworks", new JSONArray().put("MASTERCARD").put("VISA"))
+                                .put("assuranceDetailsRequired", true)
+                        );
+                        cardMethod.put("tokenizationSpecification", new JSONObject()
+                                .put("type", "PAYMENT_GATEWAY")
+                                .put("parameters", new JSONObject()
+                                        .put("gateway", "molpay")
+                                        .put("gatewayMerchantId", "molpay")
+                                )
+                        );
+                        paymentMethods.put(cardMethod);
+                        break;
+                    case "TOUCH_N_GO":
+                        // Touch 'n Go E-wallet
+                        JSONObject tngPay = new JSONObject();
+                        tngPay.put("type", "EWALLET");
+                        tngPay.put("processingSpecification", new JSONObject()
+                                .put("type", "TOUCH_N_GO")
+                                .put("parameters", new JSONObject()
+                                        .put("ewalletMerchantAccount", "217120000033045876753")
+                                        .put("ewalletMerchantName", "Razer Merchant Services")
+                                        .put("pspCallbackUrl", "https://sandbox-payment.fiuu.com/RMS/TNG-EWALLET-GooglePay/notification.php")
+                                        .put("pspOrderExpiration", "1744181519728")
+                                        .put("pspOrderMcc", "2741")
+                                        .put("pspOrderTimestamp", "1744180919728")
+                                        .put("pspTransactionReference", "100384")
+                                )
+                        );
+                        paymentMethods.put(tngPay);
+                        break;
+                    case "SHOPEE_PAY":
+                        // ShopeePay E-wallet
+                        JSONObject shopeePay = new JSONObject();
+                        shopeePay.put("type", "EWALLET");
+                        shopeePay.put("processingSpecification", new JSONObject()
+                                .put("type", "SHOPEE_PAY")
+                                .put("parameters", new JSONObject()
+                                        .put("clientId", "rms-uat")
+                                        .put("ewalletMerchantAccount", "rms-uat")
+                                        .put("ewalletMerchantName", "Razer Merchant Services")
+                                        .put("merchantExtId", "naery_Dev")
+                                        .put("pspTransactionReference", "100384")
+                                        .put("storeExtId", "naery_Dev")
+                                )
+                        );
+                        paymentMethods.put(shopeePay);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        } else {
+            Log.e("logGooglePay", "gpayAllowedChannels NULL");
+
+            // Card Payment Method Only
+            JSONObject cardMethod = new JSONObject();
+            cardMethod.put("type", "CARD");
+            cardMethod.put("parameters", new JSONObject()
+                    .put("allowedAuthMethods", new JSONArray().put("PAN_ONLY").put("CRYPTOGRAM_3DS"))
+                    .put("allowedCardNetworks", new JSONArray().put("MASTERCARD").put("VISA"))
+                    .put("assuranceDetailsRequired", true)
+            );
+            cardMethod.put("tokenizationSpecification", new JSONObject()
+                    .put("type", "PAYMENT_GATEWAY")
+                    .put("parameters", new JSONObject()
+                            .put("gateway", "molpay")
+                            .put("gatewayMerchantId", "molpay")
+                    )
+            );
+            paymentMethods.put(cardMethod);
+        }
 
         return paymentMethods;
     }
@@ -336,9 +373,11 @@ public class UtilGP {
      * @see <a
      * href="https://developers.google.com/pay/api/android/reference/object#PaymentDataRequest">PaymentDataRequest</a>
      */
-    public static JSONObject getPaymentDataRequest(long priceCents) {
+    public static JSONObject getPaymentDataRequest(long priceCents , String[] allowedChannels) {
 
         Log.e("logGooglePay", "### 5 PaymentDataRequest");
+
+        gpayAllowedChannels = allowedChannels;
 
         final String price = UtilGP.centsToString(priceCents);
 

@@ -164,6 +164,10 @@ public class MainActivity extends AppCompatActivity {
         paymentDetails.put(MOLPayActivity.mp_bill_email, "payer.email@fiuu.com");
         paymentDetails.put(MOLPayActivity.mp_bill_mobile, "123456789");
 
+        paymentDetails.put(MOLPayActivity.mp_gpay_channel, new String[] { "SHOPEE_PAY", "CARD", "TOUCH_N_GO" });
+//        paymentDetails.put(MOLPayActivity.mp_gpay_channel, new String[] { "TOUCH_N_GO", "SHOPEE_PAY" });
+//        paymentDetails.put(MOLPayActivity.mp_gpay_channel, new String[] { "CARD", "TOUCH_N_GO" });
+
 //        paymentDetails.put(MOLPayActivity.mp_extended_vcode, false); // Optional : Set true if your account enabled extended Verify Payment
 
         openGPActivityWithResult();
@@ -218,7 +222,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             // TODO: Choose your preferred Google Pay button : https://developers.google.com/pay/api/android/guides/brand-guidelines
 
-            Log.e("logGooglePay", "setAllowedPaymentMethods = " + UtilGP.getAllowedPaymentMethods().toString());
+//            Log.e("logGooglePay", "setAllowedPaymentMethods = " + UtilGP.getAllowedPaymentMethods().toString());
 
             googlePayButton.initialize(
                     ButtonOptions.newBuilder()
