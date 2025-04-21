@@ -57,10 +57,16 @@ public class ApiRequestService {
             String verificationKey = paymentInput.getString("verificationKey");
 
             if (WebActivity.isSandbox.equals("false")) {
-                endPoint = Production.BASE_PAYMENT + "RMS/API/Direct/1.4.0/index.php";
+                endPoint = Production.BASE_PAYMENT + "RMS/GooglePay/payment_v2.php";
             } else if (WebActivity.isSandbox.equals("true")) {
-                endPoint = Development.BASE_PAYMENT + "RMS/API/Direct/1.4.0/index.php";
+                endPoint = "https://sandbox-payment.fiuu.com/RMS/GooglePay/payment_v2.php";
             }
+
+//            if (WebActivity.isSandbox.equals("false")) {
+//                endPoint = Production.BASE_PAYMENT + "RMS/API/Direct/1.4.0/index.php";
+//            } else if (WebActivity.isSandbox.equals("true")) {
+//                endPoint = Development.BASE_PAYMENT + "RMS/API/Direct/1.4.0/index.php";
+//            }
 
             Uri uri = Uri.parse(endPoint)
                     .buildUpon()
