@@ -155,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
         paymentDetails.put(MOLPayActivity.mp_merchant_ID, "SB_molpayxdk"); // Sandbox ID for TEST environment & Production/Dev ID once Google approved production access
         paymentDetails.put(MOLPayActivity.mp_verification_key, "4445db44bdb60687a8e7f7903a59c3a9"); // Sandbox ID for TEST environment & Production/Dev ID once Google approved production access
 
-        paymentDetails.put(MOLPayActivity.mp_amount, "1.01"); // 2 decimal points format
+        paymentDetails.put(MOLPayActivity.mp_amount, "0.10"); // 2 decimal points format
         paymentDetails.put(MOLPayActivity.mp_order_ID, Calendar.getInstance().getTimeInMillis()); // Any unique alphanumeric String. For symbol only allowed hypen "-" and underscore "_"
         paymentDetails.put(MOLPayActivity.mp_currency, "MYR");
         paymentDetails.put(MOLPayActivity.mp_country, "MY");

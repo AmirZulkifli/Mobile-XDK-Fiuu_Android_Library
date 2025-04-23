@@ -83,9 +83,9 @@ public class ViewModelGP extends AndroidViewModel {
             return null;
         }
 
-        PaymentDataRequest request = PaymentDataRequest.fromJson(paymentDataRequestJson.toString());
+        Log.e("logGooglePay" , "### 4 loadPaymentData = " + paymentDataRequestJson);
 
-        Log.e("logGooglePay" , "### 4 loadPaymentData");
+        PaymentDataRequest request = PaymentDataRequest.fromJson(paymentDataRequestJson.toString());
 
         return paymentsClient.loadPaymentData(request);
     }

@@ -245,8 +245,6 @@ public class UtilGP {
      */
     public static JSONObject getPaymentDataRequest(long priceCents) {
 
-        Log.e("logGooglePay", "### 5 PaymentDataRequest");
-
 //        gpayAllowedChannels = allowedChannels;
 
         final String price = UtilGP.centsToString(priceCents);
@@ -266,6 +264,8 @@ public class UtilGP {
 //      JSONArray allowedCountryCodes = new JSONArray(Constants.SHIPPING_SUPPORTED_COUNTRIES);
 //      shippingAddressParameters.put("allowedCountryCodes", allowedCountryCodes);
 //      paymentDataRequest.put("shippingAddressParameters", shippingAddressParameters);
+
+            Log.e("logGooglePay", "### 5 PaymentDataRequest = " + paymentDataRequest);
 
             return paymentDataRequest;
 
