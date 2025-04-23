@@ -4,6 +4,7 @@
 
 package com.molpay.molpayxdk.googlepay;
 
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
@@ -25,6 +26,9 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
+import okhttp3.*;
+import java.io.IOException;
+
 public class ApiRequestService {
 
     static class Production {
@@ -38,6 +42,62 @@ public class ApiRequestService {
     }
 
     public ApiRequestService() {
+    }
+
+    // ### TODO : Get channels from API createTxn.php & pass result to getPaymentMethods()
+
+    public interface NetworkCallback {
+        void onSuccess(String responseJson);
+        void onFailure(String error);
+    }
+
+    public static void CreateTxn(NetworkCallback callback) {
+
+        Log.e("logGooglePay", "CreateTxn");
+
+        OkHttpClient client = new OkHttpClient();
+
+        RequestBody formBody = new FormBody.Builder()
+                .add("MerchantID", "SB_molpayxdk")
+                .add("ReferenceNo", "Ashraf_Testing-123")
+                .add("TxnType", "SALS")
+                .add("TxnCurrency", "MYR")
+                .add("TxnAmount", "0.10")
+                .add("Signature", "b1667822eeed9923b5d4737e9619bbbe")
+                .add("CustName", "Ashraf Testing")
+                .add("CustContact", "55218438")
+                .add("mpsl_version", "3")
+                .add("vc_channel", "indexAN")
+                .add("ReturnURL", "")
+                .add("NotificationURL", "")
+                .add("CallbackURL", "")
+                .add("ExpirationTime", "")
+                .add("paymentMethods[0]", "CC")
+                .add("paymentMethods[1]", "ShopeePay")
+                .add("paymentMethods[2]", "TNG-EWALLET")
+                .build();
+
+        Request request = new Request.Builder()
+                .url("https://sandbox-payment.fiuu.com/RMS/GooglePay/createTxn.php")
+                .post(formBody)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                callback.onFailure(e.getMessage());
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    callback.onFailure("Unexpected code: " + response.code());
+                } else {
+                    String responseBody = response.body().string();
+                    callback.onSuccess(responseBody);
+                }
+            }
+        });
     }
 
     public Object GetPaymentRequest(JSONObject paymentInput, String paymentInfo ) {
