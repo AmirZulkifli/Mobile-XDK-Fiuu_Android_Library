@@ -10,6 +10,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
@@ -146,8 +147,6 @@ public class UtilGP {
      * @throws JSONException
      */
     public static JSONArray getAllowedPaymentMethods() throws JSONException {
-        // ### TODO : Get channels from API createTxn.php & return in JSONArray
-
         Log.e("logGooglePay", "getAllowedPaymentMethods");
 
 //        return new JSONArray() {{
@@ -156,6 +155,21 @@ public class UtilGP {
 //        }};
 
 // -------
+
+        // ### TODO : Get channels from API createTxn.php & pass result to getPaymentMethods()
+        ApiRequestService.CreateTxn(new ApiRequestService.NetworkCallback() {
+            @Override
+            public void onSuccess(String responseJson) {
+                Log.e("logGooglePay", "onSuccess = " + responseJson);
+                // Do something with the JSON
+            }
+
+            @Override
+            public void onFailure(String error) {
+                Log.e("logGooglePay", "onFailure = " + error);
+            }
+        });
+
 
         return getPaymentMethods(); // Test new Card + e-wallets
 
