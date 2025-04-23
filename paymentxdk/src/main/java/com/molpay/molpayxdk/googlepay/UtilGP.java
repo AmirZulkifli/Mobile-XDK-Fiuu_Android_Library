@@ -10,11 +10,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Contains helper static methods for dealing with the Payments API.
@@ -25,11 +22,7 @@ import java.util.List;
  */
 public class UtilGP {
 
-    public static final BigDecimal CENTS_IN_A_UNIT = new BigDecimal(100);
-
     static String createTxnResult;
-
-//    public static String[] gpayAllowedChannels = null;
 
     /**
      * Create a Google Pay API base request object with properties used in all requests.
@@ -154,19 +147,13 @@ public class UtilGP {
         Log.e("logGooglePay", "getAllowedPaymentMethods");
 
 //        return new JSONArray() {{
-////            put(getCardPaymentMethod());
-//            put(getCardPaymentMethod2()); // Success tested new Card Json Array
+//            put(getCardPaymentMethod());
 //        }};
-
-// -------
-
-        // ### TODO : Get channels from API createTxn.php & pass result to getPaymentMethods()
 
         ApiRequestService.CreateTxn(new ApiRequestService.NetworkCallback() {
             @Override
             public void onSuccess(String responseJson) {
                 Log.e("logGooglePay", "onSuccess = " + responseJson);
-                // Do something with the JSON
                 createTxnResult = responseJson;
             }
 
@@ -176,30 +163,7 @@ public class UtilGP {
             }
         });
 
-
-        return getPaymentMethods(createTxnResult); // Test new Card + e-wallets
-
-// -------
-
-//        return getPaymentMethodsGoogle();
-    }
-
-    public static JSONObject getCardPaymentMethod2() throws JSONException {
-        return new JSONObject() {{
-            put("type", "CARD");
-            put("parameters", new JSONObject() {{
-                put("allowedAuthMethods", new JSONArray().put("PAN_ONLY").put("CRYPTOGRAM_3DS"));
-                put("allowedCardNetworks", new JSONArray().put("MASTERCARD").put("VISA"));
-                put("assuranceDetailsRequired", true);
-            }});
-            put("tokenizationSpecification", new JSONObject() {{
-                put("type", "PAYMENT_GATEWAY");
-                put("parameters", new JSONObject() {{
-                    put("gateway", "molpay");
-                    put("gatewayMerchantId", "molpay");
-                }});
-            }});
-        }};
+        return getPaymentMethods(createTxnResult); // New Card + e-wallets methods
     }
 
     public static JSONArray getPaymentMethods(String createTxnResult) {
@@ -216,45 +180,6 @@ public class UtilGP {
         Log.e("logGooglePay", "responseData = " + createTxnResponseData);
 
         return createTxnResponseData;
-    }
-
-    public static JSONArray getPaymentMethodsGoogle() throws JSONException {
-        JSONArray paymentMethods = new JSONArray();
-
-        // Card Payment Method
-        JSONObject cardMethod = new JSONObject();
-        cardMethod.put("type", "CARD");
-        cardMethod.put("parameters", new JSONObject()
-                .put("allowedAuthMethods", new JSONArray()
-                        .put("PAN_ONLY")
-                        .put("CRYPTOGRAM_3DS"))
-                .put("allowedCardNetworks", new JSONArray()
-                        .put("AMEX")
-                        .put("DISCOVER")
-                        .put("INTERAC")
-                        .put("JCB")
-                        .put("MASTERCARD")
-                        .put("VISA"))
-        );
-        paymentMethods.put(cardMethod);
-
-        // ShopeePay E-wallet
-        JSONObject shopeePay = new JSONObject();
-        shopeePay.put("type", "EWALLET");
-        shopeePay.put("processingSpecification", new JSONObject()
-                .put("type", "SHOPEE_PAY")
-        );
-        paymentMethods.put(shopeePay);
-
-        // Touch 'n Go E-wallet
-        JSONObject tngPay = new JSONObject();
-        tngPay.put("type", "EWALLET");
-        tngPay.put("processingSpecification", new JSONObject()
-                .put("type", "TOUCH_N_GO")
-        );
-        paymentMethods.put(tngPay);
-
-        return paymentMethods;
     }
 
     /**
