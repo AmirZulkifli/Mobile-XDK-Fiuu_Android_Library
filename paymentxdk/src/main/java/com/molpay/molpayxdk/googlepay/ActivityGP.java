@@ -113,7 +113,7 @@ public class ActivityGP extends AppCompatActivity {
             }
         }
 
-        initializeUi();
+        initializeUi(paymentDetails);
 
         gpayAllowedChannels = (String[]) paymentDetails.get(MOLPayActivity.mp_gpay_channel);
 
@@ -134,7 +134,7 @@ public class ActivityGP extends AppCompatActivity {
         getOnBackPressedDispatcher().addCallback(this, callback);
     }
 
-    private void initializeUi() {
+    private void initializeUi(HashMap<String, Object> paymentDetails) {
         Log.e("logGooglePay", "initializeUi");
 
         // Use view binding to access the UI elements
@@ -142,6 +142,8 @@ public class ActivityGP extends AppCompatActivity {
         setContentView(layoutBinding.getRoot());
 
         pbLoading = layoutBinding.pbLoading;
+
+        UtilGP.setPaymentDetails(paymentDetails);
     }
 
     /**
