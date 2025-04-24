@@ -24,9 +24,6 @@ import java.util.HashMap;
  */
 public class UtilGP {
 
-    static String createTxnResult;
-    static HashMap<String, Object> paymentDetails;
-
     /**
      * Create a Google Pay API base request object with properties used in all requests.
      *
@@ -141,11 +138,6 @@ public class UtilGP {
         return cardPaymentMethod;
     }
 
-    public static void setPaymentDetails(HashMap<String, Object> payD) {
-        Log.e("logGooglePay", "setPaymentDetails");
-        paymentDetails = payD;
-    }
-
     /**
      * Return a collection of payment methods allowed to complete the operation with Google Pay.
      * @return A JSONArray object with the list of payment methods.
@@ -158,20 +150,20 @@ public class UtilGP {
 //            put(getCardPaymentMethod());
 //        }};
 
-        ApiRequestService.CreateTxn(new ApiRequestService.NetworkCallback() {
-            @Override
-            public void onSuccess(String responseJson) {
-                Log.e("logGooglePay", "onSuccess = " + responseJson);
-                createTxnResult = responseJson;
-            }
+//        ApiRequestService.CreateTxn(new ApiRequestService.NetworkCallback() {
+//            @Override
+//            public void onSuccess(String responseJson) {
+//                Log.e("logGooglePay", "onSuccess = " + responseJson);
+//                ActivityGP.createTxnResult = responseJson;
+//            }
+//
+//            @Override
+//            public void onFailure(String error) {
+//                Log.e("logGooglePay", "onFailure = " + error);
+//            }
+//        } , paymentDetails);
 
-            @Override
-            public void onFailure(String error) {
-                Log.e("logGooglePay", "onFailure = " + error);
-            }
-        } , paymentDetails);
-
-        return getPaymentMethods(createTxnResult); // New Card + e-wallets methods
+        return getPaymentMethods(ActivityGP.createTxnResult); // New Card + e-wallets methods
     }
 
     public static JSONArray getPaymentMethods(String createTxnResult) throws JSONException {
