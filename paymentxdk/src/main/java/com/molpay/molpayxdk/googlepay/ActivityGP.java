@@ -58,6 +58,7 @@ public class ActivityGP extends AppCompatActivity {
     public static int PAYMENTS_ENVIRONMENT = WalletConstants.ENVIRONMENT_TEST; // 3 = TEST & 1 = PRODUCTION
 
     public static String[] gpayAllowedChannels = null;
+    public static String createTxnResult;
 
     // Handle potential conflict from calling loadPaymentData.
     ActivityResultLauncher<IntentSenderRequest> resolvePaymentForResult = registerForActivityResult(
@@ -96,6 +97,8 @@ public class ActivityGP extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        initializeUi();
+
         paymentDetails = (HashMap<String, Object>) getIntent().getSerializableExtra(MOLPayPaymentDetails);
 
         if (paymentDetails != null) {
@@ -113,28 +116,45 @@ public class ActivityGP extends AppCompatActivity {
             }
         }
 
-        initializeUi(paymentDetails);
-
-        gpayAllowedChannels = (String[]) paymentDetails.get(MOLPayActivity.mp_gpay_channel);
-
-        // Check Google Pay availability
-        model = new ViewModelProvider(this).get(ViewModelGP.class);
-        model.canUseGooglePay.observe(this, this::setGooglePayAvailable);
-
-        // Register a callback for handling the back press
-        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+        ApiRequestService.CreateTxn(new ApiRequestService.NetworkCallback() {
             @Override
-            public void handleOnBackPressed() {
-                // Do nothing - prevent user from performing backpress
-                Log.e("logGooglePay", "ActivityGP backpressed");
-            }
-        };
+            public void onSuccess(String responseJson) {
 
-        // Add the callback to the OnBackPressedDispatcher
-        getOnBackPressedDispatcher().addCallback(this, callback);
+                runOnUiThread(() -> {
+                    // Safely update UI here
+                    Log.e("logGooglePay", "onSuccess = " + responseJson);
+                    createTxnResult = responseJson;
+
+                    gpayAllowedChannels = (String[]) paymentDetails.get(MOLPayActivity.mp_gpay_channel);
+
+                    // Check Google Pay availability
+                    model = new ViewModelProvider(ActivityGP.this).get(ViewModelGP.class);
+                    model.canUseGooglePay.observe(ActivityGP.this, ActivityGP.this::setGooglePayAvailable);
+
+                    // Register a callback for handling the back press
+                    OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+                        @Override
+                        public void handleOnBackPressed() {
+                            // Do nothing - prevent user from performing backpress
+                            Log.e("logGooglePay", "ActivityGP backpressed");
+                        }
+                    };
+
+                    // Add the callback to the OnBackPressedDispatcher
+                    getOnBackPressedDispatcher().addCallback(ActivityGP.this, callback);
+                });
+            }
+
+            @Override
+            public void onFailure(String error) {
+                Log.e("logGooglePay", "onFailure = " + error);
+            }
+        } , paymentDetails);
+
+
     }
 
-    private void initializeUi(HashMap<String, Object> paymentDetails) {
+    private void initializeUi() {
         Log.e("logGooglePay", "initializeUi");
 
         // Use view binding to access the UI elements
@@ -142,8 +162,6 @@ public class ActivityGP extends AppCompatActivity {
         setContentView(layoutBinding.getRoot());
 
         pbLoading = layoutBinding.pbLoading;
-
-        UtilGP.setPaymentDetails(paymentDetails);
     }
 
     /**
