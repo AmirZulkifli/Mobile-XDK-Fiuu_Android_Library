@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.google.android.gms.wallet.PaymentsClient;
 import com.google.android.gms.wallet.Wallet;
+import com.molpay.molpayxdk.databinding.ActivityGooglepayBinding;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -12,6 +13,7 @@ import org.json.JSONObject;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.HashMap;
 
 /**
  * Contains helper static methods for dealing with the Payments API.
@@ -23,6 +25,7 @@ import java.math.RoundingMode;
 public class UtilGP {
 
     static String createTxnResult;
+    static HashMap<String, Object> paymentDetails;
 
     /**
      * Create a Google Pay API base request object with properties used in all requests.
@@ -138,6 +141,11 @@ public class UtilGP {
         return cardPaymentMethod;
     }
 
+    public static void setPaymentDetails(HashMap<String, Object> payD) {
+        Log.e("logGooglePay", "setPaymentDetails");
+        paymentDetails = payD;
+    }
+
     /**
      * Return a collection of payment methods allowed to complete the operation with Google Pay.
      * @return A JSONArray object with the list of payment methods.
@@ -161,12 +169,12 @@ public class UtilGP {
             public void onFailure(String error) {
                 Log.e("logGooglePay", "onFailure = " + error);
             }
-        });
+        } , paymentDetails);
 
         return getPaymentMethods(createTxnResult); // New Card + e-wallets methods
     }
 
-    public static JSONArray getPaymentMethods(String createTxnResult) {
+    public static JSONArray getPaymentMethods(String createTxnResult) throws JSONException {
 
         JSONArray createTxnResponseData = new JSONArray();
 
