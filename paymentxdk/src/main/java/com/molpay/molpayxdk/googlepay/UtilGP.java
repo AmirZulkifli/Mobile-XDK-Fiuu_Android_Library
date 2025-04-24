@@ -183,6 +183,34 @@ public class UtilGP {
             createTxnResponseData = json.getJSONArray("responseData");
         } catch (Exception e) {
             e.printStackTrace();
+
+            JSONObject cardPaymentMethod = new JSONObject();
+            cardPaymentMethod.put("type", "CARD");
+
+            JSONObject parameters = new JSONObject();
+            parameters.put("allowedAuthMethods", new JSONArray()
+                    .put("PAN_ONLY")
+                    .put("CRYPTOGRAM_3DS"));
+            parameters.put("allowedCardNetworks", new JSONArray()
+                    .put("MASTERCARD")
+                    .put("VISA"));
+            parameters.put("assuranceDetailsRequired", true);
+
+            cardPaymentMethod.put("parameters", parameters);
+
+            JSONObject tokenizationSpecification = new JSONObject();
+            tokenizationSpecification.put("type", "PAYMENT_GATEWAY");
+
+            JSONObject tokenParams = new JSONObject();
+            tokenParams.put("gateway", "molpay");
+            tokenParams.put("gatewayMerchantId", "molpay");
+
+            tokenizationSpecification.put("parameters", tokenParams);
+
+            cardPaymentMethod.put("tokenizationSpecification", tokenizationSpecification);
+
+            // Add the object to the JSONArray
+            createTxnResponseData.put(cardPaymentMethod);
         }
 
         Log.e("logGooglePay", "responseData = " + createTxnResponseData);
