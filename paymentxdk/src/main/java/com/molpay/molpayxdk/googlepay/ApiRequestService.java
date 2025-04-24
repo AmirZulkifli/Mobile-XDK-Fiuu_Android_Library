@@ -28,6 +28,7 @@ import java.util.Base64;
 
 import okhttp3.*;
 import java.io.IOException;
+import java.util.HashMap;
 
 public class ApiRequestService {
 
@@ -51,7 +52,7 @@ public class ApiRequestService {
         void onFailure(String error);
     }
 
-    public static void CreateTxn(NetworkCallback callback) {
+    public static void CreateTxn(NetworkCallback callback , HashMap<String, Object> paymentDetails) {
 
         Log.e("logGooglePay", "CreateTxn");
 
