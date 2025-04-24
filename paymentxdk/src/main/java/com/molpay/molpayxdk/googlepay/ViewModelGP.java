@@ -44,7 +44,7 @@ public class ViewModelGP extends AndroidViewModel {
             _canUseGooglePay.setValue(false);
             return;
         } else {
-            Log.e("logGooglePay" , "fetchCanUseGooglePay TRUE");
+            Log.e("logGooglePay" , "fetchCanUseGooglePay isReadyToPayJson = " + isReadyToPayJson.toString());
         }
 
         // The call to isReadyToPay is asynchronous and returns a Task. We need to provide an
