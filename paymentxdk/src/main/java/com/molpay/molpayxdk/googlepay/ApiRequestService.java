@@ -29,6 +29,7 @@ import java.util.Base64;
 import okhttp3.*;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class ApiRequestService {
 
@@ -41,6 +42,9 @@ public class ApiRequestService {
         static final String BASE_PAYMENT = "https://sandbox.merchant.razer.com/";
         static final String API_PAYMENT = "https://sandbox.merchant.razer.com/";
     }
+
+    private static String signature;
+    private static Boolean extendedVcode;
 
     public ApiRequestService() {
     }
@@ -57,48 +61,106 @@ public class ApiRequestService {
         Log.e("logGooglePay", "CreateTxn");
 
         OkHttpClient client = new OkHttpClient();
+        RequestBody formBody = null;
 
-        RequestBody formBody = new FormBody.Builder()
-                .add("MerchantID", "SB_molpayxdk")
-                .add("ReferenceNo", "Ashraf_Testing-123")
-                .add("TxnType", "SALS")
-                .add("TxnCurrency", "MYR")
-                .add("TxnAmount", "0.10")
-                .add("Signature", "b1667822eeed9923b5d4737e9619bbbe")
-                .add("CustName", "Ashraf Testing")
-                .add("CustContact", "55218438")
-                .add("mpsl_version", "3")
-                .add("vc_channel", "indexAN")
-                .add("ReturnURL", "")
-                .add("NotificationURL", "")
-                .add("CallbackURL", "")
-                .add("ExpirationTime", "")
-                .add("paymentMethods[0]", "CC")
-                .add("paymentMethods[1]", "ShopeePay")
-                .add("paymentMethods[2]", "TNG-EWALLET")
-                .build();
+        if (paymentDetails != null) {
 
-        Request request = new Request.Builder()
-                .url("https://sandbox-payment.fiuu.com/RMS/GooglePay/createTxn.php")
-                .post(formBody)
-                .build();
+            Log.e("logGooglePay", "paymentDetails NOT NULL");
 
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                callback.onFailure(e.getMessage());
+            if (paymentDetails.get("mp_extended_vcode") == null) {
+                extendedVcode = false;
+            } else {
+                Log.e("logGooglePay", "mp_extended_vcode = " + paymentDetails.get("mp_extended_vcode"));
+                extendedVcode = (Boolean) paymentDetails.get("mp_extended_vcode");
             }
 
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                if (!response.isSuccessful()) {
-                    callback.onFailure("Unexpected code: " + response.code());
-                } else {
-                    String responseBody = response.body().string();
-                    callback.onSuccess(responseBody);
+            signature = ApplicationHelper.getInstance().GetVCode(
+                    Objects.requireNonNull(paymentDetails.get("mp_amount")).toString(),
+                    Objects.requireNonNull(paymentDetails.get("mp_merchant_ID")).toString(),
+                    Objects.requireNonNull(paymentDetails.get("mp_order_ID")).toString(),
+                    Objects.requireNonNull(paymentDetails.get("mp_verification_key")).toString(),
+                    Objects.requireNonNull(paymentDetails.get("mp_currency")).toString(),
+                    extendedVcode
+            );
+
+            Log.e("logGooglePay", "mp_amount = " + Objects.requireNonNull(paymentDetails.get("mp_amount")).toString());
+            Log.e("logGooglePay", "mp_merchant_ID = " + Objects.requireNonNull(paymentDetails.get("mp_merchant_ID")).toString());
+            Log.e("logGooglePay", "mp_order_ID = " + Objects.requireNonNull(paymentDetails.get("mp_order_ID")).toString());
+            Log.e("logGooglePay", "mp_verification_key = " + Objects.requireNonNull(paymentDetails.get("mp_verification_key")).toString());
+            Log.e("logGooglePay", "mp_currency = " + Objects.requireNonNull(paymentDetails.get("mp_currency")).toString());
+
+            Log.e("logGooglePay", "mp_bill_name = " + Objects.requireNonNull(paymentDetails.get("mp_bill_name")).toString());
+            Log.e("logGooglePay", "mp_bill_mobile = " + Objects.requireNonNull(paymentDetails.get("mp_bill_mobile")).toString());
+            Log.e("logGooglePay", "signature = " + signature);
+
+            formBody = new FormBody.Builder()
+                    .add("MerchantID", Objects.requireNonNull(paymentDetails.get("mp_merchant_ID")).toString())
+                    .add("ReferenceNo", Objects.requireNonNull(paymentDetails.get("mp_order_ID")).toString())
+                    .add("TxnType", "SALS")
+                    .add("TxnCurrency", Objects.requireNonNull(paymentDetails.get("mp_currency")).toString())
+                    .add("TxnAmount", Objects.requireNonNull(paymentDetails.get("mp_amount")).toString())
+                    .add("Signature", signature)
+                    .add("CustName", Objects.requireNonNull(paymentDetails.get("mp_bill_name")).toString())
+                    .add("CustContact", Objects.requireNonNull(paymentDetails.get("mp_bill_mobile")).toString())
+                    .add("mpsl_version", "3")
+                    .add("vc_channel", "indexAN")
+                    .add("ReturnURL", "")
+                    .add("NotificationURL", "")
+                    .add("CallbackURL", "")
+                    .add("ExpirationTime", "")
+                    .add("paymentMethods[0]", "CC")
+                    .add("paymentMethods[1]", "ShopeePay")
+                    .add("paymentMethods[2]", "TNG-EWALLET")
+                    .build();
+
+//            formBody = new FormBody.Builder()
+//                    .add("MerchantID", "SB_molpayxdk")
+//                    .add("ReferenceNo", "Ashraf_Testing-123")
+//                    .add("TxnType", "SALS")
+//                    .add("TxnCurrency", "MYR")
+//                    .add("TxnAmount", "0.10")
+//                    .add("Signature", "b1667822eeed9923b5d4737e9619bbbe")
+//                    .add("CustName", "Ashraf Testing")
+//                    .add("CustContact", "123456789")
+//                    .add("mpsl_version", "3")
+//                    .add("vc_channel", "indexAN")
+//                    .add("ReturnURL", "")
+//                    .add("NotificationURL", "")
+//                    .add("CallbackURL", "")
+//                    .add("ExpirationTime", "")
+//                    .add("paymentMethods[0]", "CC")
+//                    .add("paymentMethods[1]", "ShopeePay")
+//                    .add("paymentMethods[2]", "TNG-EWALLET")
+//                    .build();
+
+            Request request = new Request.Builder()
+                    .url("https://sandbox-payment.fiuu.com/RMS/GooglePay/createTxn.php")
+                    .post(formBody)
+                    .build();
+
+            client.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    Log.e("logGooglePay", "onFailure = " + e.getMessage());
+                    callback.onFailure(e.getMessage());
                 }
-            }
-        });
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+                    if (!response.isSuccessful()) {
+                        Log.e("logGooglePay", "onResponse code = " + response.code());
+                        callback.onFailure("Unexpected code: " + response.code());
+                    } else {
+                        String responseBody = response.body().string();
+                        Log.e("logGooglePay", "onResponse responseBody = " + responseBody);
+                        callback.onSuccess(responseBody);
+                    }
+                }
+            });
+        } else {
+            Log.e("logGooglePay", "paymentDetails == NULL");
+        }
+
     }
 
     public Object GetPaymentRequest(JSONObject paymentInput, String paymentInfo ) {
