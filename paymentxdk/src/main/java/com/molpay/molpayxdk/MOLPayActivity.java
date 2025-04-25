@@ -48,8 +48,19 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.security.MessageDigest;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Objects;
+import java.util.concurrent.Executors;
+
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class MOLPayActivity extends AppCompatActivity {
 
@@ -116,7 +127,7 @@ public class MOLPayActivity extends AppCompatActivity {
     private final static String mpclickgpbutton = "mpclickgpbutton://";
     private final static String module_id = "module_id";
     private final static String wrapper_version = "wrapper_version";
-    private final static String wrapperVersion = "11a";
+    private final static String wrapperVersion = "14a";
 
     private String filename;
     private Bitmap imgBitmap;
@@ -130,6 +141,103 @@ public class MOLPayActivity extends AppCompatActivity {
 
     private static final Gson gson =  new Gson();
     private static DeviceInfo deviceInfo;
+
+    private static final OkHttpClient client = new OkHttpClient();
+    private static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
+
+    public static String generateSHA512(String input) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-512");
+            byte[] bytes = md.digest(input.getBytes("UTF-8"));
+            StringBuilder sb = new StringBuilder();
+            for (byte b : bytes) {
+                sb.append(String.format("%02x", b));
+            }
+            return sb.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static String sendXDKLogs(String reference, String type, String process, String details) {
+        try {
+
+            Log.d(MOLPAY, "try sendXDKLogs");
+
+            String urlString = "https://vtapi.merchant.razer.com/api/mobile/vt/logs";
+
+            String datetime = new SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault()).format(new Date());
+
+            String input = "4faf214e-172b-419f-9fc1-9b12744115eb" + datetime;
+            String checksum = generateSHA512(input);
+//            String checksum = Helper.getInstance().generateSHA512(PRODUCTION.APP_KEY + datetime);
+
+            Log.d(MOLPAY, "try 1");
+
+            // Build JSON body
+            JSONObject deviceInfo = new JSONObject()
+                    .put("platform", "Android")
+                    .put("os", Build.VERSION.RELEASE)
+                    .put("brand", Build.BRAND)
+                    .put("model", Build.MODEL)
+                    .put("modelNo", Build.DEVICE);
+
+            JSONObject productInfo = new JSONObject()
+                    .put("type", "XDK")
+                    .put("version", "latest")
+                    .put("merchantId", "chageesg_Dev");
+
+            JSONObject logs = new JSONObject()
+                    .put("referenceNumber", reference)
+                    .put("type", type)
+                    .put("process", process)
+                    .put("details", details);
+
+            JSONObject data = new JSONObject()
+                    .put("deviceInfo", deviceInfo)
+                    .put("productInfo", productInfo)
+                    .put("logs", logs);
+
+            JSONObject body = new JSONObject()
+                    .put("datetime", datetime)
+                    .put("checksum", checksum)
+                    .put("data", data);
+
+            Log.d(MOLPAY, "try 2");
+            Log.d(MOLPAY, "urlString = " + urlString);
+            Log.d(MOLPAY, "body = " + body.toString());
+
+            // Build request
+            RequestBody requestBody = RequestBody.create(body.toString(), JSON);
+            Request request = new Request.Builder()
+                    .url(urlString)
+                    .post(requestBody)
+                    .build();
+
+            Log.d(MOLPAY, "try 3");
+
+            // Send request
+            try (Response response = client.newCall(request).execute()) {
+
+                Log.d(MOLPAY, "try client.newCall");
+
+                if (response.isSuccessful()) {
+                    String responseStr = response.body().string();
+                    Log.d(MOLPAY, "returnMsg = " + responseStr);
+                    return responseStr;
+                } else {
+                    Log.e(MOLPAY, "Request failed: " + response.code());
+                }
+            }
+
+        } catch (Exception e) {
+            Log.d(MOLPAY, "catch Exception = " + e);
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 
     // Private API
     private void closemolpay() {
@@ -164,7 +272,7 @@ public class MOLPayActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        Log.d("TAG: ", "Get Menu: " + item.getTitle());
+        Log.d("MOLPAY: ", "Get Menu: " + item.getTitle());
         if (Objects.equals(item.getTitle(), "Close")) {
             closemolpay();
         }
@@ -397,7 +505,16 @@ public class MOLPayActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
+
+        Log.d(MOLPAY , "onResume molpay activity");
+
         super.onResume();
+
+        if (paymentDetails == null) {
+            Log.d(MOLPAY , "onResume paymentDetails == null");
+        }   else {
+            Log.d(MOLPAY , "onResume paymentDetails NOT null");
+        }
 
         if (mpMOLPayUI != null && !paymentDetails.isEmpty() && isTNGResult) {
             Log.d(MOLPAY , "onResume TNG condition");
@@ -441,6 +558,31 @@ public class MOLPayActivity extends AppCompatActivity {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             Log.d(MOLPAY, "MPMainUIWebClient shouldOverrideUrlLoading url = " + url);
+
+            paymentDetails.put(MOLPayActivity.mp_merchant_ID, Objects.requireNonNull(paymentDetails.get("mp_merchant_ID"))); // Your sandbox / production merchant ID
+            paymentDetails.put(MOLPayActivity.mp_verification_key, Objects.requireNonNull(paymentDetails.get("mp_verification_key"))); // Your sandbox / production verification key
+            paymentDetails.put(MOLPayActivity.mp_app_name, Objects.requireNonNull(paymentDetails.get("mp_app_name")));
+            paymentDetails.put(MOLPayActivity.mp_username, Objects.requireNonNull(paymentDetails.get("mp_username")));
+            paymentDetails.put(MOLPayActivity.mp_password, Objects.requireNonNull(paymentDetails.get("mp_password")));
+
+            paymentDetails.put(MOLPayActivity.mp_amount, Objects.requireNonNull(paymentDetails.get("mp_amount"))); // Must be in 2 decimal points format
+            paymentDetails.put(MOLPayActivity.mp_order_ID, Objects.requireNonNull(paymentDetails.get("mp_order_ID"))); // Must be unique
+            paymentDetails.put(MOLPayActivity.mp_currency, Objects.requireNonNull(paymentDetails.get("mp_currency"))); // Must matched mp_country
+            paymentDetails.put(MOLPayActivity.mp_country, Objects.requireNonNull(paymentDetails.get("mp_country"))); // Must matched mp_currency
+            paymentDetails.put(MOLPayActivity.mp_bill_description, Objects.requireNonNull(paymentDetails.get("mp_bill_description")));
+            paymentDetails.put(MOLPayActivity.mp_bill_name, Objects.requireNonNull(paymentDetails.get("mp_bill_name")));
+            paymentDetails.put(MOLPayActivity.mp_bill_email, Objects.requireNonNull(paymentDetails.get("mp_bill_email")));
+            paymentDetails.put(MOLPayActivity.mp_bill_mobile, Objects.requireNonNull(paymentDetails.get("mp_bill_mobile")));
+
+            Gson gson = new Gson();
+            String paymentDetailsString = gson.toJson(paymentDetails);
+
+            // Call your logging method in a background thread
+            Executors.newSingleThreadExecutor().execute(() -> {
+                Log.d(MOLPAY, "Executors.newSingleThreadExecutor().execute");
+                // sendXDKLogs(String reference, String type, String process, String details)
+                sendXDKLogs("paymentDetails = " + paymentDetailsString , "response MOLPayActivity.java" , "MPMainUIWebClient shouldOverrideUrlLoading" , "url = " + url);
+            });
 
             if (url != null) {
                 if (url.startsWith(mpopenmolpaywindow)) {

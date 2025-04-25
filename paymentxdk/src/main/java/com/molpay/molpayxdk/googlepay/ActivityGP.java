@@ -121,7 +121,7 @@ public class ActivityGP extends AppCompatActivity {
             public void onSuccess(String responseJson) {
 
                 runOnUiThread(() -> {
-                    // Safely update UI here
+                    // Safely update UI after API completed
                     Log.e("logGooglePay", "onSuccess = " + responseJson);
                     createTxnResult = responseJson;
 
@@ -130,18 +130,6 @@ public class ActivityGP extends AppCompatActivity {
                     // Check Google Pay availability
                     model = new ViewModelProvider(ActivityGP.this).get(ViewModelGP.class);
                     model.canUseGooglePay.observe(ActivityGP.this, ActivityGP.this::setGooglePayAvailable);
-
-                    // Register a callback for handling the back press
-                    OnBackPressedCallback callback = new OnBackPressedCallback(true) {
-                        @Override
-                        public void handleOnBackPressed() {
-                            // Do nothing - prevent user from performing backpress
-                            Log.e("logGooglePay", "ActivityGP backpressed");
-                        }
-                    };
-
-                    // Add the callback to the OnBackPressedDispatcher
-                    getOnBackPressedDispatcher().addCallback(ActivityGP.this, callback);
                 });
             }
 
@@ -150,7 +138,6 @@ public class ActivityGP extends AppCompatActivity {
                 Log.e("logGooglePay", "onFailure = " + error);
             }
         } , paymentDetails);
-
 
     }
 
@@ -162,6 +149,20 @@ public class ActivityGP extends AppCompatActivity {
         setContentView(layoutBinding.getRoot());
 
         pbLoading = layoutBinding.pbLoading;
+
+        // Register a callback for handling the back press
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                // Do nothing - prevent user from performing backpress
+                Log.e("logGooglePay", "ActivityGP backpressed");
+            }
+        };
+
+        // Add the callback to the OnBackPressedDispatcher
+        getOnBackPressedDispatcher().addCallback(this, callback);
+
+        Log.e("logGooglePay", "done set ui");
     }
 
     /**

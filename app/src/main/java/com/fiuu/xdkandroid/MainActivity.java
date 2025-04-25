@@ -35,27 +35,37 @@ public class MainActivity extends AppCompatActivity {
 //        paymentDetails.put(MOLPayActivity.mp_username, "RMSxdk_2022");
 //        paymentDetails.put(MOLPayActivity.mp_password, "RMSpwd@2022");
 //        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "rmsxdk_mobile_Dev");
-//        paymentDetails.put(MOLPayActivity.mp_app_name, "mobile");
+////        paymentDetails.put(MOLPayActivity.mp_app_name, "mobile");
 //        paymentDetails.put(MOLPayActivity.mp_verification_key, "ee738b541eff7b6b495e44771f71c0ec");
+//
+//        paymentDetails.put(MOLPayActivity.mp_username, "RMSxdk_2022");
+//        paymentDetails.put(MOLPayActivity.mp_password, "RMSpwd@2022");
+//        paymentDetails.put(MOLPayActivity.mp_app_name, "mobile");
 
+        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "chageesg_Dev");
+        paymentDetails.put(MOLPayActivity.mp_verification_key, "403949d50fe34207cdfe6864b832f190");
+        paymentDetails.put(MOLPayActivity.mp_app_name, "chageesgtest");
         paymentDetails.put(MOLPayActivity.mp_username, "RMSxdk_2022");
         paymentDetails.put(MOLPayActivity.mp_password, "RMSpwd@2022");
-        paymentDetails.put(MOLPayActivity.mp_app_name, "mobile");
-        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "SB_molpayxdk"); // Sandbox ID for TEST environment & Production/Dev ID once Google approved production access
+        paymentDetails.put(MOLPayActivity.mp_currency, "SGD");
+        paymentDetails.put(MOLPayActivity.mp_country, "SG");
+
+//        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "SB_molpayxdk"); // Sandbox ID for TEST environment & Production/Dev ID once Google approved production access
 //        paymentDetails.put(MOLPayActivity.mp_verification_key, "4445db44bdb60687a8e7f7903a59c3a9"); // Sandbox ID for TEST environment & Production/Dev ID once Google approved production access
 //        New UAT vkey
-        paymentDetails.put(MOLPayActivity.mp_verification_key, "9bd5f1436e15d06c8067ae058f01fc3a");
+//        paymentDetails.put(MOLPayActivity.mp_verification_key, "9bd5f1436e15d06c8067ae058f01fc3a");
 
-        paymentDetails.put(MOLPayActivity.mp_sandbox_mode, true); // true = Test Environment & false = production (required Google Pay production access approval)
+//        paymentDetails.put(MOLPayActivity.mp_sandbox_mode, true); // true = Test Environment & false = production (required Google Pay production access approval)
 
         // Compulsory String. Payment info.
-        paymentDetails.put(MOLPayActivity.mp_amount, "1.10"); // 2 decimal points format
+        paymentDetails.put(MOLPayActivity.mp_amount, "0.10"); // 2 decimal points format
         paymentDetails.put(MOLPayActivity.mp_order_ID, Calendar.getInstance().getTimeInMillis()); // Any unique alphanumeric String. For symbol only allowed hypen "-" and underscore "_"
-        paymentDetails.put(MOLPayActivity.mp_currency, "MYR");
-        paymentDetails.put(MOLPayActivity.mp_country, "MY");
-        paymentDetails.put(MOLPayActivity.mp_bill_description, "The bill description");
-        paymentDetails.put(MOLPayActivity.mp_bill_name, "Payer Name");
-        paymentDetails.put(MOLPayActivity.mp_bill_email, "payer.email@fiuu.com");
+//        paymentDetails.put(MOLPayActivity.mp_order_ID, "2025_04_25-1531"); // Any unique alphanumeric String. For symbol only allowed hypen "-" and underscore "_"
+//        paymentDetails.put(MOLPayActivity.mp_currency, "MYR");
+//        paymentDetails.put(MOLPayActivity.mp_country, "MY");
+        paymentDetails.put(MOLPayActivity.mp_bill_description, "chageesg_Dev Test PayNow");
+        paymentDetails.put(MOLPayActivity.mp_bill_name, "chageesg_Dev Test Paynow");
+        paymentDetails.put(MOLPayActivity.mp_bill_email, "test.paynow@chagee.com");
         paymentDetails.put(MOLPayActivity.mp_bill_mobile, "123456789");
 
         // --------------------------------- FOR GOOGLE PAY ----------------------------------------
@@ -72,11 +82,11 @@ public class MainActivity extends AppCompatActivity {
         // -------------------------------- Most commonly used -------------------------------------
 
         // To pre-select channel, please refer to column mp_channel in https://github.com/RazerMS/Mobile-XDK-RazerMS_Examples/blob/master/channel-list.md
-//        paymentDetails.put(MOLPayActivity.mp_channel, "maybank2u");
+        paymentDetails.put(MOLPayActivity.mp_channel, "PayNow");
 
         // Optional, required a valid mp_channel value, this will skip the payment info page and go direct to the payment screen.
         // Channel "credit" could not use express mode due security reasons.
-//        paymentDetails.put(MOLPayActivity.mp_express_mode, true);
+        paymentDetails.put(MOLPayActivity.mp_express_mode, true);
 
         // Optional, show selected channels only.
 //        String allowedchannels[] = {"TNG-EWALLET","maybank2u"}; // Refer to column mp_channel in https://github.com/RazerMS/Mobile-XDK-RazerMS_Examples/blob/master/channel-list.md
