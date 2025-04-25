@@ -61,7 +61,7 @@ public class ApiRequestService {
         Log.e("logGooglePay", "CreateTxn");
 
         OkHttpClient client = new OkHttpClient();
-        RequestBody formBody = null;
+        FormBody formBody = null;
 
         if (paymentDetails != null) {
 
@@ -93,7 +93,8 @@ public class ApiRequestService {
             Log.e("logGooglePay", "mp_bill_mobile = " + Objects.requireNonNull(paymentDetails.get("mp_bill_mobile")).toString());
             Log.e("logGooglePay", "signature = " + signature);
 
-            formBody = new FormBody.Builder()
+
+            FormBody.Builder formBuilder = new FormBody.Builder()
                     .add("MerchantID", Objects.requireNonNull(paymentDetails.get("mp_merchant_ID")).toString())
                     .add("ReferenceNo", Objects.requireNonNull(paymentDetails.get("mp_order_ID")).toString())
                     .add("TxnType", "SALS")
@@ -107,11 +108,15 @@ public class ApiRequestService {
                     .add("ReturnURL", "")
                     .add("NotificationURL", "")
                     .add("CallbackURL", "")
-                    .add("ExpirationTime", "")
-                    .add("paymentMethods[0]", "CC")
-                    .add("paymentMethods[1]", "ShopeePay")
-                    .add("paymentMethods[2]", "TNG-EWALLET")
-                    .build();
+                    .add("ExpirationTime", "");
+
+            // Handle paymentMethods[] from String[] mp_gpay_channel
+            String[] gpayChannels = (String[]) paymentDetails.get("mp_gpay_channel");
+            for (int i = 0; i < Objects.requireNonNull(gpayChannels).length; i++) {
+                formBuilder.add("paymentMethods[" + i + "]", gpayChannels[i]);
+            }
+
+            formBody = formBuilder.build();
 
 //            formBody = new FormBody.Builder()
 //                    .add("MerchantID", "SB_molpayxdk")
