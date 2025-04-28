@@ -18,6 +18,15 @@
         android:layout_height="wrap_content"
         android:text="Tap Google Pay button or START for other payments" />
 
+    <EditText
+        android:id="@+id/etOrderID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/resultTV"
+        android:layout_marginTop="9dp"
+        android:hint="Enter Order ID"
+        />
+
     <com.google.android.gms.wallet.button.PayButton
         android:id="@+id/googlePayButton"
         android:layout_width="match_parent"

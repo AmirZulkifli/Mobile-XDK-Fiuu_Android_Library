@@ -437,6 +437,31 @@ public class MOLPayActivity extends AppCompatActivity {
         public boolean shouldOverrideUrlLoading(final WebView view, String url) {
             Log.d(MOLPAY, "MPMOLPayUIWebClient shouldOverrideUrlLoading url = " + url);
 
+            paymentDetails.put(MOLPayActivity.mp_merchant_ID, Objects.requireNonNull(paymentDetails.get("mp_merchant_ID"))); // Your sandbox / production merchant ID
+            paymentDetails.put(MOLPayActivity.mp_verification_key, Objects.requireNonNull(paymentDetails.get("mp_verification_key"))); // Your sandbox / production verification key
+            paymentDetails.put(MOLPayActivity.mp_app_name, Objects.requireNonNull(paymentDetails.get("mp_app_name")));
+            paymentDetails.put(MOLPayActivity.mp_username, Objects.requireNonNull(paymentDetails.get("mp_username")));
+            paymentDetails.put(MOLPayActivity.mp_password, Objects.requireNonNull(paymentDetails.get("mp_password")));
+
+            paymentDetails.put(MOLPayActivity.mp_amount, Objects.requireNonNull(paymentDetails.get("mp_amount"))); // Must be in 2 decimal points format
+            paymentDetails.put(MOLPayActivity.mp_order_ID, Objects.requireNonNull(paymentDetails.get("mp_order_ID"))); // Must be unique
+            paymentDetails.put(MOLPayActivity.mp_currency, Objects.requireNonNull(paymentDetails.get("mp_currency"))); // Must matched mp_country
+            paymentDetails.put(MOLPayActivity.mp_country, Objects.requireNonNull(paymentDetails.get("mp_country"))); // Must matched mp_currency
+            paymentDetails.put(MOLPayActivity.mp_bill_description, Objects.requireNonNull(paymentDetails.get("mp_bill_description")));
+            paymentDetails.put(MOLPayActivity.mp_bill_name, Objects.requireNonNull(paymentDetails.get("mp_bill_name")));
+            paymentDetails.put(MOLPayActivity.mp_bill_email, Objects.requireNonNull(paymentDetails.get("mp_bill_email")));
+            paymentDetails.put(MOLPayActivity.mp_bill_mobile, Objects.requireNonNull(paymentDetails.get("mp_bill_mobile")));
+
+            Gson gson = new Gson();
+            String paymentDetailsString = gson.toJson(paymentDetails);
+
+            // Call your logging method in a background thread
+            Executors.newSingleThreadExecutor().execute(() -> {
+                Log.d(MOLPAY, "Executors.newSingleThreadExecutor().execute");
+                // sendXDKLogs(String reference, String type, String process, String details)
+                sendXDKLogs("paymentDetails = " + paymentDetailsString , "response MOLPayActivity.java" , "MPMOLPayUIWebClient shouldOverrideUrlLoading" , "url = " + url);
+            });
+
             if (url != null) {
                 if (url.contains("scbeasy/easy_app_link.html")) {
                     try {
@@ -478,6 +503,16 @@ public class MOLPayActivity extends AppCompatActivity {
 		    Log.d(MOLPAY, "MPMOLPayUIWebClient onPageFinished url = " + url);
 	//            nativeWebRequestUrlUpdates(url);
 
+            Gson gson = new Gson();
+            String paymentDetailsString = gson.toJson(paymentDetails);
+
+            // Call your logging method in a background thread
+            Executors.newSingleThreadExecutor().execute(() -> {
+                Log.d(MOLPAY, "Executors.newSingleThreadExecutor().execute");
+                // sendXDKLogs(String reference, String type, String process, String details)
+                sendXDKLogs("paymentDetails = " + paymentDetailsString , "response MOLPayActivity.java" , "MPMainUIWebClient shouldOverrideUrlLoading" , "url = " + url);
+            });
+
             if (url.contains("intermediate_appTNG-EWALLET.php") || url.contains("intermediate_app/processing.php")) {
 
 			Log.d(MOLPAY, "contains url");
@@ -512,14 +547,33 @@ public class MOLPayActivity extends AppCompatActivity {
 
         if (paymentDetails == null) {
             Log.d(MOLPAY , "onResume paymentDetails == null");
+            // Call your logging method in a background thread
+            Executors.newSingleThreadExecutor().execute(() -> {
+                Log.d(MOLPAY, "onResume Executors.newSingleThreadExecutor().execute");
+                // sendXDKLogs(String reference, String type, String process, String details)
+                sendXDKLogs("XDK MOLPayActivity.java" , "onResume" , "paymentDetails" , "NULL");
+            });
         }   else {
             Log.d(MOLPAY , "onResume paymentDetails NOT null");
+            // Call your logging method in a background thread
+            Executors.newSingleThreadExecutor().execute(() -> {
+                Log.d(MOLPAY, "onResume Executors.newSingleThreadExecutor().execute");
+                // sendXDKLogs(String reference, String type, String process, String details)
+                sendXDKLogs("XDK MOLPayActivity.java" , "onResume" , "paymentDetails" , "NOT NULL");
+            });
         }
 
         if (mpMOLPayUI != null && !paymentDetails.isEmpty() && isTNGResult) {
             Log.d(MOLPAY , "onResume TNG condition");
             closemolpay();
         }
+
+        // Call your logging method in a background thread
+        Executors.newSingleThreadExecutor().execute(() -> {
+            Log.d(MOLPAY, "onResume Executors.newSingleThreadExecutor().execute");
+            // sendXDKLogs(String reference, String type, String process, String details)
+            sendXDKLogs("XDK MOLPayActivity.java" , "onResume" , "no nullity issue" , "reached last line");
+        });
     }
 
     private class MPMOLPayUIWebChromeClient extends WebChromeClient {
@@ -743,6 +797,17 @@ public class MOLPayActivity extends AppCompatActivity {
 
         @Override
         public void onPageFinished(WebView view, String url) {
+
+            Gson gson = new Gson();
+            String paymentDetailsString = gson.toJson(paymentDetails);
+
+            // Call your logging method in a background thread
+            Executors.newSingleThreadExecutor().execute(() -> {
+                Log.d(MOLPAY, "Executors.newSingleThreadExecutor().execute");
+                // sendXDKLogs(String reference, String type, String process, String details)
+                sendXDKLogs("paymentDetails = " + paymentDetailsString , "response MOLPayActivity.java" , "MPMainUIWebClient shouldOverrideUrlLoading" , "url = " + url);
+            });
+
             if (!isMainUILoaded && !url.equals("about:blank")) {
 
                 isMainUILoaded = true;

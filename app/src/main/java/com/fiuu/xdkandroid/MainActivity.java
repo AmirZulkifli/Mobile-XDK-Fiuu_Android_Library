@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -28,6 +29,8 @@ import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
     HashMap<Object, Object> paymentDetails = new HashMap<>();
+
+    EditText etOrderID;
 
     private void restartmolpay() {
 
@@ -59,8 +62,9 @@ public class MainActivity extends AppCompatActivity {
 
         // Compulsory String. Payment info.
         paymentDetails.put(MOLPayActivity.mp_amount, "0.10"); // 2 decimal points format
-        paymentDetails.put(MOLPayActivity.mp_order_ID, Calendar.getInstance().getTimeInMillis()); // Any unique alphanumeric String. For symbol only allowed hypen "-" and underscore "_"
-//        paymentDetails.put(MOLPayActivity.mp_order_ID, "2025_04_25-1531"); // Any unique alphanumeric String. For symbol only allowed hypen "-" and underscore "_"
+//        paymentDetails.put(MOLPayActivity.mp_order_ID, Calendar.getInstance().getTimeInMillis()); // Any unique alphanumeric String. For symbol only allowed hypen "-" and underscore "_"
+//        paymentDetails.put(MOLPayActivity.mp_order_ID, "2025_04_25-1819"); // Any unique alphanumeric String. For symbol only allowed hypen "-" and underscore "_"
+        paymentDetails.put(MOLPayActivity.mp_order_ID, etOrderID.getText().toString()); // Any unique alphanumeric String. For symbol only allowed hypen "-" and underscore "_"
 //        paymentDetails.put(MOLPayActivity.mp_currency, "MYR");
 //        paymentDetails.put(MOLPayActivity.mp_country, "MY");
         paymentDetails.put(MOLPayActivity.mp_bill_description, "chageesg_Dev Test PayNow");
@@ -230,6 +234,8 @@ public class MainActivity extends AppCompatActivity {
         // The Google Pay button is a layout file – take the root view
         PayButton googlePayButton = findViewById(R.id.googlePayButton);
         ImageView btnGPay = findViewById(R.id.btnGPay);
+
+        etOrderID = findViewById(R.id.etOrderID);
 
         Log.e("logGooglePay", "onCreate before try");
 
