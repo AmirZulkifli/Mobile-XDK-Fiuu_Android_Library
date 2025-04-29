@@ -170,6 +170,9 @@ public class ApiRequestService {
 
     public Object GetPaymentRequest(JSONObject paymentInput, String paymentInfo ) {
 
+        Log.e("logGooglePay", "GetPaymentRequest paymentInfo = " + paymentInfo);
+        Log.e("logGooglePay", "GetPaymentRequest paymentInput = " + paymentInput.toString());
+
         try {
             String endPoint = "";
             String txnType = "SALS";
@@ -183,6 +186,8 @@ public class ApiRequestService {
             String billDesc = paymentInput.getString("billDesc");
             String merchantId = paymentInput.getString("merchantId");
             String verificationKey = paymentInput.getString("verificationKey");
+
+            // -------------------------------------------------------------------------------------
 
             if (WebActivity.isSandbox.equals("false")) {
                 endPoint = Production.BASE_PAYMENT + "RMS/GooglePay/payment_v2.php";
@@ -213,6 +218,20 @@ public class ApiRequestService {
             String GooglePayBase64 = Base64.getEncoder()
                                     .encodeToString(paymentInfo.getBytes());
 
+            Log.e("logGooglePay", "endPoint = " + endPoint);
+            Log.e("logGooglePay", "MerchantID = " + merchantId);
+            Log.e("logGooglePay", "ReferenceNo = " + orderId);
+            Log.e("logGooglePay", "TxnType = " + txnType);
+            Log.e("logGooglePay", "TxnCurrency = " + currency);
+            Log.e("logGooglePay", "TxnAmount = " + amount);
+            Log.e("logGooglePay", "CustName = " + billName);
+            Log.e("logGooglePay", "CustEmail = " + billEmail);
+            Log.e("logGooglePay", "CustContact = " + billPhone);
+            Log.e("logGooglePay", "CustDesc = " + billDesc);
+            Log.e("logGooglePay", "Signature = " + vCode);
+            Log.e("logGooglePay", "mpsl_version = 2");
+            Log.e("logGooglePay", "GooglePay = " + GooglePayBase64);
+
             Uri.Builder builder = new Uri.Builder()
                     .appendQueryParameter("MerchantID", merchantId)
                     .appendQueryParameter("ReferenceNo", orderId)
@@ -231,6 +250,7 @@ public class ApiRequestService {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
         return null;
     }
 
