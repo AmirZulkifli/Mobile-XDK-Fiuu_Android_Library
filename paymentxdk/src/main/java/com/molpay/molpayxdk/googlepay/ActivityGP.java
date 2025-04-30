@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -82,27 +83,7 @@ public class ActivityGP extends AppCompatActivity {
 
                     case Activity.RESULT_CANCELED:
                         // The user cancelled the payment attempt
-
-                        // TODO : Implement cancel.php
-
-                        ApiRequestService.CancelTxn(new ApiRequestService.NetworkCallback() {
-                            @Override
-                            public void onSuccess(String responseJson) {
-
-                                runOnUiThread(() -> {
-                                    // Safely update UI here
-                                    Log.e("logGooglePay", "onSuccess = " + responseJson);
-                                    setResult(RESULT_CANCELED, null);
-                                    finish();
-                                });
-                            }
-
-                            @Override
-                            public void onFailure(String error) {
-                                Log.e("logGooglePay", "onFailure = " + error);
-                            }
-                        } , paymentDetails);
-
+                        CancelGPay();
                         break;
 
                     default:
@@ -114,11 +95,31 @@ public class ActivityGP extends AppCompatActivity {
             }
     );
 
+    public void CancelGPay () {
+        ApiRequestService.CancelTxn(new ApiRequestService.NetworkCallback() {
+            @Override
+            public void onSuccess(String responseJson) {
+
+                runOnUiThread(() -> {
+                    // Safely update UI here
+                    Log.e("logGooglePay", "onSuccess = " + responseJson);
+                    cancelTimer();
+                    setResult(RESULT_CANCELED, null);
+                    finish();
+                });
+            }
+
+            @Override
+            public void onFailure(String error) {
+                Log.e("logGooglePay", "onFailure = " + error);
+                // TODO : Closed page internet / technical issue
+            }
+        } , paymentDetails);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        initializeUi();
 
         paymentDetails = (HashMap<String, Object>) getIntent().getSerializableExtra(MOLPayPaymentDetails);
 
@@ -136,6 +137,8 @@ public class ActivityGP extends AppCompatActivity {
                 }
             }
         }
+
+        initializeUi();
 
         ApiRequestService.CreateTxn(new ApiRequestService.NetworkCallback() {
             @Override
@@ -169,9 +172,9 @@ public class ActivityGP extends AppCompatActivity {
             @Override
             public void onFailure(String error) {
                 Log.e("logGooglePay", "onFailure = " + error);
+                // TODO : Closed page internet / technical issue
             }
         } , paymentDetails);
-
 
     }
 
@@ -236,6 +239,40 @@ public class ActivityGP extends AppCompatActivity {
             }
 
         });
+    }
+
+    private CountDownTimer countDownTimer;
+
+    public void startTimer(int millisInFuture , int countDownInterval) {
+
+//        millisInFuture = 60000;
+//        countDownInterval = 1000;
+
+        countDownTimer = new CountDownTimer(millisInFuture, countDownInterval) { // 60,000 ms = 1 minute
+
+            @Override
+            public void onTick(long millisUntilFinished) {
+                long secondsLeft = millisUntilFinished / countDownInterval;
+                Log.e("logGoogle", "Seconds remaining: " + secondsLeft);
+                // You can update a TextView here if you're in an Activity
+            }
+
+            @Override
+            public void onFinish() {
+                Log.e("logGoogle", "Timer finished!");
+                // You can trigger a callback or update the UI here
+                CancelGPay();
+            }
+        };
+
+        countDownTimer.start();
+    }
+
+    public void cancelTimer() {
+        Log.e("logGoogle", "cancelTimer");
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+        }
     }
 
     /**
