@@ -44,7 +44,7 @@ public class WebActivity extends AppCompatActivity {
 
     public static boolean statCodeValueSuccess = false;
 
-    public static String isSandbox;
+    public static String isSandbox = "";
 
     private CountDownTimer countDownTimer;
     private String requestType = "";
@@ -117,8 +117,9 @@ public class WebActivity extends AppCompatActivity {
 
     private void onStartTimOut() {
 
-        long minTimeOut = 180000; // 3 minutes
-        long interval = 6000;
+        // TODO : Finalized timeout & interval
+        long minTimeOut = 15000; // 1 minute
+        long interval = 3000;
         final String[] queryResultStr = {null};
         final String[] trasactionJsonStr = {null};
 
@@ -128,6 +129,8 @@ public class WebActivity extends AppCompatActivity {
             // Query Transaction ID for every 6 second in 3 minutes
             @Override
             public void onTick(long millisUntilFinished) {
+
+                Log.e("logGooglePay" , "onTick millisUntilFinished = " + millisUntilFinished);
 
                 JSONObject transactionObject = new JSONObject();
                 try {
@@ -212,13 +215,20 @@ public class WebActivity extends AppCompatActivity {
 
             @Override
             public void onFinish() {
+
+                Log.e("logGooglePay" , "onFinish");
+
                 try {
+                    Log.e("logGooglePay" , "try");
+
                     JSONObject queryResultObj = new JSONObject(queryResultStr[0]);
+                    Log.e("logGooglePay" , "1");
                     String responseBody = queryResultObj.getString("responseBody");
-
+                    Log.e("logGooglePay" , "2 responseBody = " + responseBody);
                     JSONObject responseBodyObj = new JSONObject(responseBody);
-
+                    Log.e("logGooglePay" , "3");
                     Intent intent = new Intent();
+                    Log.e("logGooglePay" , "4");
                     intent.putExtra("response", String.valueOf(responseBodyObj));
 
                     Log.e("logGooglePay" , "onFinish response = " + String.valueOf(responseBodyObj));
@@ -231,10 +241,16 @@ public class WebActivity extends AppCompatActivity {
                     }
 
                     countDownTimer.cancel();
+                    Log.e("logGooglePay" , "last");
                     finish();
 
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    Log.e("logGooglePay" , "JSONException = " + e);
+                    // TODO : Error Handler
+                    setResult(RESULT_CANCELED, null);
+                    countDownTimer.cancel();
+                    finish();
                 }
             }
         };
