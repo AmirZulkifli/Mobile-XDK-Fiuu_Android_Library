@@ -11,6 +11,7 @@ import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
+import com.molpay.molpayxdk.MOLPayActivity;
 import com.molpay.molpayxdk.googlepay.Helper.ApplicationHelper;
 
 import org.json.JSONException;
@@ -54,6 +55,54 @@ public class ApiRequestService {
     public interface NetworkCallback {
         void onSuccess(String responseJson);
         void onFailure(String error);
+    }
+
+    public static void CancelTxn( NetworkCallback callback , HashMap<String, Object> paymentDetails) {
+
+        Log.e("logGooglePay", "RMS/GooglePay/cancel.php");
+        Log.e("logGooglePay", "ActivityGP.tranID = " + ActivityGP.tranID);
+
+        OkHttpClient client = new OkHttpClient();
+
+        // Build the request body
+        RequestBody formBody = new FormBody.Builder()
+                .add("MerchantID", Objects.requireNonNull(paymentDetails.get(MOLPayActivity.mp_merchant_ID)).toString())
+                .add("ReferenceNo", Objects.requireNonNull(paymentDetails.get(MOLPayActivity.mp_order_ID)).toString())
+                .add("TxnID", ActivityGP.tranID)
+                .add("TxnType", "SALS")
+                .add("TxnCurrency", Objects.requireNonNull(paymentDetails.get(MOLPayActivity.mp_currency)).toString())
+                .add("TxnAmount", Objects.requireNonNull(paymentDetails.get(MOLPayActivity.mp_amount)).toString())
+                .add("TxnChannel", "")
+                .add("TxnData[RequestURL]", "")
+                .add("TxnData[RequestMethod]", "")
+                .add("TxnData[RequestType]", "")
+                .build();
+
+        // Build the request
+        Request request = new Request.Builder()
+                .url("https://sandbox-payment.fiuu.com/RMS/GooglePay/cancel.php")
+                .post(formBody)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e("logGooglePay", "onFailure = " + e.getMessage());
+                callback.onFailure(e.getMessage());
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    Log.e("logGooglePay", "onResponse code = " + response.code());
+                    callback.onFailure("Unexpected code: " + response.code());
+                } else {
+                    String responseBody = response.body().string();
+                    Log.e("logGooglePay", "onResponse responseBody = " + responseBody);
+                    callback.onSuccess(responseBody);
+                }
+            }
+        });
     }
 
     public static void CreateTxn(NetworkCallback callback , HashMap<String, Object> paymentDetails) {
