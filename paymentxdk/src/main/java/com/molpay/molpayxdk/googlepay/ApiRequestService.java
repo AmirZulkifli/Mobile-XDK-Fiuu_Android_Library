@@ -11,6 +11,7 @@ import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
+import com.google.android.gms.wallet.WalletConstants;
 import com.molpay.molpayxdk.MOLPayActivity;
 import com.molpay.molpayxdk.googlepay.Helper.ApplicationHelper;
 
@@ -42,6 +43,8 @@ public class ApiRequestService {
     static class Development {
         static final String BASE_PAYMENT = "https://sandbox.merchant.razer.com/";
         static final String API_PAYMENT = "https://sandbox.merchant.razer.com/";
+        // New Sandbox
+        static final String FIUU_SANDBOX = "https://sandbox-payment.fiuu.com/";
     }
 
     private static String signature;
@@ -50,8 +53,6 @@ public class ApiRequestService {
     public ApiRequestService() {
     }
 
-    // ### TODO : Get channels from API createTxn.php & pass result to getPaymentMethods()
-
     public interface NetworkCallback {
         void onSuccess(String responseJson);
         void onFailure(String error);
@@ -59,8 +60,17 @@ public class ApiRequestService {
 
     public static void CancelTxn( NetworkCallback callback , HashMap<String, Object> paymentDetails) {
 
-        Log.e("logGooglePay", "RMS/GooglePay/cancel.php");
         Log.e("logGooglePay", "ActivityGP.tranID = " + ActivityGP.tranID);
+
+        String endPoint = "";
+
+        if (ActivityGP.PAYMENTS_ENVIRONMENT == WalletConstants.ENVIRONMENT_PRODUCTION) {
+            endPoint = Production.BASE_PAYMENT + "RMS/GooglePay/cancel.php";
+        } else if (ActivityGP.PAYMENTS_ENVIRONMENT == WalletConstants.ENVIRONMENT_TEST) {
+            endPoint = Development.FIUU_SANDBOX + "RMS/GooglePay/cancel.php";
+        }
+
+        Log.e("logGooglePay", endPoint);
 
         OkHttpClient client = new OkHttpClient();
 
@@ -72,15 +82,16 @@ public class ApiRequestService {
                 .add("TxnType", "SALS")
                 .add("TxnCurrency", Objects.requireNonNull(paymentDetails.get(MOLPayActivity.mp_currency)).toString())
                 .add("TxnAmount", Objects.requireNonNull(paymentDetails.get(MOLPayActivity.mp_amount)).toString())
-                .add("TxnChannel", "")
-                .add("TxnData[RequestURL]", "")
-                .add("TxnData[RequestMethod]", "")
-                .add("TxnData[RequestType]", "")
+                // TODO : Below Params did not have source
+//                .add("TxnChannel", "")
+//                .add("TxnData[RequestURL]", "")
+//                .add("TxnData[RequestMethod]", "")
+//                .add("TxnData[RequestType]", "")
                 .build();
 
         // Build the request
         Request request = new Request.Builder()
-                .url("https://sandbox-payment.fiuu.com/RMS/GooglePay/cancel.php")
+                .url(endPoint)
                 .post(formBody)
                 .build();
 
@@ -107,10 +118,17 @@ public class ApiRequestService {
 
     public static void CreateTxn(NetworkCallback callback , HashMap<String, Object> paymentDetails) {
 
-        Log.e("logGooglePay", "CreateTxn");
-
         OkHttpClient client = new OkHttpClient();
         FormBody formBody = null;
+        String endPoint = "";
+
+        if (ActivityGP.PAYMENTS_ENVIRONMENT == WalletConstants.ENVIRONMENT_PRODUCTION) {
+            endPoint = Production.BASE_PAYMENT + "RMS/GooglePay/createTxn.php";
+        } else if (ActivityGP.PAYMENTS_ENVIRONMENT == WalletConstants.ENVIRONMENT_TEST) {
+            endPoint = Development.FIUU_SANDBOX + "RMS/GooglePay/createTxn.php";
+        }
+
+        Log.e("logGooglePay", endPoint);
 
         if (paymentDetails != null) {
 
@@ -188,7 +206,7 @@ public class ApiRequestService {
 //                    .build();
 
             Request request = new Request.Builder()
-                    .url("https://sandbox-payment.fiuu.com/RMS/GooglePay/createTxn.php")
+                    .url(endPoint)
                     .post(formBody)
                     .build();
 
@@ -238,10 +256,10 @@ public class ApiRequestService {
 
             // -------------------------------------------------------------------------------------
 
-            if (WebActivity.isSandbox.equals("false")) {
+            if (ActivityGP.PAYMENTS_ENVIRONMENT == WalletConstants.ENVIRONMENT_PRODUCTION) {
                 endPoint = Production.BASE_PAYMENT + "RMS/GooglePay/payment_v2.php";
-            } else if (WebActivity.isSandbox.equals("true")) {
-                endPoint = "https://sandbox-payment.fiuu.com/RMS/GooglePay/payment_v2.php";
+            } else if (ActivityGP.PAYMENTS_ENVIRONMENT == WalletConstants.ENVIRONMENT_TEST) {
+                endPoint = Development.FIUU_SANDBOX + "RMS/GooglePay/payment_v2.php";
             }
 
 //            if (WebActivity.isSandbox.equals("false")) {
