@@ -173,6 +173,7 @@ public class UtilGP {
         try {
             JSONObject json = new JSONObject(createTxnResult);
             createTxnResponseData = json.getJSONArray("responseData");
+            ActivityGP.tranID = json.getString("tranID");
         } catch (Exception e) {
             e.printStackTrace();
 
