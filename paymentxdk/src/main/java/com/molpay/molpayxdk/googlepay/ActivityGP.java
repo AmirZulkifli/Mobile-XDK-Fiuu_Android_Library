@@ -60,6 +60,8 @@ public class ActivityGP extends AppCompatActivity {
     public static String[] gpayAllowedChannels = null;
     public static String createTxnResult;
 
+    public static String tranID = "";
+
     // Handle potential conflict from calling loadPaymentData.
     ActivityResultLauncher<IntentSenderRequest> resolvePaymentForResult = registerForActivityResult(
             new ActivityResultContracts.StartIntentSenderForResult(),
@@ -80,8 +82,27 @@ public class ActivityGP extends AppCompatActivity {
 
                     case Activity.RESULT_CANCELED:
                         // The user cancelled the payment attempt
-                        setResult(RESULT_CANCELED, null);
-                        finish();
+
+                        // TODO : Implement cancel.php
+
+                        ApiRequestService.CancelTxn(new ApiRequestService.NetworkCallback() {
+                            @Override
+                            public void onSuccess(String responseJson) {
+
+                                runOnUiThread(() -> {
+                                    // Safely update UI here
+                                    Log.e("logGooglePay", "onSuccess = " + responseJson);
+                                    setResult(RESULT_CANCELED, null);
+                                    finish();
+                                });
+                            }
+
+                            @Override
+                            public void onFailure(String error) {
+                                Log.e("logGooglePay", "onFailure = " + error);
+                            }
+                        } , paymentDetails);
+
                         break;
 
                     default:
