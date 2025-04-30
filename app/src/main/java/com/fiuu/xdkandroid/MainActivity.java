@@ -86,11 +86,11 @@ public class MainActivity extends AppCompatActivity {
         // -------------------------------- Most commonly used -------------------------------------
 
         // To pre-select channel, please refer to column mp_channel in https://github.com/RazerMS/Mobile-XDK-RazerMS_Examples/blob/master/channel-list.md
-        paymentDetails.put(MOLPayActivity.mp_channel, "PayNow");
+//        paymentDetails.put(MOLPayActivity.mp_channel, "PayNow");
 
         // Optional, required a valid mp_channel value, this will skip the payment info page and go direct to the payment screen.
         // Channel "credit" could not use express mode due security reasons.
-        paymentDetails.put(MOLPayActivity.mp_express_mode, true);
+//        paymentDetails.put(MOLPayActivity.mp_express_mode, true);
 
         // Optional, show selected channels only.
 //        String allowedchannels[] = {"TNG-EWALLET","maybank2u"}; // Refer to column mp_channel in https://github.com/RazerMS/Mobile-XDK-RazerMS_Examples/blob/master/channel-list.md

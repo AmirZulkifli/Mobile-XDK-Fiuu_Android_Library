@@ -55,6 +55,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.Executors;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -134,6 +136,7 @@ public class MOLPayActivity extends AppCompatActivity {
 
     private WebView mpMainUI, mpMOLPayUI, mpBankUI;
     private HashMap<String, Object> paymentDetails;
+    private String channel = "";
     private Boolean isMainUILoaded = false;
     private Boolean isClosingReceipt = false;
     private Boolean isClosebuttonDisplay = false;
@@ -648,6 +651,15 @@ public class MOLPayActivity extends AppCompatActivity {
                     String dataString = new String(data);
                     Log.d(MOLPAY, "MPMainUIWebClient mpopenmolpaywindow dataString = " + dataString);
 
+                    Pattern pattern = Pattern.compile("name=\"payment_gateway\"\\s+value=\"([^\"]+)\"");
+                    Matcher matcher = pattern.matcher(dataString);
+
+                    if (matcher.find()) {
+                        String value = matcher.group(1);
+                        Log.d(MOLPAY, "payment_gateway value = " + value);
+                        channel = value;
+                    }
+
                     if (!dataString.isEmpty()) {
                         Log.d(MOLPAY, "MPMainUIWebClient mpopenmolpaywindow success");
                         if (mpMOLPayUI != null) {
@@ -672,7 +684,11 @@ public class MOLPayActivity extends AppCompatActivity {
                         mpBankUI.destroy();
                         mpBankUI = null;
                     }
-                    if (mpMOLPayUI != null) {
+
+                    Log.d(MOLPAY, "if channel = " + channel);
+
+                    if (mpMOLPayUI != null && !channel.equalsIgnoreCase("PayNow")) {
+                        Log.d(MOLPAY, "Close mpMOLPayUI");
                         mpMOLPayUI.loadUrl("about:blank");
                         mpMOLPayUI.setVisibility(View.GONE);
                         mpMOLPayUI.clearCache(true);
@@ -680,6 +696,8 @@ public class MOLPayActivity extends AppCompatActivity {
                         mpMOLPayUI.removeAllViews();
                         mpMOLPayUI.destroy();
                         mpMOLPayUI = null;
+                    } else {
+                        Log.d(MOLPAY, "Not Close mpMOLPayUI");
                     }
                 }
                 else if (url.startsWith(mptransactionresults)) {
