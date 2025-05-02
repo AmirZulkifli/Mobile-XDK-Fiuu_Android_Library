@@ -4,12 +4,8 @@
 
 package com.molpay.molpayxdk.googlepay;
 
-import android.net.ConnectivityManager;
 import android.net.Uri;
-import android.os.Build;
 import android.util.Log;
-
-import androidx.annotation.RequiresApi;
 
 import com.google.android.gms.wallet.WalletConstants;
 import com.molpay.molpayxdk.MOLPayActivity;
@@ -44,7 +40,8 @@ public class ApiRequestService {
         static final String BASE_PAYMENT = "https://sandbox.merchant.razer.com/";
         static final String API_PAYMENT = "https://sandbox.merchant.razer.com/";
         // New Sandbox
-        static final String FIUU_SANDBOX = "https://sandbox-payment.fiuu.com/";
+        static final String SB_PAYMENT_FIUU = "https://sandbox-payment.fiuu.com/";
+        static final String SB_API_FIUU = "https://sandbox-api.fiuu.com/";
     }
 
     private static String signature;
@@ -67,7 +64,7 @@ public class ApiRequestService {
         if (ActivityGP.PAYMENTS_ENVIRONMENT == WalletConstants.ENVIRONMENT_PRODUCTION) {
             endPoint = Production.BASE_PAYMENT + "RMS/GooglePay/cancel.php";
         } else if (ActivityGP.PAYMENTS_ENVIRONMENT == WalletConstants.ENVIRONMENT_TEST) {
-            endPoint = Development.FIUU_SANDBOX + "RMS/GooglePay/cancel.php";
+            endPoint = Development.SB_PAYMENT_FIUU + "RMS/GooglePay/cancel.php";
         }
 
         Log.e("logGooglePay", endPoint);
@@ -82,7 +79,7 @@ public class ApiRequestService {
                 .add("TxnType", "SALS")
                 .add("TxnCurrency", Objects.requireNonNull(paymentDetails.get(MOLPayActivity.mp_currency)).toString())
                 .add("TxnAmount", Objects.requireNonNull(paymentDetails.get(MOLPayActivity.mp_amount)).toString())
-                // TODO : Below Params did not have source
+                // TODO : Add param from payment v2
 //                .add("TxnChannel", "")
 //                .add("TxnData[RequestURL]", "")
 //                .add("TxnData[RequestMethod]", "")
@@ -125,7 +122,7 @@ public class ApiRequestService {
         if (ActivityGP.PAYMENTS_ENVIRONMENT == WalletConstants.ENVIRONMENT_PRODUCTION) {
             endPoint = Production.BASE_PAYMENT + "RMS/GooglePay/createTxn.php";
         } else if (ActivityGP.PAYMENTS_ENVIRONMENT == WalletConstants.ENVIRONMENT_TEST) {
-            endPoint = Development.FIUU_SANDBOX + "RMS/GooglePay/createTxn.php";
+            endPoint = Development.SB_PAYMENT_FIUU + "RMS/GooglePay/createTxn.php";
         }
 
         Log.e("logGooglePay", endPoint);
@@ -259,7 +256,7 @@ public class ApiRequestService {
             if (ActivityGP.PAYMENTS_ENVIRONMENT == WalletConstants.ENVIRONMENT_PRODUCTION) {
                 endPoint = Production.BASE_PAYMENT + "RMS/GooglePay/payment_v2.php";
             } else if (ActivityGP.PAYMENTS_ENVIRONMENT == WalletConstants.ENVIRONMENT_TEST) {
-                endPoint = Development.FIUU_SANDBOX + "RMS/GooglePay/payment_v2.php";
+                endPoint = Development.SB_PAYMENT_FIUU + "RMS/GooglePay/payment_v2.php";
             }
 
 //            if (WebActivity.isSandbox.equals("false")) {
@@ -313,6 +310,8 @@ public class ApiRequestService {
                     .appendQueryParameter("mpsl_version", "2")
                     .appendQueryParameter("GooglePay", GooglePayBase64);
 
+            // TODO : Add "tranID" from createTxn & "requery" = 0
+
                 return postRequest(uri, builder);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -328,7 +327,7 @@ public class ApiRequestService {
             if (WebActivity.isSandbox.equals("false")) {
                 endPoint = Production.API_PAYMENT + "RMS/q_by_tid.php";
             } else if (WebActivity.isSandbox.equals("true")) {
-                endPoint = Development.API_PAYMENT + "RMS/q_by_tid.php";
+                endPoint = Development.SB_API_FIUU + "RMS/q_by_tid.php";
             }
 
             Uri uri = Uri.parse(endPoint)
@@ -390,6 +389,8 @@ public class ApiRequestService {
 
             outputStream.close();
 
+            Log.e("logGooglePay", "httpConnection = " + httpConnection);
+
             return parse(httpConnection);
         } catch (Exception e) {
             e.printStackTrace();
@@ -404,15 +405,21 @@ public class ApiRequestService {
 
     private JSONObject parse(HttpURLConnection httpURLConnection) throws JSONException {
 
+        Log.e("logGooglePay", "parse");
+
         JSONObject response = new JSONObject();
 
         try {
+            Log.e("logGooglePay", "try");
             response.put("statusCode", httpURLConnection.getResponseCode());
             response.put("responseMessage", httpURLConnection.getResponseMessage());
             response.put("responseBody", getResponseBody(httpURLConnection));
 
+            Log.e("logGooglePay", "response = " + response);
+
             return response;
         } catch (Exception e) {
+            Log.e("logGooglePay", "catch Exception = " + e);
             e.printStackTrace();
             return new JSONObject(String.format("{\"exception\":\"%s\"}", e.getMessage()));
         }
