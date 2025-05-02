@@ -169,6 +169,8 @@ public class WebActivity extends AppCompatActivity {
                                 Log.e("logGooglePay" , "statCodeValue " + statCodeValue);
 
                                 if (statCodeValue.equals("00")) {
+                                    // TODO : Check success logic without result.php
+                                    Log.e("logGooglePay" , "statCodeValueSuccess " + statCodeValueSuccess);
                                     if (statCodeValueSuccess) {
                                         Log.e("logGooglePay" , "statCodeValueSuccess finish");
                                         onFinish();
