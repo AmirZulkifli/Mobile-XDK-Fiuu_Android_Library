@@ -83,7 +83,7 @@ public class ActivityGP extends AppCompatActivity {
 
                     case Activity.RESULT_CANCELED:
                         // The user cancelled the payment attempt
-                        CancelGPay();
+                        CancelGPay(null);
                         break;
 
                     default:
@@ -95,7 +95,7 @@ public class ActivityGP extends AppCompatActivity {
             }
     );
 
-    public void CancelGPay () {
+    public void CancelGPay (Intent data) {
         ApiRequestService.CancelTxn(new ApiRequestService.NetworkCallback() {
             @Override
             public void onSuccess(String responseJson) {
@@ -103,8 +103,25 @@ public class ActivityGP extends AppCompatActivity {
                 runOnUiThread(() -> {
                     // Safely update UI here
                     Log.e("logGooglePay", "onSuccess = " + responseJson);
+
+                    String response;
+
+                    // TODO: Send cancel status 11 json if user cancel / timeout
+
+                    if (data != null) {
+                        response = data.getStringExtra("response");
+                        Log.e("logGooglePay", "RESULT_CANCELED response = " + response);
+
+                        Intent resultCancel = new Intent();
+                        resultCancel.putExtra(MOLPayActivity.MOLPayTransactionResult, response);
+                        setResult(RESULT_CANCELED, resultCancel);
+                    } else {
+                        Log.e("logGooglePay", "RESULT_CANCELED data = null");
+                        setResult(RESULT_CANCELED, null);
+                    }
+
                     cancelTimer();
-                    setResult(RESULT_CANCELED, null);
+//                    setResult(RESULT_CANCELED, null);
                     finish();
                 });
             }
@@ -261,7 +278,7 @@ public class ActivityGP extends AppCompatActivity {
             public void onFinish() {
                 Log.e("logGoogle", "Timer finished!");
                 // You can trigger a callback or update the UI here
-                CancelGPay();
+                CancelGPay(null);
             }
         };
 
@@ -392,19 +409,22 @@ public class ActivityGP extends AppCompatActivity {
                 case AppCompatActivity.RESULT_CANCELED:
                     // The user cancelled the payment attempt
                     // Response Error CallBack
-                    if (data != null) {
-                        response = data.getStringExtra("response");
-                        Log.e("logGooglePay", "RESULT_CANCELED response = " + response);
 
-                        Intent resultCancel = new Intent();
-                        resultCancel.putExtra(MOLPayActivity.MOLPayTransactionResult, response);
-                        setResult(RESULT_CANCELED, resultCancel);
-                    } else {
-                        Log.e("logGooglePay", "RESULT_CANCELED data = null");
-                        setResult(RESULT_CANCELED, null);
-                    }
+                    CancelGPay(data);
 
-                    finish();
+//                    if (data != null) {
+//                        response = data.getStringExtra("response");
+//                        Log.e("logGooglePay", "RESULT_CANCELED response = " + response);
+//
+//                        Intent resultCancel = new Intent();
+//                        resultCancel.putExtra(MOLPayActivity.MOLPayTransactionResult, response);
+//                        setResult(RESULT_CANCELED, resultCancel);
+//                    } else {
+//                        Log.e("logGooglePay", "RESULT_CANCELED data = null");
+//                        setResult(RESULT_CANCELED, null);
+//                    }
+
+//                    finish();
                     break;
 
                 case AutoResolveHelper.RESULT_ERROR:
