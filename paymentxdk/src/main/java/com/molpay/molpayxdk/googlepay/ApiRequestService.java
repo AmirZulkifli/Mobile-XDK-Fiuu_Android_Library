@@ -79,7 +79,7 @@ public class ApiRequestService {
                 .add("TxnType", "SALS")
                 .add("TxnCurrency", Objects.requireNonNull(paymentDetails.get(MOLPayActivity.mp_currency)).toString())
                 .add("TxnAmount", Objects.requireNonNull(paymentDetails.get(MOLPayActivity.mp_amount)).toString())
-                // TODO : Add param from payment v2
+                // TODO 4 : Add param from payment v2
 //                .add("TxnChannel", "")
 //                .add("TxnData[RequestURL]", "")
 //                .add("TxnData[RequestMethod]", "")
@@ -310,7 +310,7 @@ public class ApiRequestService {
                     .appendQueryParameter("mpsl_version", "2")
                     .appendQueryParameter("GooglePay", GooglePayBase64);
 
-            // TODO : Add "tranID" from createTxn & "requery" = 0
+            // TODO 5 : Add "tranID" from createTxn & "requery" = 0
 
                 return postRequest(uri, builder);
         } catch (JSONException e) {

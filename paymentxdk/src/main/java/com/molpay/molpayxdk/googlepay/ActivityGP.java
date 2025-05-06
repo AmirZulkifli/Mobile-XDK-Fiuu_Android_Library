@@ -106,7 +106,7 @@ public class ActivityGP extends AppCompatActivity {
 
                     String response;
 
-                    // TODO: Send cancel status 11 json if user cancel / timeout
+                    // TODO 1: Send cancel status 11 json if user cancel / timeout
 
                     if (data != null) {
                         response = data.getStringExtra("response");
@@ -129,7 +129,7 @@ public class ActivityGP extends AppCompatActivity {
             @Override
             public void onFailure(String error) {
                 Log.e("logGooglePay", "onFailure = " + error);
-                // TODO : Closed page internet / technical issue
+                // TODO 2 : Closed page internet / technical issue
             }
         } , paymentDetails);
     }
@@ -189,7 +189,7 @@ public class ActivityGP extends AppCompatActivity {
             @Override
             public void onFailure(String error) {
                 Log.e("logGooglePay", "onFailure = " + error);
-                // TODO : Closed page internet / technical issue
+                // TODO 3 : Closed page internet / technical issue
             }
         } , paymentDetails);
 

@@ -117,7 +117,7 @@ public class WebActivity extends AppCompatActivity {
 
     private void onStartTimOut() {
 
-        // TODO : Finalized timeout & interval
+        // TODO 6 : Finalized timeout & interval
         long minTimeOut = 15000; // 1 minute
         long interval = 3000;
         final String[] queryResultStr = {null};
@@ -169,7 +169,7 @@ public class WebActivity extends AppCompatActivity {
                                 Log.e("logGooglePay" , "statCodeValue " + statCodeValue);
 
                                 if (statCodeValue.equals("00")) {
-                                    // TODO : Check success logic without result.php
+                                    // TODO 7 : Check success logic without result.php
                                     Log.e("logGooglePay" , "statCodeValueSuccess " + statCodeValueSuccess);
                                     if (statCodeValueSuccess) {
                                         Log.e("logGooglePay" , "statCodeValueSuccess finish");
@@ -249,7 +249,7 @@ public class WebActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Log.e("logGooglePay" , "JSONException = " + e);
-                    // TODO : Error Handler
+                    // TODO 8 : Error Handler
                     setResult(RESULT_CANCELED, null);
                     countDownTimer.cancel();
                     finish();
