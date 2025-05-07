@@ -83,7 +83,7 @@ public class ActivityGP extends AppCompatActivity {
 
                     case Activity.RESULT_CANCELED:
                         // The user cancelled the payment attempt
-                        CancelGPay(null);
+                        CancelGPay();
                         break;
 
                     default:
@@ -95,7 +95,7 @@ public class ActivityGP extends AppCompatActivity {
             }
     );
 
-    public void CancelGPay (Intent data) {
+    public void CancelGPay () {
         ApiRequestService.CancelTxn(new ApiRequestService.NetworkCallback() {
             @Override
             public void onSuccess(String responseJson) {
@@ -104,24 +104,12 @@ public class ActivityGP extends AppCompatActivity {
                     // Safely update UI here
                     Log.e("logGooglePay", "onSuccess = " + responseJson);
 
-                    String response;
-
                     // TODO 1: Send cancel status 11 json if user cancel / timeout
 
-                    if (data != null) {
-                        response = data.getStringExtra("response");
-                        Log.e("logGooglePay", "RESULT_CANCELED response = " + response);
+                    Intent i = new Intent(ActivityGP.this, WebActivity.class); // Redirect To WebActivity (RMS library)
+                    i.putExtra("cancelResponse", responseJson);
+                    startActivity(i);
 
-                        Intent resultCancel = new Intent();
-                        resultCancel.putExtra(MOLPayActivity.MOLPayTransactionResult, response);
-                        setResult(RESULT_CANCELED, resultCancel);
-                    } else {
-                        Log.e("logGooglePay", "RESULT_CANCELED data = null");
-                        setResult(RESULT_CANCELED, null);
-                    }
-
-                    cancelTimer();
-//                    setResult(RESULT_CANCELED, null);
                     finish();
                 });
             }
@@ -129,7 +117,7 @@ public class ActivityGP extends AppCompatActivity {
             @Override
             public void onFailure(String error) {
                 Log.e("logGooglePay", "onFailure = " + error);
-                // TODO 2 : Closed page internet / technical issue
+                // TODO 2 : What to do if cancel api failed response. Set custom json response ? Send log ?
             }
         } , paymentDetails);
     }
@@ -189,7 +177,7 @@ public class ActivityGP extends AppCompatActivity {
             @Override
             public void onFailure(String error) {
                 Log.e("logGooglePay", "onFailure = " + error);
-                // TODO 3 : Closed page internet / technical issue
+                // TODO 3 : What to do if createTxn failed response. Trigger cancelTxn
             }
         } , paymentDetails);
 
@@ -256,40 +244,6 @@ public class ActivityGP extends AppCompatActivity {
             }
 
         });
-    }
-
-    private CountDownTimer countDownTimer;
-
-    public void startTimer(int millisInFuture , int countDownInterval) {
-
-//        millisInFuture = 60000;
-//        countDownInterval = 1000;
-
-        countDownTimer = new CountDownTimer(millisInFuture, countDownInterval) { // 60,000 ms = 1 minute
-
-            @Override
-            public void onTick(long millisUntilFinished) {
-                long secondsLeft = millisUntilFinished / countDownInterval;
-                Log.e("logGoogle", "Seconds remaining: " + secondsLeft);
-                // You can update a TextView here if you're in an Activity
-            }
-
-            @Override
-            public void onFinish() {
-                Log.e("logGoogle", "Timer finished!");
-                // You can trigger a callback or update the UI here
-                CancelGPay(null);
-            }
-        };
-
-        countDownTimer.start();
-    }
-
-    public void cancelTimer() {
-        Log.e("logGoogle", "cancelTimer");
-        if (countDownTimer != null) {
-            countDownTimer.cancel();
-        }
     }
 
     /**
@@ -410,7 +364,7 @@ public class ActivityGP extends AppCompatActivity {
                     // The user cancelled the payment attempt
                     // Response Error CallBack
 
-                    CancelGPay(data);
+                    CancelGPay();
 
 //                    if (data != null) {
 //                        response = data.getStringExtra("response");
