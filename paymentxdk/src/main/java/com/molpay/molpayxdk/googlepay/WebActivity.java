@@ -61,15 +61,19 @@ public class WebActivity extends AppCompatActivity {
         String paymentInput = intent.getStringExtra("paymentInput");
         String paymentInfo = intent.getStringExtra("paymentInfo");
 
-        // Transcation model from paymentInput
-        JSONObject paymentInputObj = null;
-        try {
-            paymentInputObj = new JSONObject(paymentInput);
-            transaction.setVkey(paymentInputObj.getString("verificationKey"));
-            isSandbox = paymentInputObj.getString("isSandbox");
-            Log.e("logGooglePay" , "WebActivity isSandbox = " + isSandbox);
-        } catch (JSONException e) {
-            e.printStackTrace();
+        Log.e("logGooglePay" , "after getStringExtra 1");
+
+        if (paymentInput != null) {
+            // Transcation model from paymentInput
+            JSONObject paymentInputObj = null;
+            try {
+                paymentInputObj = new JSONObject(paymentInput);
+                transaction.setVkey(paymentInputObj.getString("verificationKey"));
+                isSandbox = paymentInputObj.getString("isSandbox");
+                Log.e("logGooglePay" , "WebActivity isSandbox = " + isSandbox);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
 
         tvLoading = findViewById(R.id.tvLoading);
@@ -88,6 +92,31 @@ public class WebActivity extends AppCompatActivity {
         wvGateway.getSettings().setSupportZoom(true);
         wvGateway.getSettings().setBuiltInZoomControls(true);
         wvGateway.getSettings().setDisplayZoomControls(false);
+
+        Log.e("logGooglePay" , "before get cancelResponse");
+
+        String cancelResponse = intent.getStringExtra("cancelResponse");
+
+        if (cancelResponse != null) {
+            Log.e("logGooglePay" , "cancelResponse != null");
+
+            try {
+                // Convert the JSON string into a JSONObject
+                JSONObject responseBody = new JSONObject(cancelResponse);
+
+                // Create a new parent JSONObject and put the responseBody under it
+                JSONObject finalObject = new JSONObject();
+                finalObject.put("responseBody", responseBody);
+
+                onRequestData(finalObject);
+                Log.e("logGooglePay" , "finalObject = " + finalObject);
+                return;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        Log.e("logGooglePay" , "bypass return cancelResponse");
 
         PaymentThread paymentThread = new PaymentThread();
         paymentThread.setValue(paymentInput, paymentInfo); // set value
@@ -169,7 +198,6 @@ public class WebActivity extends AppCompatActivity {
                                 Log.e("logGooglePay" , "statCodeValue " + statCodeValue);
 
                                 if (statCodeValue.equals("00")) {
-                                    // TODO 7 : Check success logic without result.php
                                     Log.e("logGooglePay" , "statCodeValueSuccess " + statCodeValueSuccess);
                                     if (statCodeValueSuccess) {
                                         Log.e("logGooglePay" , "statCodeValueSuccess finish");
@@ -198,6 +226,7 @@ public class WebActivity extends AppCompatActivity {
                                             .setMessage(errorCode + " : " + errorDesc)
                                             .setCancelable(false)
                                             .setPositiveButton("CLOSE", (dialog, which) -> {
+                                                // TODO 8 : Error Handler Triggered CancelTxn Flow
                                                 setResult(RESULT_CANCELED, intent);
                                                 finish();
                                             }).show();
@@ -237,6 +266,7 @@ public class WebActivity extends AppCompatActivity {
 
                     // If timeout / cancel
                     if (!responseBodyObj.has("StatCode")){
+                        // TODO 8 : Error Handler Triggered CancelTxn Flow
                         setResult(RESULT_CANCELED, intent);
                     } else {
                         setResult(RESULT_OK, intent);
@@ -249,7 +279,7 @@ public class WebActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Log.e("logGooglePay" , "JSONException = " + e);
-                    // TODO 8 : Error Handler
+                    // TODO 8 : Error Handler Triggered CancelTxn Flow
                     setResult(RESULT_CANCELED, null);
                     countDownTimer.cancel();
                     finish();
@@ -287,6 +317,8 @@ public class WebActivity extends AppCompatActivity {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
 
+                Log.e("logGooglePay" , "shouldOverrideUrlLoading = " + request.getUrl());
+
                 if (request.getUrl().toString().contains("result.php")) {
                     statCodeValueSuccess = true;
                     pbLoading.setVisibility(View.VISIBLE);
@@ -321,27 +353,41 @@ public class WebActivity extends AppCompatActivity {
 
     public void onRequestData(JSONObject response) {
 
+        Log.e("logGoogle" , "onRequestData = " + response);
+
         try {
+            Log.e("logGoogle" , "try");
+
             if (response.has("error_code") && response.has("error_desc")) {
+                Log.e("logGoogle" , "1");
                 Intent intent = new Intent();
                 String strResponse = response.toString();
                 intent.putExtra("response", strResponse);
+                // TODO 8 : Error Handler Triggered CancelTxn Flow
                 setResult(RESULT_CANCELED, intent);
                 finish();
             }
             if (response.has("TxnID")) {
+
+                Log.e("logGoogle" , "2");
+
                 try {
+                    Log.e("logGoogle" , "try 2");
                     transaction.setTxID(response.getString("TxnID"));
                     transaction.setDomain(response.getString("MerchantID"));
                     transaction.setAmount(response.getString("TxnAmount"));
                 } catch (JSONException e) {
+                    Log.e("logGoogle" , "JSONException = " + e);
                     e.printStackTrace();
                 }
 
                 if (response.has("TxnData") && !response.has("pInstruction")) {
 
+                    Log.e("logGoogle" , "3");
+
                     onStartTimOut();
 
+                    // TODO 1.1 : Check cancel api redirection parameters
                     JSONObject txnData = response.getJSONObject("TxnData");
 
                     StringBuilder html = new StringBuilder();
@@ -384,6 +430,7 @@ public class WebActivity extends AppCompatActivity {
                     Intent intent = new Intent();
                     String strResponse = response.toString();
                     intent.putExtra("response", strResponse);
+                    // TODO 8 : Error Handler Triggered CancelTxn Flow
                     setResult(RESULT_CANCELED, intent);
                     finish();
                 }
@@ -391,6 +438,7 @@ public class WebActivity extends AppCompatActivity {
                 Intent intent = new Intent();
                 String strResponse = response.toString();
                 intent.putExtra("response", strResponse);
+                // TODO 8 : Error Handler Triggered CancelTxn Flow
                 setResult(RESULT_CANCELED, intent);
                 finish();
             }
