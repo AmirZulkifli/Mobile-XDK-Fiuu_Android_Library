@@ -26,6 +26,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatTextView;
 
+import com.molpay.molpayxdk.MOLPayActivity;
 import com.molpay.molpayxdk.R;
 import com.molpay.molpayxdk.googlepay.Helper.RMSGooglePay;
 
@@ -103,13 +104,14 @@ public class WebActivity extends AppCompatActivity {
             try {
                 // Convert the JSON string into a JSONObject
                 JSONObject responseBody = new JSONObject(cancelResponse);
+                onRequestData(responseBody);
+                Log.e("logGooglePay" , "cancelResponse = " + cancelResponse);
 
-                // Create a new parent JSONObject and put the responseBody under it
-                JSONObject finalObject = new JSONObject();
-                finalObject.put("responseBody", responseBody);
-
-                onRequestData(finalObject);
-                Log.e("logGooglePay" , "finalObject = " + finalObject);
+//                // Create a new parent JSONObject and put the responseBody under it
+//                JSONObject finalObject = new JSONObject();
+//                finalObject.put("responseBody", responseBody);
+//                onRequestData(finalObject);
+//                Log.e("logGooglePay" , "finalObject = " + finalObject);
                 return;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -172,6 +174,8 @@ public class WebActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
+                Log.e("logGooglePay" , "trasactionJsonStr[0] = " + trasactionJsonStr[0]);
+
                 QueryResultThread queryResultThread = new QueryResultThread();
                 queryResultThread.setValue(trasactionJsonStr[0]); // set value
 
@@ -179,21 +183,32 @@ public class WebActivity extends AppCompatActivity {
                 thread.start();
 
                 try {
+                    Log.e("logGooglePay" , "try CountDownTimer");
+
+                    Log.e("logGooglePay" , "queryResultThread.resp = " + queryResultThread.resp);
+                    Log.e("logGooglePay" , "queryResultThread.transaction = " + queryResultThread.transaction);
+
                     thread.join();
                     queryResultStr[0] = queryResultThread.getValue();
 
+                    Log.e("logGooglePay" , "queryResultStr[0] = " + queryResultStr[0]);
+
                     if (queryResultStr[0] != null) {
+                        Log.e("logGooglePay" , "1");
                         try {
+                            Log.e("logGooglePay" , "try 2");
                             JSONObject queryResultObj = new JSONObject(queryResultStr[0]);
                             String responseBody = queryResultObj.getString("responseBody");
                             JSONObject responseBodyObj = new JSONObject(responseBody);
+
+                            Log.e("logGooglePay" , "responseBodyObj = " + responseBodyObj);
 
                             // If StatCode
                             if (responseBodyObj.has("StatCode")){
                                 String statCodeValue = responseBodyObj.getString("StatCode");
 
-                                Intent intent = new Intent();
-                                intent.putExtra("response", String.valueOf(responseBodyObj));
+//                                Intent intent = new Intent();
+//                                intent.putExtra("response", String.valueOf(responseBodyObj));
 
                                 Log.e("logGooglePay" , "statCodeValue " + statCodeValue);
 
@@ -226,8 +241,11 @@ public class WebActivity extends AppCompatActivity {
                                             .setMessage(errorCode + " : " + errorDesc)
                                             .setCancelable(false)
                                             .setPositiveButton("CLOSE", (dialog, which) -> {
+                                                Log.e("logGooglePay" , "responseBodyObj = " + responseBodyObj);
                                                 // TODO 8 : Error Handler Triggered CancelTxn Flow
-                                                setResult(RESULT_CANCELED, intent);
+                                                Intent resultCancel = new Intent();
+                                                resultCancel.putExtra("response", String.valueOf(responseBodyObj));
+                                                setResult(RESULT_CANCELED, resultCancel);
                                                 finish();
                                             }).show();
                                 }  else if (statCodeValue.equals("22")) {
@@ -240,6 +258,7 @@ public class WebActivity extends AppCompatActivity {
                         }
                     }
                 } catch (InterruptedException e) {
+                    Log.e("logGooglePay" , "InterruptedException = " + e);
                     e.printStackTrace();
                 }
             }
@@ -267,6 +286,7 @@ public class WebActivity extends AppCompatActivity {
                     // If timeout / cancel
                     if (!responseBodyObj.has("StatCode")){
                         // TODO 8 : Error Handler Triggered CancelTxn Flow
+                        Log.e("logGooglePay" , "RESULT_CANCELED 1");
                         setResult(RESULT_CANCELED, intent);
                     } else {
                         setResult(RESULT_OK, intent);
@@ -358,12 +378,17 @@ public class WebActivity extends AppCompatActivity {
         try {
             Log.e("logGoogle" , "try");
 
+            if (response.has("responseBody")) {
+                Log.e("logGoogle" , "test has responseBody");
+            }
+
             if (response.has("error_code") && response.has("error_desc")) {
                 Log.e("logGoogle" , "1");
                 Intent intent = new Intent();
                 String strResponse = response.toString();
                 intent.putExtra("response", strResponse);
                 // TODO 8 : Error Handler Triggered CancelTxn Flow
+                Log.e("logGooglePay" , "RESULT_CANCELED 2");
                 setResult(RESULT_CANCELED, intent);
                 finish();
             }
@@ -433,18 +458,22 @@ public class WebActivity extends AppCompatActivity {
                     String strResponse = response.toString();
                     intent.putExtra("response", strResponse);
                     // TODO 8 : Error Handler Triggered CancelTxn Flow
+                    Log.e("logGooglePay" , "RESULT_CANCELED 3");
                     setResult(RESULT_CANCELED, intent);
                     finish();
                 }
             } else {
+                Log.e("logGoogle" , "cancel - else");
                 Intent intent = new Intent();
                 String strResponse = response.toString();
                 intent.putExtra("response", strResponse);
                 // TODO 8 : Error Handler Triggered CancelTxn Flow
+                Log.e("logGooglePay" , "RESULT_CANCELED 4");
                 setResult(RESULT_CANCELED, intent);
                 finish();
             }
         } catch (JSONException e) {
+            Log.e("logGoogle" , "onRequestData JSONException = " + e);
             e.printStackTrace();
         }
     }
@@ -493,8 +522,13 @@ public class WebActivity extends AppCompatActivity {
         @Override
         public void run() {
 
+                Log.e("logGooglePay" , "QueryResultThread run");
+
                 RMSGooglePay pay = new RMSGooglePay();
                 JSONObject result = (JSONObject) pay.queryPaymentResult(transaction);
+
+                Log.e("logGooglePay" , "result = " + result);
+
                 if (result != null) {
                     resp = result.toString();
                 }
