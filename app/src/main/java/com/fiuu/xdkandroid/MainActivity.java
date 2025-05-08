@@ -172,8 +172,8 @@ public class MainActivity extends AppCompatActivity {
         paymentDetails.put(MOLPayActivity.mp_bill_email, "payer.email@fiuu.com");
         paymentDetails.put(MOLPayActivity.mp_bill_mobile, "123456789");
 
-        paymentDetails.put(MOLPayActivity.mp_gpay_channel, new String[] { "ShopeePay", "CC", "TNG-EWALLET" });
-//        paymentDetails.put(MOLPayActivity.mp_gpay_channel, new String[] { "TNG-EWALLET", "ShopeePay" });
+        paymentDetails.put(MOLPayActivity.mp_gpay_channel, new String[] { "SHOPEEPAY", "CC", "TNG-EWALLET" });
+//        paymentDetails.put(MOLPayActivity.mp_gpay_channel, new String[] { "TNG-EWALLET", "SHOPEEPAY" });
 //        paymentDetails.put(MOLPayActivity.mp_gpay_channel, new String[] { "CC", "TNG-EWALLET" });
 
 //        paymentDetails.put(MOLPayActivity.mp_extended_vcode, false); // Optional : Set true if your account enabled extended Verify Payment
