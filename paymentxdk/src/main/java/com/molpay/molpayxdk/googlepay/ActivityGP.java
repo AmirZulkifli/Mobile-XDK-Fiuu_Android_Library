@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -33,7 +32,6 @@ import com.molpay.molpayxdk.databinding.ActivityGooglepayBinding;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -45,6 +43,7 @@ public class ActivityGP extends AppCompatActivity {
     public JSONObject paymentInput = new JSONObject();
 
     private static final int LOAD_TRANSACTION_DATA_REQUEST_CODE = 998;
+    private static final int CANCEL_GPAY_TXN = 997;
 
     private ViewModelGP model;
 
@@ -84,11 +83,13 @@ public class ActivityGP extends AppCompatActivity {
 
                     case Activity.RESULT_CANCELED:
                         // The user cancelled the payment attempt
+                        Log.e("logGooglePay", "Masuk ActivityResultLauncher AppCompatActivity.RESULT_CANCELED");
                         CancelGPay();
                         break;
 
                     default:
                         // If Result = 1 finish with no response
+                        Log.e("logGooglePay", "Masuk RESULT_FIRST_USER");
                         setResult(RESULT_FIRST_USER, null);
                         finish();
                         break;
@@ -109,9 +110,14 @@ public class ActivityGP extends AppCompatActivity {
 
                     Intent i = new Intent(ActivityGP.this, WebActivity.class); // Redirect To WebActivity (RMS library)
                     i.putExtra("cancelResponse", responseJson);
-                    startActivity(i);
+                    startActivityForResult(i, CANCEL_GPAY_TXN);
+//                    startActivity(i);
 
-                    finish();
+//                    Intent resultCancel = new Intent();
+//                    resultCancel.putExtra(MOLPayActivity.MOLPayTransactionResult, "{\"StatCode\":\"11\",\"StatName\":\"failed\",\"TranID\":\"100759\",\"Amount\":\"0.10\",\"Domain\":\"SB_molpayxdk\",\"VrfKey\":\"444cf0a37f6f6fe025936ed4b3f3e9f9\",\"Channel\":\"GooglePay\",\"OrderID\":\"1746678618412\",\"Currency\":\"MYR\",\"ErrorCode\":\"GOOGLEPAY_C1\",\"ErrorDesc\":\"User cancelled the payment\",\"ProcessorResponseCode\":null,\"ProcessorCVVResponse\":null,\"SchemeTransactionID\":null,\"MerchantAdviceCode\":null,\"ECI\":null,\"3DSVersion\":null,\"ACSTransactionID\":null,\"3DSTransactionID\":null}");
+//                    setResult(RESULT_CANCELED, resultCancel);
+
+//                    finish();
                 });
             }
 
@@ -144,6 +150,8 @@ public class ActivityGP extends AppCompatActivity {
                 }
             }
         }
+
+        Log.e("logGooglePay", "PAYMENTS_ENVIRONMENT = " + PAYMENTS_ENVIRONMENT);
 
         initializeUi();
 
@@ -179,7 +187,7 @@ public class ActivityGP extends AppCompatActivity {
             @Override
             public void onFailure(String error) {
                 Log.e("logGooglePay", "onFailure = " + error);
-                // TODO 3 : What to do if createTxn failed response. Trigger cancelTxn
+                // TODO 3 : What to do if createTxn failed response. = Return response failed no need cancel.php
             }
         } , paymentDetails);
 
@@ -366,6 +374,8 @@ public class ActivityGP extends AppCompatActivity {
                     // The user cancelled the payment attempt
                     // Response Error CallBack
 
+                    Log.e("logGooglePay", "Masuk LOAD_TRANSACTION_DATA_REQUEST_CODE AppCompatActivity.RESULT_CANCELED");
+
                     CancelGPay();
 
 //                    if (data != null) {
@@ -393,6 +403,14 @@ public class ActivityGP extends AppCompatActivity {
                     }
                     break;
             }
+        }
+        else if (requestCode == CANCEL_GPAY_TXN) {
+            assert data != null;
+            response = data.getStringExtra("response");
+            Intent resultCancel = new Intent();
+            resultCancel.putExtra(MOLPayActivity.MOLPayTransactionResult, response);
+            setResult(RESULT_CANCELED, resultCancel); // pass back to MainActivity
+            finish(); // finish ActivityGP
         }
     }
 }
