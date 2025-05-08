@@ -242,7 +242,6 @@ public class WebActivity extends AppCompatActivity {
                                             .setCancelable(false)
                                             .setPositiveButton("CLOSE", (dialog, which) -> {
                                                 Log.e("logGooglePay" , "responseBodyObj = " + responseBodyObj);
-                                                // TODO 8 : Error Handler Triggered CancelTxn Flow
                                                 Intent resultCancel = new Intent();
                                                 resultCancel.putExtra("response", String.valueOf(responseBodyObj));
                                                 setResult(RESULT_CANCELED, resultCancel);
@@ -286,7 +285,7 @@ public class WebActivity extends AppCompatActivity {
                     // If timeout / cancel
                     if (!responseBodyObj.has("StatCode")){
                         // TODO 8 : Error Handler Triggered CancelTxn Flow
-                        Log.e("logGooglePay" , "RESULT_CANCELED 1");
+                        Log.e("logGooglePay" , "RESULT_CANCELED 1 responseBodyObj = " + responseBodyObj);
                         setResult(RESULT_CANCELED, intent);
                     } else {
                         setResult(RESULT_OK, intent);
@@ -298,11 +297,7 @@ public class WebActivity extends AppCompatActivity {
 
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Log.e("logGooglePay" , "JSONException = " + e);
-                    // TODO 8 : Error Handler Triggered CancelTxn Flow
-                    setResult(RESULT_CANCELED, null);
-                    countDownTimer.cancel();
-                    finish();
+                    Log.e("logGooglePay" , "RESULT_CANCELED 0 JSONException = " + e);
                 }
             }
         };
@@ -388,7 +383,7 @@ public class WebActivity extends AppCompatActivity {
                 String strResponse = response.toString();
                 intent.putExtra("response", strResponse);
                 // TODO 8 : Error Handler Triggered CancelTxn Flow
-                Log.e("logGooglePay" , "RESULT_CANCELED 2");
+                Log.e("logGooglePay" , "RESULT_CANCELED 2 strResponse = " + strResponse);
                 setResult(RESULT_CANCELED, intent);
                 finish();
             }
@@ -414,7 +409,6 @@ public class WebActivity extends AppCompatActivity {
 
                     onStartTimOut();
 
-                    // TODO 1.1 : Check cancel api redirection parameters
                     JSONObject txnData = response.getJSONObject("TxnData");
 
                     StringBuilder html = new StringBuilder();
@@ -458,7 +452,7 @@ public class WebActivity extends AppCompatActivity {
                     String strResponse = response.toString();
                     intent.putExtra("response", strResponse);
                     // TODO 8 : Error Handler Triggered CancelTxn Flow
-                    Log.e("logGooglePay" , "RESULT_CANCELED 3");
+                    Log.e("logGooglePay" , "RESULT_CANCELED 3 strResponse = " + strResponse);
                     setResult(RESULT_CANCELED, intent);
                     finish();
                 }
@@ -468,7 +462,7 @@ public class WebActivity extends AppCompatActivity {
                 String strResponse = response.toString();
                 intent.putExtra("response", strResponse);
                 // TODO 8 : Error Handler Triggered CancelTxn Flow
-                Log.e("logGooglePay" , "RESULT_CANCELED 4");
+                Log.e("logGooglePay" , "RESULT_CANCELED 4 = " + strResponse);
                 setResult(RESULT_CANCELED, intent);
                 finish();
             }
