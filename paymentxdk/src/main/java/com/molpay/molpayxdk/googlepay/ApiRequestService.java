@@ -79,6 +79,7 @@ public class ApiRequestService {
                 .add("TxnType", "SALS")
                 .add("TxnCurrency", Objects.requireNonNull(paymentDetails.get(MOLPayActivity.mp_currency)).toString())
                 .add("TxnAmount", Objects.requireNonNull(paymentDetails.get(MOLPayActivity.mp_amount)).toString())
+                .add("mpsl_version", "2")
                 // TODO 4 : Add param from payment v2. What value ? Below did not return in payment v2
 //                .add("TxnChannel", "")
 //                .add("TxnData[RequestURL]", "")
