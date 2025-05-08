@@ -97,6 +97,29 @@ public class ActivityGP extends AppCompatActivity {
             }
     );
 
+    public void CancelGPayV2 (String paymentV2Response) {
+        ApiRequestService.CancelTxnV2(paymentV2Response , new ApiRequestService.NetworkCallback() {
+            @Override
+            public void onSuccess(String responseJson) {
+
+                runOnUiThread(() -> {
+                    // Safely update UI here
+                    Log.e("logGooglePay", "onSuccess = " + responseJson);
+
+                    Intent i = new Intent(ActivityGP.this, WebActivity.class); // Redirect To WebActivity (RMS library)
+                    i.putExtra("cancelResponse", responseJson);
+                    startActivityForResult(i, CANCEL_GPAY_TXN);
+                });
+            }
+
+            @Override
+            public void onFailure(String error) {
+                Log.e("logGooglePay", "onFailure = " + error);
+                // TODO 2 : What to do if cancel api failed response. Set custom json response ? Send log ?
+            }
+        } , paymentDetails);
+    }
+
     public void CancelGPay () {
         ApiRequestService.CancelTxn(new ApiRequestService.NetworkCallback() {
             @Override
@@ -106,18 +129,9 @@ public class ActivityGP extends AppCompatActivity {
                     // Safely update UI here
                     Log.e("logGooglePay", "onSuccess = " + responseJson);
 
-                    // TODO 1: Send cancel status 11 json if user cancel / timeout
-
                     Intent i = new Intent(ActivityGP.this, WebActivity.class); // Redirect To WebActivity (RMS library)
                     i.putExtra("cancelResponse", responseJson);
                     startActivityForResult(i, CANCEL_GPAY_TXN);
-//                    startActivity(i);
-
-//                    Intent resultCancel = new Intent();
-//                    resultCancel.putExtra(MOLPayActivity.MOLPayTransactionResult, "{\"StatCode\":\"11\",\"StatName\":\"failed\",\"TranID\":\"100759\",\"Amount\":\"0.10\",\"Domain\":\"SB_molpayxdk\",\"VrfKey\":\"444cf0a37f6f6fe025936ed4b3f3e9f9\",\"Channel\":\"GooglePay\",\"OrderID\":\"1746678618412\",\"Currency\":\"MYR\",\"ErrorCode\":\"GOOGLEPAY_C1\",\"ErrorDesc\":\"User cancelled the payment\",\"ProcessorResponseCode\":null,\"ProcessorCVVResponse\":null,\"SchemeTransactionID\":null,\"MerchantAdviceCode\":null,\"ECI\":null,\"3DSVersion\":null,\"ACSTransactionID\":null,\"3DSTransactionID\":null}");
-//                    setResult(RESULT_CANCELED, resultCancel);
-
-//                    finish();
                 });
             }
 
@@ -376,21 +390,16 @@ public class ActivityGP extends AppCompatActivity {
 
                     Log.e("logGooglePay", "Masuk LOAD_TRANSACTION_DATA_REQUEST_CODE AppCompatActivity.RESULT_CANCELED");
 
-                    CancelGPay();
+                    if (data != null) {
+                        response = data.getStringExtra("response");
+                        Log.e("logGooglePay", "RESULT_CANCELED response = " + response);
+                        CancelGPayV2(response);
+                    } else {
+                        Log.e("logGooglePay", "RESULT_CANCELED data = null");
+                        setResult(RESULT_CANCELED, null);
+                        finish();
+                    }
 
-//                    if (data != null) {
-//                        response = data.getStringExtra("response");
-//                        Log.e("logGooglePay", "RESULT_CANCELED response = " + response);
-//
-//                        Intent resultCancel = new Intent();
-//                        resultCancel.putExtra(MOLPayActivity.MOLPayTransactionResult, response);
-//                        setResult(RESULT_CANCELED, resultCancel);
-//                    } else {
-//                        Log.e("logGooglePay", "RESULT_CANCELED data = null");
-//                        setResult(RESULT_CANCELED, null);
-//                    }
-
-//                    finish();
                     break;
 
                 case AutoResolveHelper.RESULT_ERROR:
