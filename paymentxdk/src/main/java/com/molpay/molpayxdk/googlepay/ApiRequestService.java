@@ -309,9 +309,10 @@ public class ApiRequestService {
                     .appendQueryParameter("CustDesc", billDesc)
                     .appendQueryParameter("Signature", vCode)
                     .appendQueryParameter("mpsl_version", "2")
+                    // TODO 5 : Add "tranID" from createTxn & "requery" = 0
+                    .appendQueryParameter("tranID", ActivityGP.tranID)
+                    .appendQueryParameter("requery", "0")
                     .appendQueryParameter("GooglePay", GooglePayBase64);
-
-            // TODO 5 : Add "tranID" from createTxn & "requery" = 0
 
                 return postRequest(uri, builder);
         } catch (JSONException e) {
@@ -322,12 +323,15 @@ public class ApiRequestService {
     }
 
     public Object GetPaymentResult(JSONObject transaction ) {
+
+        Log.e("logGooglePay" , "GetPaymentResult q_by_tid");
+
         try {
             String endPoint = "";
 
-            if (WebActivity.isSandbox.equals("false")) {
+            if (ActivityGP.PAYMENTS_ENVIRONMENT == WalletConstants.ENVIRONMENT_PRODUCTION) {
                 endPoint = Production.API_PAYMENT + "RMS/q_by_tid.php";
-            } else if (WebActivity.isSandbox.equals("true")) {
+            } else if (ActivityGP.PAYMENTS_ENVIRONMENT == WalletConstants.ENVIRONMENT_TEST) {
                 endPoint = Development.SB_API_FIUU + "RMS/q_by_tid.php";
             }
 
@@ -355,8 +359,12 @@ public class ApiRequestService {
                     .appendQueryParameter("url", "")
                     .appendQueryParameter("type", "2");
 
+            Log.e("logGooglePay" , "endPoint = " + endPoint.toString());
+            Log.e("logGooglePay" , "builder = " + builder.toString());
+
             return postRequest(uri, builder);
         } catch (JSONException e) {
+            Log.e("logGooglePay" , "JSONException = " + e);
             e.printStackTrace();
         }
         return null;
@@ -417,6 +425,8 @@ public class ApiRequestService {
             response.put("responseBody", getResponseBody(httpURLConnection));
 
             Log.e("logGooglePay", "response = " + response);
+
+            // TODO 5.1 : Re-send payment V2 "requery" = 1
 
             return response;
         } catch (Exception e) {
