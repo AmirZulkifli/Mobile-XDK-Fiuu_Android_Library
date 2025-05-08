@@ -372,10 +372,12 @@ public class WebActivity extends AppCompatActivity {
                 Log.e("logGoogle" , "2");
 
                 try {
-                    Log.e("logGoogle" , "try 2");
+                    Log.e("logGoogle" , "try 2 ActivityGP.verificationKey = " + ActivityGP.verificationKey);
                     transaction.setTxID(response.getString("TxnID"));
                     transaction.setDomain(response.getString("MerchantID"));
                     transaction.setAmount(response.getString("TxnAmount"));
+//                    transaction.setVkey(response.getString("verificationKey"));
+                    transaction.setVkey(ActivityGP.verificationKey);
                 } catch (JSONException e) {
                     Log.e("logGoogle" , "JSONException = " + e);
                     e.printStackTrace();

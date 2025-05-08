@@ -62,6 +62,7 @@ public class ActivityGP extends AppCompatActivity {
     public static String createTxnResult;
 
     public static String tranID = "";
+    public static String verificationKey = "";
 
     // Handle potential conflict from calling loadPaymentData.
     ActivityResultLauncher<IntentSenderRequest> resolvePaymentForResult = registerForActivityResult(
@@ -131,6 +132,7 @@ public class ActivityGP extends AppCompatActivity {
         if (paymentDetails != null) {
             COUNTRY_CODE = Objects.requireNonNull(paymentDetails.get("mp_country")).toString();
             CURRENCY_CODE = Objects.requireNonNull(paymentDetails.get("mp_currency")).toString();
+            verificationKey = Objects.requireNonNull(paymentDetails.get(MOLPayActivity.mp_verification_key)).toString();
 
             if (paymentDetails.get("mp_sandbox_mode") == null) {
                 PAYMENTS_ENVIRONMENT = WalletConstants.ENVIRONMENT_PRODUCTION;
