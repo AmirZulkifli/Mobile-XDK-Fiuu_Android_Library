@@ -395,7 +395,8 @@ public class ActivityGP extends AppCompatActivity {
                         Log.e("logGooglePay", "RESULT_CANCELED response = " + response);
                         CancelGPayV2(response);
                     } else {
-                        Log.e("logGooglePay", "RESULT_CANCELED data = null");
+                        Log.e("logGooglePay", "RESULT_CANCELED ActivityGP 1 data = null");
+//                        TODO: Send response based on what data have only
                         setResult(RESULT_CANCELED, null);
                         finish();
                     }
@@ -418,6 +419,7 @@ public class ActivityGP extends AppCompatActivity {
             response = data.getStringExtra("response");
             Intent resultCancel = new Intent();
             resultCancel.putExtra(MOLPayActivity.MOLPayTransactionResult, response);
+            Log.e("logGooglePay", "RESULT_CANCELED ActivityGP 2");
             setResult(RESULT_CANCELED, resultCancel); // pass back to MainActivity
             finish(); // finish ActivityGP
         }

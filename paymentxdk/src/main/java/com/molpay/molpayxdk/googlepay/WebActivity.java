@@ -241,7 +241,7 @@ public class WebActivity extends AppCompatActivity {
                                             .setMessage(errorCode + " : " + errorDesc)
                                             .setCancelable(false)
                                             .setPositiveButton("CLOSE", (dialog, which) -> {
-                                                Log.e("logGooglePay" , "responseBodyObj = " + responseBodyObj);
+                                                Log.e("logGooglePay" , "RESULT_CANCELED WebActivity 1 responseBodyObj = " + responseBodyObj);
                                                 Intent resultCancel = new Intent();
                                                 resultCancel.putExtra("response", String.valueOf(responseBodyObj));
                                                 setResult(RESULT_CANCELED, resultCancel);
@@ -285,7 +285,7 @@ public class WebActivity extends AppCompatActivity {
                     // If timeout / cancel
                     if (!responseBodyObj.has("StatCode")){
                         // TODO 8 : Error Handler Triggered CancelTxn Flow
-                        Log.e("logGooglePay" , "RESULT_CANCELED 1 responseBodyObj = " + responseBodyObj);
+                        Log.e("logGooglePay" , "RESULT_CANCELED WebActivity 2 responseBodyObj = " + responseBodyObj);
                         setResult(RESULT_CANCELED, intent);
                     } else {
                         setResult(RESULT_OK, intent);
@@ -383,7 +383,7 @@ public class WebActivity extends AppCompatActivity {
                 String strResponse = response.toString();
                 intent.putExtra("response", strResponse);
                 // TODO 8 : Error Handler Triggered CancelTxn Flow
-                Log.e("logGooglePay" , "RESULT_CANCELED 2 strResponse = " + strResponse);
+                Log.e("logGooglePay" , "RESULT_CANCELED WebActivity 3 strResponse = " + strResponse);
                 setResult(RESULT_CANCELED, intent);
                 finish();
             }
@@ -452,7 +452,7 @@ public class WebActivity extends AppCompatActivity {
                     String strResponse = response.toString();
                     intent.putExtra("response", strResponse);
                     // TODO 8 : Error Handler Triggered CancelTxn Flow
-                    Log.e("logGooglePay" , "RESULT_CANCELED 3 strResponse = " + strResponse);
+                    Log.e("logGooglePay" , "RESULT_CANCELED WebActivity 4 strResponse = " + strResponse);
                     setResult(RESULT_CANCELED, intent);
                     finish();
                 }
@@ -462,7 +462,7 @@ public class WebActivity extends AppCompatActivity {
                 String strResponse = response.toString();
                 intent.putExtra("response", strResponse);
                 // TODO 8 : Error Handler Triggered CancelTxn Flow
-                Log.e("logGooglePay" , "RESULT_CANCELED 4 = " + strResponse);
+                Log.e("logGooglePay" , "RESULT_CANCELED WebActivity 5 = " + strResponse);
                 setResult(RESULT_CANCELED, intent);
                 finish();
             }
