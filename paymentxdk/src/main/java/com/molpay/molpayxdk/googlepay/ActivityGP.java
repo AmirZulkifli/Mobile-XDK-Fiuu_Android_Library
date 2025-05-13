@@ -90,8 +90,9 @@ public class ActivityGP extends AppCompatActivity {
                     default:
                         // If Result = 1 finish with no response
                         Log.e("logGooglePay", "Masuk RESULT_FIRST_USER");
-                        setResult(RESULT_FIRST_USER, null);
-                        finish();
+                        CancelGPay();
+//                        setResult(RESULT_FIRST_USER, null);
+//                        finish();
                         break;
                 }
             }
@@ -377,6 +378,7 @@ public class ActivityGP extends AppCompatActivity {
                         setResult(RESULT_OK, result);
                     } else {
                         Log.e("logGooglePay", "RESULT_OK data = null");
+//                        Todo: send some data in standard format don't null
                         setResult(RESULT_OK, null);
                     }
 
