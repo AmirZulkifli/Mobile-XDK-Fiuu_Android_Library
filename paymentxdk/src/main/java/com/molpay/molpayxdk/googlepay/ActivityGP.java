@@ -211,8 +211,38 @@ public class ActivityGP extends AppCompatActivity {
 
             @Override
             public void onFailure(String error) {
-                Log.e("logGooglePay", "ActivityGP cancel.php onFailure = " + error);
-                // TODO 3 : What to do if createTxn failed response. = Return response failed no need cancel.php
+                Log.e("logGooglePay", "ActivityGP createTxn.php onFailure = " + error);
+                // Send custom failed response
+                Map<String, Object> data = new HashMap<>();
+                data.put("StatCode", "11");
+                data.put("StatName", "failed");
+                data.put("TranID", tranID);
+                data.put("Amount", Objects.requireNonNull(paymentDetails.get(MOLPayActivity.mp_amount)).toString());
+                data.put("Domain", Objects.requireNonNull(paymentDetails.get(MOLPayActivity.mp_merchant_ID)).toString());
+                data.put("VrfKey", "");
+                data.put("Channel", "GooglePay");
+                data.put("OrderID", Objects.requireNonNull(paymentDetails.get(MOLPayActivity.mp_order_ID)).toString());
+                data.put("Currency", Objects.requireNonNull(paymentDetails.get(MOLPayActivity.mp_currency)).toString());
+                data.put("ErrorCode", "GOOGLEPAY_P");
+                data.put("ErrorDesc", "Payment Failed. Check device internet connection.");
+                data.put("ProcessorResponseCode", null);
+                data.put("ProcessorCVVResponse", null);
+                data.put("SchemeTransactionID", null);
+                data.put("MerchantAdviceCode", null);
+                data.put("ECI", null);
+                data.put("3DSVersion", null);
+                data.put("ACSTransactionID", null);
+                data.put("3DSTransactionID", null);
+
+                Gson gson = new Gson();
+                String jsonGPayCancel = gson.toJson(data);
+
+                Log.e("logGooglePay", "jsonGPayCancel = " + jsonGPayCancel);
+
+                Intent resultCancel = new Intent();
+                resultCancel.putExtra(MOLPayActivity.MOLPayTransactionResult, jsonGPayCancel);
+                setResult(RESULT_CANCELED, resultCancel); // pass back to MainActivity
+                finish(); // finish ActivityGP
             }
         } , paymentDetails);
 
