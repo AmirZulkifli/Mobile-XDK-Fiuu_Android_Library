@@ -118,8 +118,7 @@ public class ActivityGP extends AppCompatActivity {
             @Override
             public void onFailure(String error) {
                 Log.e("logGooglePay", "ActivityGP ApiRequestService.CancelTxn onFailure = " + error);
-                // TODO 2 : What to do if cancel api failed response. Set custom json response ? Send log ?
-
+                // Send custom cancel response
                 Map<String, Object> data = new HashMap<>();
                 data.put("StatCode", "11");
                 data.put("StatName", "failed");
@@ -421,13 +420,11 @@ public class ActivityGP extends AppCompatActivity {
                         Intent result = new Intent();
                         result.putExtra(MOLPayActivity.MOLPayTransactionResult, response);
                         setResult(RESULT_OK, result);
+                        finish();
                     } else {
                         Log.e("logGooglePay", "RESULT_OK data = null");
-//                        Todo: send some data in standard format don't null
-                        setResult(RESULT_OK, null);
+                        CancelGPay("");
                     }
-
-                    finish();
 
                     break;
 
@@ -443,9 +440,7 @@ public class ActivityGP extends AppCompatActivity {
                         CancelGPay(response);
                     } else {
                         Log.e("logGooglePay", "RESULT_CANCELED ActivityGP 1 data = null");
-//                        TODO: Send response based on what data have only
-                        setResult(RESULT_CANCELED, null);
-                        finish();
+                        CancelGPay("");
                     }
 
                     break;

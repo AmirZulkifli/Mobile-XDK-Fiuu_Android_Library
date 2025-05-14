@@ -291,7 +291,7 @@ In Java class add this in onCreate :
                 paymentDetails.put(MOLPayActivity.mp_sandbox_mode, true); // true = Test Environment & false = production (required Google Pay production access approval)
                 paymentDetails.put(MOLPayActivity.mp_extended_vcode, false); // Optional : Set true if your account enabled extended Verify Payment (by default false)
 
-[//]: # (               TODO : Add mp_gpay_channels & mp_close_button)
+[//]: # (               TODO 0 : Add mp_gpay_channels & mp_close_button)
 
                 openGPActivityWithResult();
         }
