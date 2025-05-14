@@ -84,13 +84,13 @@ public class ActivityGP extends AppCompatActivity {
                     case Activity.RESULT_CANCELED:
                         // The user cancelled the payment attempt
                         Log.e("logGooglePay", "Masuk ActivityResultLauncher AppCompatActivity.RESULT_CANCELED");
-                        CancelGPay();
+                        CancelGPay("");
                         break;
 
                     default:
                         // If Result = 1 finish with no response
                         Log.e("logGooglePay", "Masuk RESULT_FIRST_USER");
-                        CancelGPay();
+                        CancelGPay("");
 //                        setResult(RESULT_FIRST_USER, null);
 //                        finish();
                         break;
@@ -98,8 +98,8 @@ public class ActivityGP extends AppCompatActivity {
             }
     );
 
-    public void CancelGPayV2 (String paymentV2Response) {
-        ApiRequestService.CancelTxnV2(paymentV2Response , new ApiRequestService.NetworkCallback() {
+    public void CancelGPay (String paymentV2Response) {
+        ApiRequestService.CancelTxn(paymentV2Response, new ApiRequestService.NetworkCallback() {
             @Override
             public void onSuccess(String responseJson) {
 
@@ -395,7 +395,7 @@ public class ActivityGP extends AppCompatActivity {
                     if (data != null) {
                         response = data.getStringExtra("response");
                         Log.e("logGooglePay", "RESULT_CANCELED response = " + response);
-                        CancelGPayV2(response);
+                        CancelGPay(response);
                     } else {
                         Log.e("logGooglePay", "RESULT_CANCELED ActivityGP 1 data = null");
 //                        TODO: Send response based on what data have only
