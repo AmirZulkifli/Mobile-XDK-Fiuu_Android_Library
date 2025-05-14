@@ -25,6 +25,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.gms.wallet.AutoResolveHelper;
 import com.google.android.gms.wallet.PaymentData;
 import com.google.android.gms.wallet.WalletConstants;
+import com.google.gson.Gson;
 import com.molpay.molpayxdk.MOLPayActivity;
 import com.molpay.molpayxdk.R;
 import com.molpay.molpayxdk.databinding.ActivityGooglepayBinding;
@@ -33,6 +34,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -115,31 +117,39 @@ public class ActivityGP extends AppCompatActivity {
 
             @Override
             public void onFailure(String error) {
-                Log.e("logGooglePay", "onFailure = " + error);
+                Log.e("logGooglePay", "ActivityGP ApiRequestService.CancelTxn onFailure = " + error);
                 // TODO 2 : What to do if cancel api failed response. Set custom json response ? Send log ?
-            }
-        } , paymentDetails);
-    }
 
-    public void CancelGPay () {
-        ApiRequestService.CancelTxn(new ApiRequestService.NetworkCallback() {
-            @Override
-            public void onSuccess(String responseJson) {
+                Map<String, Object> data = new HashMap<>();
+                data.put("StatCode", "11");
+                data.put("StatName", "failed");
+                data.put("TranID", tranID);
+                data.put("Amount", Objects.requireNonNull(paymentDetails.get(MOLPayActivity.mp_amount)).toString());
+                data.put("Domain", Objects.requireNonNull(paymentDetails.get(MOLPayActivity.mp_merchant_ID)).toString());
+                data.put("VrfKey", "");
+                data.put("Channel", "GooglePay");
+                data.put("OrderID", Objects.requireNonNull(paymentDetails.get(MOLPayActivity.mp_order_ID)).toString());
+                data.put("Currency", Objects.requireNonNull(paymentDetails.get(MOLPayActivity.mp_currency)).toString());
+                data.put("ErrorCode", "GOOGLEPAY_C1");
+                data.put("ErrorDesc", "User cancelled the payment");
+                data.put("ProcessorResponseCode", null);
+                data.put("ProcessorCVVResponse", null);
+                data.put("SchemeTransactionID", null);
+                data.put("MerchantAdviceCode", null);
+                data.put("ECI", null);
+                data.put("3DSVersion", null);
+                data.put("ACSTransactionID", null);
+                data.put("3DSTransactionID", null);
 
-                runOnUiThread(() -> {
-                    // Safely update UI here
-                    Log.e("logGooglePay", "onSuccess = " + responseJson);
+                Gson gson = new Gson();
+                String jsonGPayCancel = gson.toJson(data);
 
-                    Intent i = new Intent(ActivityGP.this, WebActivity.class); // Redirect To WebActivity (RMS library)
-                    i.putExtra("cancelResponse", responseJson);
-                    startActivityForResult(i, CANCEL_GPAY_TXN);
-                });
-            }
+                Log.e("logGooglePay", "jsonGPayCancel = " + jsonGPayCancel);
 
-            @Override
-            public void onFailure(String error) {
-                Log.e("logGooglePay", "onFailure = " + error);
-                // TODO 2 : What to do if cancel api failed response. Set custom json response ? Send log ?
+                Intent resultCancel = new Intent();
+                resultCancel.putExtra(MOLPayActivity.MOLPayTransactionResult, jsonGPayCancel);
+                setResult(RESULT_CANCELED, resultCancel); // pass back to MainActivity
+                finish(); // finish ActivityGP
             }
         } , paymentDetails);
     }
@@ -201,7 +211,7 @@ public class ActivityGP extends AppCompatActivity {
 
             @Override
             public void onFailure(String error) {
-                Log.e("logGooglePay", "onFailure = " + error);
+                Log.e("logGooglePay", "ActivityGP cancel.php onFailure = " + error);
                 // TODO 3 : What to do if createTxn failed response. = Return response failed no need cancel.php
             }
         } , paymentDetails);
@@ -355,6 +365,11 @@ public class ActivityGP extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
+
+//        Log.e("logGooglePay", "requestCode = " + requestCode);
+//        Log.e("logGooglePay", "resultCode = " + resultCode);
+//        assert data != null;
+//        Log.e("logGooglePay", "data = " + data);
 
 //        CharSequence response;
         String response;
