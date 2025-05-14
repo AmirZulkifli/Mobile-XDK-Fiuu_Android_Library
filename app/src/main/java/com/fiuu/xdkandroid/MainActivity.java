@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         paymentDetails.put(MOLPayActivity.mp_bill_name, "Ashraf TNG");
         paymentDetails.put(MOLPayActivity.mp_bill_email, "ashraf.tng@fiuu.com");
         paymentDetails.put(MOLPayActivity.mp_bill_mobile, "123456789");
+        paymentDetails.put(MOLPayActivity.mp_closebutton_display, true);
 
         // --------------------------------- FOR GOOGLE PAY ----------------------------------------
 
@@ -171,6 +172,9 @@ public class MainActivity extends AppCompatActivity {
         paymentDetails.put(MOLPayActivity.mp_bill_name, "Payer name");
         paymentDetails.put(MOLPayActivity.mp_bill_email, "payer.email@fiuu.com");
         paymentDetails.put(MOLPayActivity.mp_bill_mobile, "123456789");
+
+//        TODO : Add close button handler for GPay Webview e.g. allow close OTP page
+        paymentDetails.put(MOLPayActivity.mp_closebutton_display, true);
 
         paymentDetails.put(MOLPayActivity.mp_gpay_channel, new String[] { "SHOPEEPAY", "CC", "TNG-EWALLET" });
 //        paymentDetails.put(MOLPayActivity.mp_gpay_channel, new String[] { "TNG-EWALLET", "SHOPEEPAY" });
