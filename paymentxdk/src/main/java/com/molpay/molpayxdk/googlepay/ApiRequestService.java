@@ -56,7 +56,7 @@ public class ApiRequestService {
         void onFailure(String error);
     }
 
-    public static void CancelTxnV2(String paymentV2Response, NetworkCallback callback, HashMap<String, Object> paymentDetails) {
+    public static void CancelTxn(String paymentV2Response, NetworkCallback callback, HashMap<String, Object> paymentDetails) {
 
         Log.e("logGooglePay", "ActivityGP.tranID = " + ActivityGP.tranID);
 
@@ -71,85 +71,39 @@ public class ApiRequestService {
         Log.e("logGooglePay", endPoint);
 
         OkHttpClient client = new OkHttpClient();
+        RequestBody formBody;
 
-        // Convert JSON string to FormBody
-        FormBody.Builder formBuilder = new FormBody.Builder();
-        try {
-            JSONObject json = new JSONObject(paymentV2Response);
-            Iterator<String> keys = json.keys();
+        if (paymentV2Response.isEmpty()) {
+            // Cancel before proceed payment V2
+            formBody = new FormBody.Builder()
+                    .add("MerchantID", Objects.requireNonNull(paymentDetails.get(MOLPayActivity.mp_merchant_ID)).toString())
+                    .add("ReferenceNo", Objects.requireNonNull(paymentDetails.get(MOLPayActivity.mp_order_ID)).toString())
+                    .add("TxnID", ActivityGP.tranID)
+                    .add("TxnType", "SALS")
+                    .add("TxnCurrency", Objects.requireNonNull(paymentDetails.get(MOLPayActivity.mp_currency)).toString())
+                    .add("TxnAmount", Objects.requireNonNull(paymentDetails.get(MOLPayActivity.mp_amount)).toString())
+                    .add("mpsl_version", "2")
+                    .build();
+        } else {
+            // Cancel after get payment v2 error
+            FormBody.Builder formBuilder = new FormBody.Builder();
+            try {
+                JSONObject json = new JSONObject(paymentV2Response);
+                Iterator<String> keys = json.keys();
 
-            while (keys.hasNext()) {
-                String key = keys.next();
-                String value = json.getString(key);
-                formBuilder.add(key, value);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-            callback.onFailure("Invalid JSON format: " + e.getMessage());
-            return;
-        }
-
-        RequestBody formBody = formBuilder.build();
-
-        // Build the request
-        Request request = new Request.Builder()
-                .url(endPoint)
-                .post(formBody)
-                .build();
-
-        client.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Log.e("logGooglePay", "onFailure = " + e.getMessage());
-                callback.onFailure(e.getMessage());
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                if (!response.isSuccessful()) {
-                    Log.e("logGooglePay", "onResponse code = " + response.code());
-                    callback.onFailure("Unexpected code: " + response.code());
-                } else {
-                    String responseBody = response.body().string();
-                    Log.e("logGooglePay", "onResponse responseBody = " + responseBody);
-                    callback.onSuccess(responseBody);
+                while (keys.hasNext()) {
+                    String key = keys.next();
+                    String value = json.getString(key);
+                    formBuilder.add(key, value);
                 }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                callback.onFailure("Invalid JSON format: " + e.getMessage());
+                return;
             }
-        });
-    }
 
-
-    public static void CancelTxn( NetworkCallback callback , HashMap<String, Object> paymentDetails) {
-
-        Log.e("logGooglePay", "ActivityGP.tranID = " + ActivityGP.tranID);
-
-        String endPoint = "";
-
-        if (ActivityGP.PAYMENTS_ENVIRONMENT == WalletConstants.ENVIRONMENT_PRODUCTION) {
-            endPoint = Production.BASE_PAYMENT + "RMS/GooglePay/cancel.php";
-        } else if (ActivityGP.PAYMENTS_ENVIRONMENT == WalletConstants.ENVIRONMENT_TEST) {
-            endPoint = Development.SB_PAYMENT_FIUU + "RMS/GooglePay/cancel.php";
+            formBody = formBuilder.build();
         }
-
-        Log.e("logGooglePay", endPoint);
-
-        OkHttpClient client = new OkHttpClient();
-
-        // Build the request body
-        RequestBody formBody = new FormBody.Builder()
-                .add("MerchantID", Objects.requireNonNull(paymentDetails.get(MOLPayActivity.mp_merchant_ID)).toString())
-                .add("ReferenceNo", Objects.requireNonNull(paymentDetails.get(MOLPayActivity.mp_order_ID)).toString())
-                .add("TxnID", ActivityGP.tranID)
-                .add("TxnType", "SALS")
-                .add("TxnCurrency", Objects.requireNonNull(paymentDetails.get(MOLPayActivity.mp_currency)).toString())
-                .add("TxnAmount", Objects.requireNonNull(paymentDetails.get(MOLPayActivity.mp_amount)).toString())
-                .add("mpsl_version", "2")
-                // TODO 4 : Trigger cancel after payment v2 - Just return the json response
-//                .add("TxnChannel", "")
-//                .add("TxnData[RequestURL]", "")
-//                .add("TxnData[RequestMethod]", "")
-//                .add("TxnData[RequestType]", "")
-                .build();
 
         // Build the request
         Request request = new Request.Builder()
@@ -160,7 +114,7 @@ public class ApiRequestService {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                Log.e("logGooglePay", "onFailure = " + e.getMessage());
+                Log.e("logGooglePay", "ApiRequestService cancel.php onFailure = " + e.getMessage());
                 callback.onFailure(e.getMessage());
             }
 
@@ -275,7 +229,7 @@ public class ApiRequestService {
             client.newCall(request).enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
-                    Log.e("logGooglePay", "onFailure = " + e.getMessage());
+                    Log.e("logGooglePay", "ApiRequestServicec createTxn.php onFailure = " + e.getMessage());
                     callback.onFailure(e.getMessage());
                 }
 
@@ -488,9 +442,6 @@ public class ApiRequestService {
             response.put("responseBody", getResponseBody(httpURLConnection));
 
             Log.e("logGooglePay", "response = " + response);
-
-            // TODO 5.1 : Re-send payment V2 "requery" = 1 if status waiting / pending
-
             return response;
         } catch (Exception e) {
             Log.e("logGooglePay", "catch Exception = " + e);
