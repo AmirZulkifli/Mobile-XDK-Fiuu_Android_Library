@@ -193,38 +193,30 @@ public class ApiRequestService {
                     .add("CallbackURL", "")
                     .add("ExpirationTime", "");
 
+            Log.e("logGooglePay", "1");
+
             // Handle paymentMethods[] from String[] mp_gpay_channel
-            String[] gpayChannels = (String[]) paymentDetails.get("mp_gpay_channel");
-            for (int i = 0; i < Objects.requireNonNull(gpayChannels).length; i++) {
-                formBuilder.add("paymentMethods[" + i + "]", gpayChannels[i]);
+            if (paymentDetails.get("mp_gpay_channel") != null) {
+                String[] gpayChannels = (String[]) paymentDetails.get("mp_gpay_channel");
+                for (int i = 0; i < Objects.requireNonNull(gpayChannels).length; i++) {
+                    formBuilder.add("paymentMethods[" + i + "]", gpayChannels[i]);
+                }
+            } else {
+                formBuilder.add("paymentMethods[" + 0 + "]", "CC");
             }
+
+            Log.e("logGooglePay", "2");
 
             formBody = formBuilder.build();
 
-//            formBody = new FormBody.Builder()
-//                    .add("MerchantID", "SB_molpayxdk")
-//                    .add("ReferenceNo", "Ashraf_Testing-123")
-//                    .add("TxnType", "SALS")
-//                    .add("TxnCurrency", "MYR")
-//                    .add("TxnAmount", "0.10")
-//                    .add("Signature", "b1667822eeed9923b5d4737e9619bbbe")
-//                    .add("CustName", "Ashraf Testing")
-//                    .add("CustContact", "123456789")
-//                    .add("mpsl_version", "2")
-//                    .add("vc_channel", "indexAN")
-//                    .add("ReturnURL", "")
-//                    .add("NotificationURL", "")
-//                    .add("CallbackURL", "")
-//                    .add("ExpirationTime", "")
-//                    .add("paymentMethods[0]", "CC")
-//                    .add("paymentMethods[1]", "ShopeePay")
-//                    .add("paymentMethods[2]", "TNG-EWALLET")
-//                    .build();
+            Log.e("logGooglePay", "3");
 
             Request request = new Request.Builder()
                     .url(endPoint)
                     .post(formBody)
                     .build();
+
+            Log.e("logGooglePay", "before client.newCall");
 
             client.newCall(request).enqueue(new Callback() {
                 @Override
