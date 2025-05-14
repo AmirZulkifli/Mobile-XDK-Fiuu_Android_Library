@@ -34,6 +34,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -78,6 +79,7 @@ public class ActivityGP extends AppCompatActivity {
                         if (resultData != null) {
                             PaymentData paymentData = PaymentData.getFromIntent(result.getData());
                             if (paymentData != null) {
+                                Log.e("logGooglePay", "handlePaymentSuccess 2 - resolvePaymentForResult");
                                 handlePaymentSuccess(paymentData);
                             }
                         }
@@ -290,10 +292,16 @@ public class ActivityGP extends AppCompatActivity {
             Log.e("logGooglePay", "addOnCompleteListener");
 
             if (completedTask.isSuccessful()) {
+                Log.e("logGooglePay", "handlePaymentSuccess 1 - requestPayment");
                 handlePaymentSuccess(completedTask.getResult());
             } else {
                 Exception exception = completedTask.getException();
+
+                assert exception != null;
+                Log.e("logGooglePay", "exception = " + exception);
+
                 if (exception instanceof ResolvableApiException) {
+                    Log.e("logGooglePay", "start resolvePaymentForResult");
                     PendingIntent resolution = ((ResolvableApiException) exception).getResolution();
                     resolvePaymentForResult.launch(new IntentSenderRequest.Builder(resolution).build());
 
@@ -310,6 +318,7 @@ public class ActivityGP extends AppCompatActivity {
         });
     }
 
+    // TODO : Create handleEwalletRequery function
     /**
      * PaymentData response object contains the payment information, as well as any additional
      * requested information, such as billing and shipping address.
@@ -387,7 +396,7 @@ public class ActivityGP extends AppCompatActivity {
      * WalletConstants#constant-summary">Wallet Constants Library</a>
      */
     private void handleError(int statusCode, @Nullable String message) {
-//        Log.e("loadPaymentData failed", String.format(Locale.getDefault(), "Error code: %d, Message: %s", statusCode, message));
+        Log.e("logGooglePay", String.format(Locale.getDefault(), "Error code: %d, Message: %s", statusCode, message));
     }
 
     @Override
@@ -453,6 +462,13 @@ public class ActivityGP extends AppCompatActivity {
                         Log.e("logGooglePay", "RESULT_ERROR status = null");
                         handleError(0, "");
                     }
+                    break;
+
+                case 2:
+
+                    // TODO : Call handleEwalletRequery function here
+                    Log.e("logGooglePay", "Call handleEwalletRequery function");
+
                     break;
             }
         }

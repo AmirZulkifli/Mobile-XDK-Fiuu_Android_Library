@@ -32,21 +32,23 @@ public class MainActivity extends AppCompatActivity {
     private void restartmolpay() {
 
         // Compulsory String. Values obtained from Fiuu.
-        paymentDetails.put(MOLPayActivity.mp_username, "RMSxdk_2022");
-        paymentDetails.put(MOLPayActivity.mp_password, "RMSpwd@2022");
-        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "rmsxdk_mobile_Dev");
-        paymentDetails.put(MOLPayActivity.mp_app_name, "mobile");
-        paymentDetails.put(MOLPayActivity.mp_verification_key, "ee738b541eff7b6b495e44771f71c0ec");
-
 //        paymentDetails.put(MOLPayActivity.mp_username, "RMSxdk_2022");
 //        paymentDetails.put(MOLPayActivity.mp_password, "RMSpwd@2022");
+//        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "rmsxdk_mobile_Dev");
 //        paymentDetails.put(MOLPayActivity.mp_app_name, "mobile");
-//        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "SB_molpayxdk"); // Sandbox ID for TEST environment & Production/Dev ID once Google approved production access
+//        paymentDetails.put(MOLPayActivity.mp_verification_key, "ee738b541eff7b6b495e44771f71c0ec");
+
+        //----------------- Google Pay --------------------------------
+
+        paymentDetails.put(MOLPayActivity.mp_username, "RMSxdk_2022");
+        paymentDetails.put(MOLPayActivity.mp_password, "RMSpwd@2022");
+        paymentDetails.put(MOLPayActivity.mp_app_name, "mobile");
+        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "SB_molpayxdk"); // Sandbox ID for TEST environment & Production/Dev ID once Google approved production access
 //        paymentDetails.put(MOLPayActivity.mp_verification_key, "4445db44bdb60687a8e7f7903a59c3a9"); // Sandbox ID for TEST environment & Production/Dev ID once Google approved production access
 //        New UAT vkey
-//        paymentDetails.put(MOLPayActivity.mp_verification_key, "9bd5f1436e15d06c8067ae058f01fc3a");
+        paymentDetails.put(MOLPayActivity.mp_verification_key, "9bd5f1436e15d06c8067ae058f01fc3a");
 
-//        paymentDetails.put(MOLPayActivity.mp_sandbox_mode, true); // true = Test Environment & false = production (required Google Pay production access approval)
+        paymentDetails.put(MOLPayActivity.mp_sandbox_mode, true); // true = Test Environment & false = production (required Google Pay production access approval)
 
         // Compulsory String. Payment info.
         paymentDetails.put(MOLPayActivity.mp_amount, "0.10"); // 2 decimal points format
@@ -61,8 +63,8 @@ public class MainActivity extends AppCompatActivity {
 
         // --------------------------------- FOR GOOGLE PAY ----------------------------------------
 
-//        paymentDetails.put(MOLPayActivity.mp_gpay_channel, new String[] { "ShopeePay", "CC", "TNG-EWALLET" });
-        paymentDetails.put(MOLPayActivity.mp_gpay_channel, new String[] { "TNG-EWALLET", "ShopeePay" });
+//        paymentDetails.put(MOLPayActivity.mp_gpay_channel, new String[] { "SHOPEEPAY", "CC", "TNG-EWALLET" });
+//        paymentDetails.put(MOLPayActivity.mp_gpay_channel, new String[] { "TNG-EWALLET", "SHOPEEPAY" });
 //        paymentDetails.put(MOLPayActivity.mp_gpay_channel, new String[] { "CC", "TNG-EWALLET" });
 
 //        paymentDetails.put(MOLPayActivity.mp_merchant_ID, ""); // Sandbox ID for TEST environment & Production/Dev ID once Google approved production access

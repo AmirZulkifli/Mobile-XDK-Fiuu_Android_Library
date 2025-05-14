@@ -210,11 +210,10 @@ public class WebActivity extends AppCompatActivity {
                             // If StatCode
                             if (responseBodyObj.has("StatCode")){
                                 String statCodeValue = responseBodyObj.getString("StatCode");
+                                String channelValue = responseBodyObj.getString("Channel");
 
-//                                Intent intent = new Intent();
-//                                intent.putExtra("response", String.valueOf(responseBodyObj));
-
-                                Log.e("logGooglePay" , "statCodeValue " + statCodeValue);
+                                Log.e("logGooglePay" , "statCodeValue = " + statCodeValue);
+                                Log.e("logGooglePay" , "channelValue = " + channelValue);
 
                                 if (statCodeValue.equals("00")) {
                                     Log.e("logGooglePay" , "statCodeValueSuccess " + statCodeValueSuccess);
@@ -252,8 +251,18 @@ public class WebActivity extends AppCompatActivity {
                                                 finish();
                                             }).show();
                                 }  else if (statCodeValue.equals("22")) {
-                                    // Do Nothing - It will auto handle q_by_tid.php
-                                    // TODO 2 : Trigger paymentv2 again for e-wallet ?
+                                    if (channelValue.contains("ShopeePay") || channelValue.contains("TNG-EWALLET")) {
+                                        // TODO 2 : Trigger paymentv2 again for e-wallet
+                                        Log.e("logGooglePay" , "E-Wallet - need requery payment_v2");
+                                        Intent intent = new Intent();
+                                        intent.putExtra("response", String.valueOf(responseBodyObj));
+                                        setResult(2, intent);
+                                        countDownTimer.cancel();
+                                        finish();
+                                    } else {
+                                        // Do Nothing - It will auto handle q_by_tid.php
+                                        Log.e("logGooglePay" , "CARD - Do Nothing it will auto handle by q_by_tid.php");
+                                    }
                                 }
                             }
 
@@ -340,6 +349,7 @@ public class WebActivity extends AppCompatActivity {
 
                 Log.e("logGooglePay" , "shouldOverrideUrlLoading = " + request.getUrl());
 
+                // TODO : Need handle for e-wallet requery ?
                 if (request.getUrl().toString().contains("result.php")) {
                     statCodeValueSuccess = true;
                     pbLoading.setVisibility(View.VISIBLE);
