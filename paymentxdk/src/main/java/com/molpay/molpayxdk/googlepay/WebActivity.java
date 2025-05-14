@@ -148,8 +148,7 @@ public class WebActivity extends AppCompatActivity {
 
     private void onStartTimOut() {
 
-        // TODO 6 : Finalized timeout & interval
-        long minTimeOut = 15000; // 1 minute
+        long minTimeOut = 60000; // 1 minute @ 60000
         long interval = 3000;
         final String[] queryResultStr = {null};
         final String[] trasactionJsonStr = {null};
@@ -249,6 +248,7 @@ public class WebActivity extends AppCompatActivity {
                                             }).show();
                                 }  else if (statCodeValue.equals("22")) {
                                     // Do Nothing - It will auto handle
+                                    // TODO: Trigger paymentv2 again for e-wallet ?
                                 }
                             }
 
