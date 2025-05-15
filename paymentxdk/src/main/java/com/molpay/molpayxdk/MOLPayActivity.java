@@ -568,6 +568,8 @@ public class MOLPayActivity extends AppCompatActivity {
                 }
                 else if (url.startsWith(mpclickgpbutton)) {
 
+                    Log.e("logGooglePay" , "url = " + url);
+
                     // Extended VCode setting
                     if (paymentDetails.get("mp_extended_vcode") == null) {
                         paymentDetails.put(MOLPayActivity.mp_extended_vcode, false);
@@ -577,9 +579,14 @@ public class MOLPayActivity extends AppCompatActivity {
 
                     if (paymentDetails.get("mp_sandbox_mode") == null) {
                         paymentDetails.put(MOLPayActivity.mp_sandbox_mode, false);
+//                        paymentDetails.put(MOLPayActivity.mp_sandbox_mode, true);
                     } else {
                         paymentDetails.put(MOLPayActivity.mp_sandbox_mode, Objects.requireNonNull(paymentDetails.get("mp_sandbox_mode")));
                     }
+
+//                    paymentDetails.put(MOLPayActivity.mp_merchant_ID, "SB_molpayxdk");
+//                    paymentDetails.put(MOLPayActivity.mp_verification_key, "9bd5f1436e15d06c8067ae058f01fc3a");
+//                    paymentDetails.put(MOLPayActivity.mp_verification_key, "4445db44bdb60687a8e7f7903a59c3a9");
 
                     paymentDetails.put(MOLPayActivity.mp_merchant_ID, Objects.requireNonNull(paymentDetails.get("mp_merchant_ID"))); // Your sandbox / production merchant ID
                     paymentDetails.put(MOLPayActivity.mp_verification_key, Objects.requireNonNull(paymentDetails.get("mp_verification_key"))); // Your sandbox / production verification key
@@ -591,6 +598,7 @@ public class MOLPayActivity extends AppCompatActivity {
                     paymentDetails.put(MOLPayActivity.mp_bill_name, Objects.requireNonNull(paymentDetails.get("mp_bill_name")));
                     paymentDetails.put(MOLPayActivity.mp_bill_email, Objects.requireNonNull(paymentDetails.get("mp_bill_email")));
                     paymentDetails.put(MOLPayActivity.mp_bill_mobile, Objects.requireNonNull(paymentDetails.get("mp_bill_mobile")));
+                    paymentDetails.put(MOLPayActivity.mp_gpay_channel, Objects.requireNonNull(paymentDetails.get(MOLPayActivity.mp_gpay_channel)));
 
                     openGPActivityWithResult();
                 }
@@ -628,7 +636,10 @@ public class MOLPayActivity extends AppCompatActivity {
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
 
-                if (result.getResultCode() == MOLPayActivity.RESULT_OK && result.getData() != null) {
+                Log.d("logGooglePay", "MOLPayActivity gpActivityResultLauncher result = " + result.toString());
+                Log.d("logGooglePay", "MOLPayActivity gpActivityResultLauncher result = " + result.getData());
+
+                if (result.getData() != null) {
                     Intent data = result.getData();
                     String transactionResult = data.getStringExtra(MOLPayActivity.MOLPayTransactionResult);
 

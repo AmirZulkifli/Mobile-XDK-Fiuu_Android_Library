@@ -10,6 +10,8 @@ import android.net.http.SslError;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -49,6 +51,7 @@ public class WebActivity extends AppCompatActivity {
 
     private CountDownTimer countDownTimer;
     private String requestType = "";
+    private JSONObject lastestPaymentResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,12 +109,6 @@ public class WebActivity extends AppCompatActivity {
                 JSONObject responseBody = new JSONObject(cancelResponse);
                 onRequestData(responseBody);
                 Log.e("logGooglePay" , "cancelResponse = " + cancelResponse);
-
-//                // Create a new parent JSONObject and put the responseBody under it
-//                JSONObject finalObject = new JSONObject();
-//                finalObject.put("responseBody", responseBody);
-//                onRequestData(finalObject);
-//                Log.e("logGooglePay" , "finalObject = " + finalObject);
                 return;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -129,6 +126,7 @@ public class WebActivity extends AppCompatActivity {
             thread.join();
             JSONObject paymentResult = new JSONObject(new JSONObject(paymentThread.getValue()).getString("responseBody"));
             Log.e("logGooglePay" , "thread paymentResult = " + paymentResult);
+            lastestPaymentResult = paymentResult;
             onRequestData(paymentResult);
         } catch (InterruptedException | JSONException e) {
             Log.e("logGooglePay" , "thread InterruptedException | JSONException = " + e);
@@ -153,15 +151,15 @@ public class WebActivity extends AppCompatActivity {
 
     private void onStartTimOut() {
 
-        long minTimeOut = 60000; // 1 minute @ 60000
         long interval = 3000;
         final String[] queryResultStr = {null};
         final String[] trasactionJsonStr = {null};
 
-        // Query Transaction ID for every 6 second in 3 minutes
-        countDownTimer = new CountDownTimer(minTimeOut, interval) {
+        Log.e("logGooglePay" , "onStartTimOut ActivityGP.minTimeOut = " + ActivityGP.minTimeOut);
 
-            // Query Transaction ID for every 6 second in 3 minutes
+        // Query Transaction ID for every 3 second in 1 minute
+        countDownTimer = new CountDownTimer(ActivityGP.minTimeOut, interval) {
+
             @Override
             public void onTick(long millisUntilFinished) {
 
@@ -254,18 +252,29 @@ public class WebActivity extends AppCompatActivity {
                                     if (channelValue.contains("ShopeePay") || channelValue.contains("TNG-EWALLET")) {
                                         // TODO 2 : Trigger paymentv2 again for e-wallet
                                         Log.e("logGooglePay" , "E-Wallet - need requery payment_v2");
-                                        Intent intent = new Intent();
-                                        intent.putExtra("response", String.valueOf(responseBodyObj));
-                                        setResult(2, intent);
-                                        countDownTimer.cancel();
-                                        finish();
+
+                                        if (millisUntilFinished > 3000) {
+                                            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                                                pbLoading.setVisibility(View.VISIBLE);
+                                                tvLoading.setVisibility(View.VISIBLE);
+                                                ActivityGP.minTimeOut = millisUntilFinished;
+                                                countDownTimer.cancel();
+                                                onRequestData(lastestPaymentResult);
+                                            }, 3000); // 3-second delay
+                                        } else {
+                                            Intent resultCancel = new Intent();
+                                            resultCancel.putExtra("response", String.valueOf(responseBodyObj));
+                                            setResult(RESULT_CANCELED, resultCancel);
+                                            finish();
+                                        }
                                     } else {
                                         // Do Nothing - It will auto handle q_by_tid.php
                                         Log.e("logGooglePay" , "CARD - Do Nothing it will auto handle by q_by_tid.php");
                                     }
                                 }
-                            }
+                            } else {
 
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -282,7 +291,7 @@ public class WebActivity extends AppCompatActivity {
                 Log.e("logGooglePay" , "onFinish");
 
                 try {
-                    Log.e("logGooglePay" , "try");
+                    Log.e("logGooglePay" , "try WA 1");
 
                     JSONObject queryResultObj = new JSONObject(queryResultStr[0]);
                     Log.e("logGooglePay" , "1");
@@ -387,7 +396,7 @@ public class WebActivity extends AppCompatActivity {
         Log.e("logGoogle" , "onRequestData = " + response);
 
         try {
-            Log.e("logGoogle" , "try");
+            Log.e("logGoogle" , "try WA 2");
 
             if (response.has("responseBody")) {
                 Log.e("logGoogle" , "test has responseBody");
@@ -415,7 +424,7 @@ public class WebActivity extends AppCompatActivity {
 //                    transaction.setVkey(response.getString("verificationKey"));
                     transaction.setVkey(ActivityGP.verificationKey);
                 } catch (JSONException e) {
-                    Log.e("logGoogle" , "JSONException = " + e);
+                    Log.e("logGoogle" , "JSONException 3 = " + e);
                     e.printStackTrace();
                 }
 

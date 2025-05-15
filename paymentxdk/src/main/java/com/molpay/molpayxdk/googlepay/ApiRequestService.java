@@ -205,11 +205,11 @@ public class ApiRequestService {
                 formBuilder.add("paymentMethods[" + 0 + "]", "CC");
             }
 
-            Log.e("logGooglePay", "2");
+            Log.e("logGooglePay", "2 formBuilder = " + formBuilder.toString());
 
             formBody = formBuilder.build();
 
-            Log.e("logGooglePay", "3");
+            Log.e("logGooglePay", "3 formBody = " + formBody.toString());
 
             Request request = new Request.Builder()
                     .url(endPoint)
@@ -373,7 +373,7 @@ public class ApiRequestService {
 
             return postRequest(uri, builder);
         } catch (JSONException e) {
-            Log.e("logGooglePay" , "JSONException = " + e);
+            Log.e("logGooglePay" , "JSONException 1 = " + e);
             e.printStackTrace();
         }
         return null;
@@ -428,7 +428,7 @@ public class ApiRequestService {
         JSONObject response = new JSONObject();
 
         try {
-            Log.e("logGooglePay", "try");
+            Log.e("logGooglePay", "try ARS 1");
             response.put("statusCode", httpURLConnection.getResponseCode());
             response.put("responseMessage", httpURLConnection.getResponseMessage());
             response.put("responseBody", getResponseBody(httpURLConnection));
