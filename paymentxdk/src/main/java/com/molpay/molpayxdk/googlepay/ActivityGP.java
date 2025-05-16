@@ -64,7 +64,7 @@ public class ActivityGP extends AppCompatActivity {
     public static String createTxnResult;
     public static String tranID = "";
     public static String verificationKey = "";
-    public static long minTimeOut = 60000;
+    public static long minTimeOut = 0;
 
     // Handle potential conflict from calling loadPaymentData.
     ActivityResultLauncher<IntentSenderRequest> resolvePaymentForResult = registerForActivityResult(
@@ -80,7 +80,8 @@ public class ActivityGP extends AppCompatActivity {
                             PaymentData paymentData = PaymentData.getFromIntent(result.getData());
                             if (paymentData != null) {
                                 Log.e("logGooglePay", "handlePaymentSuccess 2 - resolvePaymentForResult");
-                                minTimeOut = 60000; // 1 minute @ 60000
+//                                Log.e("logGooglePay", "2 set minTimeOut 60000");
+//                                minTimeOut = 60000; // 1 minute @ 60000
                                 handlePaymentSuccess(paymentData);
                             }
                         }
@@ -239,7 +240,6 @@ public class ActivityGP extends AppCompatActivity {
     }
 
     private void initializeUi() {
-
         // Use view binding to access the UI elements
         ActivityGooglepayBinding layoutBinding = ActivityGooglepayBinding.inflate(getLayoutInflater());
         setContentView(layoutBinding.getRoot());
@@ -279,7 +279,8 @@ public class ActivityGP extends AppCompatActivity {
 
             if (completedTask.isSuccessful()) {
                 Log.e("logGooglePay", "handlePaymentSuccess 1 - requestPayment");
-                minTimeOut = 60000; // 1 minute @ 60000
+//                Log.e("logGooglePay", "1 set minTimeOut 60000");
+//                minTimeOut = 60000; // 1 minute @ 60000
                 handlePaymentSuccess(completedTask.getResult());
             } else {
                 Exception exception = completedTask.getException();
