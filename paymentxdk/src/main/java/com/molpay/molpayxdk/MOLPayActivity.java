@@ -579,14 +579,9 @@ public class MOLPayActivity extends AppCompatActivity {
 
                     if (paymentDetails.get("mp_sandbox_mode") == null) {
                         paymentDetails.put(MOLPayActivity.mp_sandbox_mode, false);
-//                        paymentDetails.put(MOLPayActivity.mp_sandbox_mode, true);
                     } else {
                         paymentDetails.put(MOLPayActivity.mp_sandbox_mode, Objects.requireNonNull(paymentDetails.get("mp_sandbox_mode")));
                     }
-
-//                    paymentDetails.put(MOLPayActivity.mp_merchant_ID, "SB_molpayxdk");
-//                    paymentDetails.put(MOLPayActivity.mp_verification_key, "9bd5f1436e15d06c8067ae058f01fc3a");
-//                    paymentDetails.put(MOLPayActivity.mp_verification_key, "4445db44bdb60687a8e7f7903a59c3a9");
 
                     paymentDetails.put(MOLPayActivity.mp_merchant_ID, Objects.requireNonNull(paymentDetails.get("mp_merchant_ID"))); // Your sandbox / production merchant ID
                     paymentDetails.put(MOLPayActivity.mp_verification_key, Objects.requireNonNull(paymentDetails.get("mp_verification_key"))); // Your sandbox / production verification key

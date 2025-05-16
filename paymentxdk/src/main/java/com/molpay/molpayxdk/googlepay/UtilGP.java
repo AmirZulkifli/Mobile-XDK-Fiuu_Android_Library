@@ -5,7 +5,6 @@ import android.util.Log;
 
 import com.google.android.gms.wallet.PaymentsClient;
 import com.google.android.gms.wallet.Wallet;
-import com.molpay.molpayxdk.databinding.ActivityGooglepayBinding;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,7 +12,6 @@ import org.json.JSONObject;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.HashMap;
 
 /**
  * Contains helper static methods for dealing with the Payments API.
@@ -145,24 +143,6 @@ public class UtilGP {
      */
     public static JSONArray getAllowedPaymentMethods() throws JSONException {
         Log.e("logGooglePay", "getAllowedPaymentMethods");
-
-//        return new JSONArray() {{
-//            put(getCardPaymentMethod());
-//        }};
-
-//        ApiRequestService.CreateTxn(new ApiRequestService.NetworkCallback() {
-//            @Override
-//            public void onSuccess(String responseJson) {
-//                Log.e("logGooglePay", "onSuccess = " + responseJson);
-//                ActivityGP.createTxnResult = responseJson;
-//            }
-//
-//            @Override
-//            public void onFailure(String error) {
-//                Log.e("logGooglePay", "onFailure = " + error);
-//            }
-//        } , paymentDetails);
-
         return getPaymentMethods(ActivityGP.createTxnResult); // New Card + e-wallets methods
     }
 
@@ -224,7 +204,6 @@ public class UtilGP {
 
         try {
             JSONObject isReadyToPayRequest = getBaseRequest();
-//            isReadyToPayRequest.put("allowedPaymentMethods", new JSONArray().put(getBaseCardPaymentMethod()));
             isReadyToPayRequest.put("allowedPaymentMethods", getAllowedPaymentMethods());
 
             return isReadyToPayRequest;
@@ -274,13 +253,10 @@ public class UtilGP {
      */
     public static JSONObject getPaymentDataRequest(long priceCents) {
 
-//        gpayAllowedChannels = allowedChannels;
-
         final String price = UtilGP.centsToString(priceCents);
 
         try {
             JSONObject paymentDataRequest = UtilGP.getBaseRequest();
-//            paymentDataRequest.put("allowedPaymentMethods", new JSONArray().put(UtilGP.getCardPaymentMethod()));
             paymentDataRequest.put("allowedPaymentMethods", getAllowedPaymentMethods());
             paymentDataRequest.put("transactionInfo", UtilGP.getTransactionInfo(price));
             paymentDataRequest.put("merchantInfo", UtilGP.getMerchantInfo());

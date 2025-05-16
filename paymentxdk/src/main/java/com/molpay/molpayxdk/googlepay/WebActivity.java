@@ -28,7 +28,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatTextView;
 
-import com.molpay.molpayxdk.MOLPayActivity;
 import com.molpay.molpayxdk.R;
 import com.molpay.molpayxdk.googlepay.Helper.RMSGooglePay;
 
@@ -421,7 +420,6 @@ public class WebActivity extends AppCompatActivity {
                     transaction.setTxID(response.getString("TxnID"));
                     transaction.setDomain(response.getString("MerchantID"));
                     transaction.setAmount(response.getString("TxnAmount"));
-//                    transaction.setVkey(response.getString("verificationKey"));
                     transaction.setVkey(ActivityGP.verificationKey);
                 } catch (JSONException e) {
                     Log.e("logGoogle" , "JSONException 3 = " + e);

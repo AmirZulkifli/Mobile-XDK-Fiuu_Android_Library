@@ -33,13 +33,11 @@ import java.util.Objects;
 public class ApiRequestService {
 
     static class Production {
-        static final String BASE_PAYMENT = "https://pay.merchant.razer.com/";
-        static final String API_PAYMENT = "https://api.merchant.razer.com/";
+        static final String BASE_PAYMENT = "https://pay.fiuu.com/";
+        static final String API_PAYMENT = "https://api.fiuu.com/";
     }
 
     static class Development {
-        static final String BASE_PAYMENT = "https://sandbox.merchant.razer.com/";
-        static final String API_PAYMENT = "https://sandbox.merchant.razer.com/";
         // New Sandbox
         static final String SB_PAYMENT_FIUU = "https://sandbox-payment.fiuu.com/";
         static final String SB_API_FIUU = "https://sandbox-api.fiuu.com/";
@@ -166,17 +164,6 @@ public class ApiRequestService {
                     extendedVcode
             );
 
-            Log.e("logGooglePay", "mp_amount = " + Objects.requireNonNull(paymentDetails.get("mp_amount")).toString());
-            Log.e("logGooglePay", "mp_merchant_ID = " + Objects.requireNonNull(paymentDetails.get("mp_merchant_ID")).toString());
-            Log.e("logGooglePay", "mp_order_ID = " + Objects.requireNonNull(paymentDetails.get("mp_order_ID")).toString());
-            Log.e("logGooglePay", "mp_verification_key = " + Objects.requireNonNull(paymentDetails.get("mp_verification_key")).toString());
-            Log.e("logGooglePay", "mp_currency = " + Objects.requireNonNull(paymentDetails.get("mp_currency")).toString());
-
-            Log.e("logGooglePay", "mp_bill_name = " + Objects.requireNonNull(paymentDetails.get("mp_bill_name")).toString());
-            Log.e("logGooglePay", "mp_bill_mobile = " + Objects.requireNonNull(paymentDetails.get("mp_bill_mobile")).toString());
-            Log.e("logGooglePay", "signature = " + signature);
-
-
             FormBody.Builder formBuilder = new FormBody.Builder()
                     .add("MerchantID", Objects.requireNonNull(paymentDetails.get("mp_merchant_ID")).toString())
                     .add("ReferenceNo", Objects.requireNonNull(paymentDetails.get("mp_order_ID")).toString())
@@ -192,8 +179,6 @@ public class ApiRequestService {
                     .add("NotificationURL", "")
                     .add("CallbackURL", "")
                     .add("ExpirationTime", "");
-
-            Log.e("logGooglePay", "1");
 
             // Handle paymentMethods[] from String[] mp_gpay_channel
             if (paymentDetails.get("mp_gpay_channel") != null) {
@@ -262,19 +247,11 @@ public class ApiRequestService {
             String merchantId = paymentInput.getString("merchantId");
             String verificationKey = paymentInput.getString("verificationKey");
 
-            // -------------------------------------------------------------------------------------
-
             if (ActivityGP.PAYMENTS_ENVIRONMENT == WalletConstants.ENVIRONMENT_PRODUCTION) {
                 endPoint = Production.BASE_PAYMENT + "RMS/GooglePay/payment_v2.php";
             } else if (ActivityGP.PAYMENTS_ENVIRONMENT == WalletConstants.ENVIRONMENT_TEST) {
                 endPoint = Development.SB_PAYMENT_FIUU + "RMS/GooglePay/payment_v2.php";
             }
-
-//            if (WebActivity.isSandbox.equals("false")) {
-//                endPoint = Production.BASE_PAYMENT + "RMS/API/Direct/1.4.0/index.php";
-//            } else if (WebActivity.isSandbox.equals("true")) {
-//                endPoint = Development.BASE_PAYMENT + "RMS/API/Direct/1.4.0/index.php";
-//            }
 
             Uri uri = Uri.parse(endPoint)
                     .buildUpon()
@@ -327,7 +304,6 @@ public class ApiRequestService {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
         return null;
     }
 

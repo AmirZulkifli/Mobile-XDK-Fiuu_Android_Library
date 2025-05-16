@@ -10,7 +10,6 @@ import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -32,32 +31,31 @@ public class MainActivity extends AppCompatActivity {
     private void restartmolpay() {
 
         // Compulsory String. Values obtained from Fiuu.
-//        paymentDetails.put(MOLPayActivity.mp_username, "RMSxdk_2022");
-//        paymentDetails.put(MOLPayActivity.mp_password, "RMSpwd@2022");
-//        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "rmsxdk_mobile_Dev");
-//        paymentDetails.put(MOLPayActivity.mp_app_name, "mobile");
-//        paymentDetails.put(MOLPayActivity.mp_verification_key, "ee738b541eff7b6b495e44771f71c0ec");
-
-        //----------------- Google Pay --------------------------------
-
         paymentDetails.put(MOLPayActivity.mp_username, "RMSxdk_2022");
         paymentDetails.put(MOLPayActivity.mp_password, "RMSpwd@2022");
+        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "rmsxdk_mobile_Dev");
         paymentDetails.put(MOLPayActivity.mp_app_name, "mobile");
-        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "SB_molpayxdk"); // Sandbox ID for TEST environment & Production/Dev ID once Google approved production access
-//        paymentDetails.put(MOLPayActivity.mp_verification_key, "4445db44bdb60687a8e7f7903a59c3a9"); // Sandbox ID for TEST environment & Production/Dev ID once Google approved production access
-//        New UAT vkey
-        paymentDetails.put(MOLPayActivity.mp_verification_key, "9bd5f1436e15d06c8067ae058f01fc3a");
+        paymentDetails.put(MOLPayActivity.mp_verification_key, "ee738b541eff7b6b495e44771f71c0ec");
 
-        paymentDetails.put(MOLPayActivity.mp_sandbox_mode, true); // true = Test Environment & false = production (required Google Pay production access approval)
+        //----------------- Google Pay SB --------------------------------
+
+//        paymentDetails.put(MOLPayActivity.mp_username, "RMSxdk_2022");
+//        paymentDetails.put(MOLPayActivity.mp_password, "RMSpwd@2022");
+//        paymentDetails.put(MOLPayActivity.mp_app_name, "mobile");
+//        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "SB_molpayxdk"); // Sandbox ID for TEST environment & Production/Dev ID once Google approved production access
+////        paymentDetails.put(MOLPayActivity.mp_verification_key, "4445db44bdb60687a8e7f7903a59c3a9"); // Sandbox ID for TEST environment & Production/Dev ID once Google approved production access
+////        New UAT vkey
+//        paymentDetails.put(MOLPayActivity.mp_verification_key, "9bd5f1436e15d06c8067ae058f01fc3a");
+//        paymentDetails.put(MOLPayActivity.mp_sandbox_mode, true); // true = Test Environment & false = production (required Google Pay production access approval)
 
         // Compulsory String. Payment info.
         paymentDetails.put(MOLPayActivity.mp_amount, "0.10"); // 2 decimal points format
         paymentDetails.put(MOLPayActivity.mp_order_ID, Calendar.getInstance().getTimeInMillis()); // Any unique alphanumeric String. For symbol only allowed hypen "-" and underscore "_"
         paymentDetails.put(MOLPayActivity.mp_currency, "MYR");
         paymentDetails.put(MOLPayActivity.mp_country, "MY");
-        paymentDetails.put(MOLPayActivity.mp_bill_description, "Test TNG");
-        paymentDetails.put(MOLPayActivity.mp_bill_name, "Ashraf TNG");
-        paymentDetails.put(MOLPayActivity.mp_bill_email, "ashraf.tng@fiuu.com");
+        paymentDetails.put(MOLPayActivity.mp_bill_description, "The bill description");
+        paymentDetails.put(MOLPayActivity.mp_bill_name, "Payer Name");
+        paymentDetails.put(MOLPayActivity.mp_bill_email, "payer.email@fiuu.com");
         paymentDetails.put(MOLPayActivity.mp_bill_mobile, "123456789");
         paymentDetails.put(MOLPayActivity.mp_closebutton_display, true);
 
@@ -162,14 +160,14 @@ public class MainActivity extends AppCompatActivity {
 
         // TODO: Enter your merchant account credentials before test run
 
-        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "rmsxdk_mobile_Dev");
-        paymentDetails.put(MOLPayActivity.mp_verification_key, "ee738b541eff7b6b495e44771f71c0ec");
+//        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "rmsxdk_mobile_Dev");
+//        paymentDetails.put(MOLPayActivity.mp_verification_key, "ee738b541eff7b6b495e44771f71c0ec");
 
-//        paymentDetails.put(MOLPayActivity.mp_sandbox_mode, true); // true = Test Environment & false = production (required Google Pay production access approval)
-//        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "SB_molpayxdk"); // Sandbox ID for TEST environment & Production/Dev ID once Google approved production access
+        paymentDetails.put(MOLPayActivity.mp_sandbox_mode, true); // true = Test Environment & false = production (required Google Pay production access approval)
+        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "SB_molpayxdk"); // Sandbox ID for TEST environment & Production/Dev ID once Google approved production access
 //        paymentDetails.put(MOLPayActivity.mp_verification_key, "4445db44bdb60687a8e7f7903a59c3a9"); // Sandbox ID for TEST environment & Production/Dev ID once Google approved production access
 //        New UAT vkey
-//        paymentDetails.put(MOLPayActivity.mp_verification_key, "9bd5f1436e15d06c8067ae058f01fc3a"); // Sandbox ID for TEST environment & Production/Dev ID once Google approved production access
+        paymentDetails.put(MOLPayActivity.mp_verification_key, "9bd5f1436e15d06c8067ae058f01fc3a"); // Sandbox ID for TEST environment & Production/Dev ID once Google approved production access
 
         paymentDetails.put(MOLPayActivity.mp_amount, "0.10"); // 2 decimal points format
         paymentDetails.put(MOLPayActivity.mp_order_ID, Calendar.getInstance().getTimeInMillis()); // Any unique alphanumeric String. For symbol only allowed hypen "-" and underscore "_"
@@ -193,8 +191,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void openGPActivityWithResult() {
-        Log.e("logGooglePay", "Tapped GPay");
-
         Intent intent = new Intent(MainActivity.this, ActivityGP.class); // Used ActivityGP for Google Pay
         intent.putExtra(MOLPayActivity.MOLPayPaymentDetails, paymentDetails);
         gpActivityResultLauncher.launch(intent);
@@ -224,9 +220,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        Log.e("logGooglePay", "onCreate 1st");
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -234,15 +227,14 @@ public class MainActivity extends AppCompatActivity {
 
         // The Google Pay button is a layout file – take the root view
         PayButton googlePayButton = findViewById(R.id.googlePayButton);
-        ImageView btnGPay = findViewById(R.id.btnGPay);
 
-        Log.e("logGooglePay", "onCreate before try");
+        ImageView btnGPay = findViewById(R.id.btnGPay);
+        btnGPay.setOnClickListener(v -> {
+            googlePayPayment();
+        });
 
         try {
             // TODO: Choose your preferred Google Pay button : https://developers.google.com/pay/api/android/guides/brand-guidelines
-
-//            Log.e("logGooglePay", "setAllowedPaymentMethods = " + UtilGP.getAllowedPaymentMethods().toString());
-
             googlePayButton.initialize(
                     ButtonOptions.newBuilder()
                             .setButtonTheme(ButtonConstants.ButtonTheme.DARK)
@@ -256,12 +248,7 @@ public class MainActivity extends AppCompatActivity {
             });
         } catch (JSONException e) {
             // Keep Google Pay button hidden (consider logging this to your app analytics service)
-            Log.e("logGooglePay", "JSONException 2 = " + e);
         }
-
-        btnGPay.setOnClickListener(v -> {
-            googlePayPayment();
-        });
     }
 
     @Override

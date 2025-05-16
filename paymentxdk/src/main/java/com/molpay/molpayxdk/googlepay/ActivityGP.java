@@ -64,7 +64,6 @@ public class ActivityGP extends AppCompatActivity {
     public static String createTxnResult;
     public static String tranID = "";
     public static String verificationKey = "";
-    private PaymentData latestPaymentData;
     public static long minTimeOut = 60000;
 
     // Handle potential conflict from calling loadPaymentData.
@@ -97,8 +96,6 @@ public class ActivityGP extends AppCompatActivity {
                         // If Result = 1 finish with no response
                         Log.e("logGooglePay", "Masuk RESULT_FIRST_USER");
                         CancelGPay("");
-//                        setResult(RESULT_FIRST_USER, null);
-//                        finish();
                         break;
                 }
             }
@@ -112,7 +109,6 @@ public class ActivityGP extends AppCompatActivity {
                 runOnUiThread(() -> {
                     // Safely update UI here
                     Log.e("logGooglePay", "onSuccess = " + responseJson);
-
                     Intent i = new Intent(ActivityGP.this, WebActivity.class); // Redirect To WebActivity (RMS library)
                     i.putExtra("cancelResponse", responseJson);
                     startActivityForResult(i, CANCEL_GPAY_TXN);
@@ -150,9 +146,9 @@ public class ActivityGP extends AppCompatActivity {
             }
         }
 
-        Log.e("logGooglePay", "PAYMENTS_ENVIRONMENT = " + PAYMENTS_ENVIRONMENT);
-
         initializeUi();
+
+        Log.e("logGooglePay", "PAYMENTS_ENVIRONMENT = " + PAYMENTS_ENVIRONMENT);
 
         ApiRequestService.CreateTxn(new ApiRequestService.NetworkCallback() {
             @Override
@@ -243,7 +239,6 @@ public class ActivityGP extends AppCompatActivity {
     }
 
     private void initializeUi() {
-        Log.e("logGooglePay", "initializeUi");
 
         // Use view binding to access the UI elements
         ActivityGooglepayBinding layoutBinding = ActivityGooglepayBinding.inflate(getLayoutInflater());
@@ -261,8 +256,6 @@ public class ActivityGP extends AppCompatActivity {
      * @param available isReadyToPay API response.
      */
     private void setGooglePayAvailable(boolean available) {
-        Log.e("logGooglePay", "setGooglePayAvailable");
-
         if (available) {
             requestPayment();
         } else {
@@ -290,12 +283,7 @@ public class ActivityGP extends AppCompatActivity {
                 handlePaymentSuccess(completedTask.getResult());
             } else {
                 Exception exception = completedTask.getException();
-
-                assert exception != null;
-                Log.e("logGooglePay", "exception = " + exception);
-
                 if (exception instanceof ResolvableApiException) {
-                    Log.e("logGooglePay", "start resolvePaymentForResult");
                     PendingIntent resolution = ((ResolvableApiException) exception).getResolution();
                     resolvePaymentForResult.launch(new IntentSenderRequest.Builder(resolution).build());
 
@@ -312,7 +300,6 @@ public class ActivityGP extends AppCompatActivity {
         });
     }
 
-    // TODO : Create handleEwalletRequery function
     /**
      * PaymentData response object contains the payment information, as well as any additional
      * requested information, such as billing and shipping address.
@@ -323,10 +310,8 @@ public class ActivityGP extends AppCompatActivity {
      */
     private void handlePaymentSuccess(PaymentData paymentData) {
 
-        latestPaymentData = paymentData;
-
         pbLoading.setVisibility(View.VISIBLE);
-        Log.e("logGooglePay", "handlePaymentSuccess paymentData = " + paymentData.toString());
+        Log.e("logGooglePay", "handlePaymentSuccess");
 
         final String paymentInfo = paymentData.toJson();
 
@@ -401,11 +386,6 @@ public class ActivityGP extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
-
-//        Log.e("logGooglePay", "requestCode = " + requestCode);
-//        Log.e("logGooglePay", "resultCode = " + resultCode);
-//        assert data != null;
-//        Log.e("logGooglePay", "data = " + data);
 
 //        CharSequence response;
         String response;
