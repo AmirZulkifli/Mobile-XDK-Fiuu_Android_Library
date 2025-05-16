@@ -356,8 +356,7 @@ public class WebActivity extends AppCompatActivity {
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
 
                 Log.e("logGooglePay" , "shouldOverrideUrlLoading = " + request.getUrl());
-
-                // TODO : Need handle for e-wallet requery ?
+                
                 if (request.getUrl().toString().contains("result.php")) {
                     statCodeValueSuccess = true;
                     pbLoading.setVisibility(View.VISIBLE);
