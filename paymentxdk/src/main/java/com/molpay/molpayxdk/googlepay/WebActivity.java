@@ -106,6 +106,8 @@ public class WebActivity extends AppCompatActivity {
             try {
                 // Convert the JSON string into a JSONObject
                 JSONObject responseBody = new JSONObject(cancelResponse);
+                Log.e("logGooglePay", "-1 set minTimeOut 60000");
+                ActivityGP.minTimeOut = 60000;
                 onRequestData(responseBody);
                 Log.e("logGooglePay" , "cancelResponse = " + cancelResponse);
                 return;
