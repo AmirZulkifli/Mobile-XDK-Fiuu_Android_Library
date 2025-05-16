@@ -511,16 +511,10 @@ public class WebActivity extends AppCompatActivity {
 
         @Override
         public void run() {
-
-                RMSGooglePay pay = new RMSGooglePay();
-                JSONObject result = null;
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    result = (JSONObject) pay.requestPayment(paymentInput, paymentInfo);
-                }
-
-                resp = result.toString();
-
+            RMSGooglePay pay = new RMSGooglePay();
+            JSONObject result;
+            result = (JSONObject) pay.requestPayment(paymentInput, paymentInfo);
+            resp = result.toString();
         }
     }
 
