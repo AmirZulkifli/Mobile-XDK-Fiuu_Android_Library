@@ -209,6 +209,11 @@ public class WebActivity extends AppCompatActivity {
                                 String statCodeValue = responseBodyObj.getString("StatCode");
                                 String channelValue = responseBodyObj.getString("Channel");
 
+//                                For Testing User Case Only
+//                                if (millisUntilFinished < 50000) {
+//                                    statCodeValue = "00";
+//                                }
+
                                 Log.e("logGooglePay" , "statCodeValue = " + statCodeValue);
                                 Log.e("logGooglePay" , "channelValue = " + channelValue);
 
