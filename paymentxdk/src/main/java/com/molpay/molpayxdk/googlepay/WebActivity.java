@@ -118,24 +118,34 @@ public class WebActivity extends AppCompatActivity {
 
         Log.e("logGooglePay" , "bypass return cancelResponse");
 
-        PaymentThread paymentThread = new PaymentThread();
-        paymentThread.setValue(paymentInput, paymentInfo); // set value
-        Thread thread = new Thread(paymentThread);
-        thread.start();
+        new Thread(() -> {
+            PaymentThread paymentThread = new PaymentThread();
+            paymentThread.setValue(paymentInput, paymentInfo);
+            paymentThread.run(); // or use thread.start() and thread.join() if needed
 
-        try {
-            thread.join();
-            JSONObject paymentResult = new JSONObject(new JSONObject(paymentThread.getValue()).getString("responseBody"));
-            Log.e("logGooglePay" , "thread paymentResult = " + paymentResult);
-            lastestPaymentResult = paymentResult;
-            onRequestData(paymentResult);
-        } catch (InterruptedException | JSONException e) {
-            Log.e("logGooglePay" , "thread InterruptedException | JSONException = " + e);
-            Intent resultCancel = new Intent();
-            resultCancel.putExtra("response", String.valueOf(e));
-            setResult(RESULT_CANCELED, resultCancel);
-            finish();
-        }
+            try {
+                JSONObject paymentResult = new JSONObject(new JSONObject(paymentThread.getValue()).getString("responseBody"));
+
+                // Update UI
+                runOnUiThread(() -> {
+                    Log.e("logGooglePay", "thread paymentResult = " + paymentResult);
+                    lastestPaymentResult = paymentResult;
+                    Log.e("logGooglePay", "0 set minTimeOut 60000");
+                    ActivityGP.minTimeOut = 60000;
+                    onRequestData(paymentResult); // <-- UI-related logic
+                });
+
+            } catch (JSONException e) {
+                runOnUiThread(() -> {
+                    Log.e("logGooglePay", "JSONException = " + e);
+                    Intent resultCancel = new Intent();
+                    resultCancel.putExtra("response", String.valueOf(e));
+                    setResult(RESULT_CANCELED, resultCancel);
+                    finish();
+                });
+            }
+        }).start();
+
 
         // Register a callback for handling the back press
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
