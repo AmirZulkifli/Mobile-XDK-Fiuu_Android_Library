@@ -266,18 +266,18 @@ public class WebActivity extends AppCompatActivity {
                                             }).show();
                                 }  else if (statCodeValue.equals("22")) {
                                     if (channelValue.contains("ShopeePay") || channelValue.contains("TNG-EWALLET")) {
-                                        // TODO 2 : Trigger paymentv2 again for e-wallet
                                         Log.e("logGooglePay" , "E-Wallet - need requery payment_v2");
-
+                                        countDownTimer.cancel();
                                         if (millisUntilFinished > 3000) {
                                             new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                                                // TODO 2 : Fix visibility kelip2
                                                 pbLoading.setVisibility(View.VISIBLE);
                                                 tvLoading.setVisibility(View.VISIBLE);
-                                                ActivityGP.minTimeOut = millisUntilFinished;
-                                                countDownTimer.cancel();
+                                                ActivityGP.minTimeOut = ActivityGP.minTimeOut - 3000;
                                                 onRequestData(lastestPaymentResult);
                                             }, 3000); // 3-second delay
                                         } else {
+                                            // TODO 2 : Fix cancel timeout 22
                                             Intent resultCancel = new Intent();
                                             resultCancel.putExtra("response", String.valueOf(responseBodyObj));
                                             setResult(RESULT_CANCELED, resultCancel);
@@ -373,7 +373,7 @@ public class WebActivity extends AppCompatActivity {
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
 
                 Log.e("logGooglePay" , "shouldOverrideUrlLoading = " + request.getUrl());
-                
+
                 if (request.getUrl().toString().contains("result.php")) {
                     statCodeValueSuccess = true;
                     pbLoading.setVisibility(View.VISIBLE);
