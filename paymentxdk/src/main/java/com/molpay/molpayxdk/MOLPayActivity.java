@@ -583,6 +583,18 @@ public class MOLPayActivity extends AppCompatActivity {
                         paymentDetails.put(MOLPayActivity.mp_sandbox_mode, Objects.requireNonNull(paymentDetails.get("mp_sandbox_mode")));
                     }
 
+                    if (paymentDetails.get(MOLPayActivity.mp_gpay_channel) == null) {
+                        paymentDetails.put(MOLPayActivity.mp_gpay_channel, new String[] { "CC" });
+                    } else {
+                        paymentDetails.put(MOLPayActivity.mp_gpay_channel, Objects.requireNonNull(paymentDetails.get(MOLPayActivity.mp_gpay_channel)));
+                    }
+
+                    if (paymentDetails.get(MOLPayActivity.mp_closebutton_display) == null) {
+                        paymentDetails.put(MOLPayActivity.mp_closebutton_display, false);
+                    } else {
+                        paymentDetails.put(MOLPayActivity.mp_closebutton_display, Objects.requireNonNull(paymentDetails.get(MOLPayActivity.mp_closebutton_display)));
+                    }
+
                     paymentDetails.put(MOLPayActivity.mp_merchant_ID, Objects.requireNonNull(paymentDetails.get("mp_merchant_ID"))); // Your sandbox / production merchant ID
                     paymentDetails.put(MOLPayActivity.mp_verification_key, Objects.requireNonNull(paymentDetails.get("mp_verification_key"))); // Your sandbox / production verification key
                     paymentDetails.put(MOLPayActivity.mp_amount, Objects.requireNonNull(paymentDetails.get("mp_amount"))); // Must be in 2 decimal points format
@@ -593,7 +605,6 @@ public class MOLPayActivity extends AppCompatActivity {
                     paymentDetails.put(MOLPayActivity.mp_bill_name, Objects.requireNonNull(paymentDetails.get("mp_bill_name")));
                     paymentDetails.put(MOLPayActivity.mp_bill_email, Objects.requireNonNull(paymentDetails.get("mp_bill_email")));
                     paymentDetails.put(MOLPayActivity.mp_bill_mobile, Objects.requireNonNull(paymentDetails.get("mp_bill_mobile")));
-                    paymentDetails.put(MOLPayActivity.mp_gpay_channel, Objects.requireNonNull(paymentDetails.get(MOLPayActivity.mp_gpay_channel)));
 
                     openGPActivityWithResult();
                 }
