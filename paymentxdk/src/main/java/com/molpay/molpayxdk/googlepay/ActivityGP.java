@@ -60,7 +60,6 @@ public class ActivityGP extends AppCompatActivity {
     public static String CURRENCY_CODE = "MYR";
     public static int PAYMENTS_ENVIRONMENT = WalletConstants.ENVIRONMENT_TEST; // 3 = TEST & 1 = PRODUCTION
 
-    public static String[] gpayAllowedChannels = null;
     public static String createTxnResult;
     public static String tranID = "";
     public static String verificationKey = "";
@@ -173,8 +172,6 @@ public class ActivityGP extends AppCompatActivity {
                     }
 
                     createTxnResult = responseJson;
-
-                    gpayAllowedChannels = (String[]) paymentDetails.get(MOLPayActivity.mp_gpay_channel);
 
                     // Check Google Pay availability
                     model = new ViewModelProvider(ActivityGP.this).get(ViewModelGP.class);
