@@ -270,6 +270,13 @@ public class ApiRequestService {
             String GooglePayBase64 = Base64.getEncoder()
                                     .encodeToString(paymentInfo.getBytes());
 
+            String requery;
+            if (WebActivity.paymentV2Requery.isEmpty()) {
+                requery = "0";
+            } else {
+                requery = WebActivity.paymentV2Requery;
+            }
+
             Log.e("logGooglePay", "endPoint = " + endPoint);
             Log.e("logGooglePay", "MerchantID = " + merchantId);
             Log.e("logGooglePay", "ReferenceNo = " + orderId);
@@ -282,6 +289,7 @@ public class ApiRequestService {
             Log.e("logGooglePay", "CustDesc = " + billDesc);
             Log.e("logGooglePay", "Signature = " + vCode);
             Log.e("logGooglePay", "mpsl_version = 2");
+            Log.e("logGooglePay", "requery = " + requery);
             Log.e("logGooglePay", "GooglePay = " + GooglePayBase64);
 
             Uri.Builder builder = new Uri.Builder()
@@ -297,8 +305,10 @@ public class ApiRequestService {
                     .appendQueryParameter("Signature", vCode)
                     .appendQueryParameter("mpsl_version", "2")
                     .appendQueryParameter("tranID", ActivityGP.tranID)
-                    .appendQueryParameter("requery", "0")
+                    .appendQueryParameter("requery", requery)
                     .appendQueryParameter("GooglePay", GooglePayBase64);
+
+            WebActivity.paymentV2Requery = "0";
 
                 return postRequest(uri, builder);
         } catch (JSONException e) {
