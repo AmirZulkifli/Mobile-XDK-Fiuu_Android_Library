@@ -324,6 +324,13 @@ public class ActivityGP extends AppCompatActivity {
                     paymentInput.put("extendedVCode", Objects.requireNonNull(paymentDetails.get("mp_extended_vcode")));
                 }
 
+                // Close button setting
+                if (paymentDetails.get(MOLPayActivity.mp_closebutton_display) == null) {
+                    paymentInput.put("closeButton", false);
+                } else {
+                    paymentInput.put("closeButton", Objects.requireNonNull(paymentDetails.get(MOLPayActivity.mp_closebutton_display)));
+                }
+
                 // TODO: Send the payment info e.g. (all info are compulsory) :
                 paymentInput.put("orderId", Objects.requireNonNull(paymentDetails.get("mp_order_ID")).toString()); // Unique payment order id
                 paymentInput.put("amount", Objects.requireNonNull(paymentDetails.get("mp_amount")).toString()); // Payment amount
