@@ -361,9 +361,12 @@ public class WebActivity extends AppCompatActivity {
             wvGateway.loadData(xdkHTMLRedirection, "text/html", "base64");
         } else if (requestType.equalsIgnoreCase("REDIRECT")) {
             wvGateway.loadData(encodedHtml, "text/html", "base64");
-            pbLoading.setVisibility(View.GONE);
-            tvLoading.setVisibility(View.GONE);
-            wvGateway.setVisibility(View.VISIBLE);
+            Log.e("logGooglePay" , "requeryPaymentV2 = " + requeryPaymentV2);
+            if ( ! requeryPaymentV2 ) {
+                pbLoading.setVisibility(View.GONE);
+                tvLoading.setVisibility(View.GONE);
+                wvGateway.setVisibility(View.VISIBLE);
+            }
         } else {
             wvGateway.loadData(encodedHtml, "text/html", "base64");
         }
