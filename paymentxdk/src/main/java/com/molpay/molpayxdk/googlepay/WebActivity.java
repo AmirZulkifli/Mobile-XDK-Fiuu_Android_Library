@@ -14,6 +14,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebResourceError;
@@ -28,6 +30,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatTextView;
 
+import com.molpay.molpayxdk.MOLPayActivity;
 import com.molpay.molpayxdk.R;
 import com.molpay.molpayxdk.googlepay.Helper.RMSGooglePay;
 
@@ -55,6 +58,7 @@ public class WebActivity extends AppCompatActivity {
     private String paymentInput;
     private String paymentInfo;
     private boolean requeryPaymentV2 = false;
+    private Boolean isClosebuttonDisplay = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -579,4 +583,52 @@ public class WebActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+
+        Log.e("logGooglePay" , "onCreateOptionsMenu paymentInput = " + paymentInput);
+
+        if (paymentInput != null) {
+            JSONObject json = null;
+            try {
+                json = new JSONObject(paymentInput);
+
+                Log.e("logGooglePay" , "onCreateOptionsMenu");
+
+                if (json.has("closeButton")) {
+                    isClosebuttonDisplay = json.getBoolean("closeButton");
+                }
+            } catch (JSONException e) {
+                return false;
+            }
+
+            if (isClosebuttonDisplay) {
+                getMenuInflater().inflate(R.menu.menu_molpay, menu);
+                return super.onCreateOptionsMenu(menu);
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        Log.e("logGooglePay", "Get Menu: " + item.getTitle());
+        if (Objects.equals(item.getTitle(), "Close")) {
+            setResult(RESULT_CANCELED, null);
+            finish();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (countDownTimer != null) {
+            Log.e("logGooglePay", "onDestroy countDownTimer NOT NULL");
+            countDownTimer.cancel();
+        }
+        super.onDestroy();
+    }
 }
