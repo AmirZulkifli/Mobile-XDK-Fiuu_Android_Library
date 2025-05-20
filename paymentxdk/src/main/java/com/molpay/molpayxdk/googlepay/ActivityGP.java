@@ -64,7 +64,7 @@ public class ActivityGP extends AppCompatActivity {
     public static String createTxnResult;
     public static String tranID = "";
     public static String verificationKey = "";
-    public static long minTimeOut = 0;
+    public static long minTimeOut = 60000;
 
     // Handle potential conflict from calling loadPaymentData.
     ActivityResultLauncher<IntentSenderRequest> resolvePaymentForResult = registerForActivityResult(
@@ -421,11 +421,17 @@ public class ActivityGP extends AppCompatActivity {
                     // Response Error CallBack
 
                     Log.e("logGooglePay", "Masuk LOAD_TRANSACTION_DATA_REQUEST_CODE AppCompatActivity.RESULT_CANCELED");
+                    Log.e("logGooglePay", "Masuk LOAD_TRANSACTION_DATA_REQUEST_CODE AppCompatActivity.RESULT_CANCELED");
 
                     if (data != null) {
                         response = data.getStringExtra("response");
                         Log.e("logGooglePay", "RESULT_CANCELED response = " + response);
-                        CancelGPay(response);
+                        assert response != null;
+                        if (response.contains("StatCode")) {
+                            CancelGPay("");
+                        } else {
+                            CancelGPay(response);
+                        }
                     } else {
                         Log.e("logGooglePay", "RESULT_CANCELED ActivityGP 1 data = null");
                         CancelGPay("");
