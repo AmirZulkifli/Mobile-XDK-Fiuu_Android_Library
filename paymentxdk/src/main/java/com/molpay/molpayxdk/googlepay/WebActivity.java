@@ -340,7 +340,11 @@ public class WebActivity extends AppCompatActivity {
                         Log.e("logGooglePay" , "RESULT_CANCELED WebActivity 2 responseBodyObj = " + responseBodyObj);
                         setResult(RESULT_CANCELED, intent);
                     } else {
-                        setResult(RESULT_OK, intent);
+                        if (responseBodyObj.getString("StatCode").equalsIgnoreCase("22")) {
+                            setResult(RESULT_CANCELED, intent);
+                        } else {
+                            setResult(RESULT_OK, intent);
+                        }
                     }
 
                     countDownTimer.cancel();
