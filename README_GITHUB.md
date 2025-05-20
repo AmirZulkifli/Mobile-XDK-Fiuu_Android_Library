@@ -291,7 +291,10 @@ In Java class add this in onCreate :
                 paymentDetails.put(MOLPayActivity.mp_sandbox_mode, true); // true = Test Environment & false = production (required Google Pay production access approval)
                 paymentDetails.put(MOLPayActivity.mp_extended_vcode, false); // Optional : Set true if your account enabled extended Verify Payment (by default false)
 
-[//]: # (               TODO 0 : Add mp_gpay_channels & mp_close_button)
+               // e-Wallet setting examples : 
+               paymentDetails.put(MOLPayActivity.mp_gpay_channel, new String[] { "SHOPEEPAY", "TNG-EWALLET", "CC" }); // Enable ShopeePay, TNG eWallet & Card 
+               paymentDetails.put(MOLPayActivity.mp_gpay_channel, new String[] { "SHOPEEPAY", "TNG-EWALLET" }); // Enable ShopeePay & TNG eWallet Only
+               paymentDetails.put(MOLPayActivity.mp_gpay_channel, new String[] { "CC", "TNG-EWALLET" }); // Enable Card & TNG eWallet Only
 
                 openGPActivityWithResult();
         }
