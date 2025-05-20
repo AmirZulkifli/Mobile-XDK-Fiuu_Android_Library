@@ -36,6 +36,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Iterator;
+import java.util.Objects;
 
 public class WebActivity extends AppCompatActivity {
 
@@ -50,7 +51,10 @@ public class WebActivity extends AppCompatActivity {
 
     private CountDownTimer countDownTimer;
     private String requestType = "";
-    private JSONObject lastestPaymentResult;
+    public static String paymentV2Requery = "0";
+    private String paymentInput;
+    private String paymentInfo;
+    private boolean requeryPaymentV2 = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,8 +65,8 @@ public class WebActivity extends AppCompatActivity {
         setContentView(R.layout.activity_web);
 
         Intent intent = getIntent();
-        String paymentInput = intent.getStringExtra("paymentInput");
-        String paymentInfo = intent.getStringExtra("paymentInfo");
+        paymentInput = intent.getStringExtra("paymentInput");
+        paymentInfo = intent.getStringExtra("paymentInfo");
 
         Log.e("logGooglePay" , "after getStringExtra 1");
 
@@ -157,19 +161,6 @@ public class WebActivity extends AppCompatActivity {
                 });
             }
         }).start();
-
-
-        // Register a callback for handling the back press
-        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                // Do nothing - prevent user from performing backpress
-                Log.e("logGooglePay" , "WebActivity GP backpressed");
-            }
-        };
-
-        // Add the callback to the OnBackPressedDispatcher
-        getOnBackPressedDispatcher().addCallback(this, callback);
     }
 
     private void onStartTimOut() {
@@ -233,7 +224,7 @@ public class WebActivity extends AppCompatActivity {
                                 String statCodeValue = responseBodyObj.getString("StatCode");
                                 String channelValue = responseBodyObj.getString("Channel");
 
-//                                For Testing User Case Only
+////                                TODO 1: For Testing User Case Only
 //                                if (millisUntilFinished < 50000) {
 //                                    statCodeValue = "00";
 //                                }
@@ -278,24 +269,31 @@ public class WebActivity extends AppCompatActivity {
                                             }).show();
                                 }  else if (statCodeValue.equals("22")) {
                                     if (channelValue.contains("ShopeePay") || channelValue.contains("TNG-EWALLET")) {
-                                        Log.e("logGooglePay" , "E-Wallet - need requery payment_v2");
-                                        countDownTimer.cancel();
+                                        Log.e("logGooglePay", "E-Wallet - need requery payment_v2");
+                                        countDownTimer.cancel(); // Stop current countdown
+
                                         if (millisUntilFinished > 3000) {
                                             new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                                                // TODO 2 : Fix visibility kelip2
                                                 pbLoading.setVisibility(View.VISIBLE);
                                                 tvLoading.setVisibility(View.VISIBLE);
-                                                ActivityGP.minTimeOut = ActivityGP.minTimeOut - 3000;
-                                                onRequestData(lastestPaymentResult);
+                                                // Reduce minTimeOut by 3 seconds
+                                                ActivityGP.minTimeOut -= 3000;
+                                                paymentV2Requery = "1";
+                                                requeryPaymentV2 = true;
+                                                runPaymentThread ();
                                             }, 3000); // 3-second delay
+
                                         } else {
-                                            // TODO 2 : Fix cancel timeout 22
+                                            // Timeout too short, cancel payment
+                                            Log.e("logGooglePay", "Timeout too short, canceling payment");
+                                            Log.e("logGooglePay", "responseBodyObj = " + responseBodyObj);
                                             Intent resultCancel = new Intent();
                                             resultCancel.putExtra("response", String.valueOf(responseBodyObj));
                                             setResult(RESULT_CANCELED, resultCancel);
                                             finish();
                                         }
-                                    } else {
+                                    }
+                                    else {
                                         // Do Nothing - It will auto handle q_by_tid.php
                                         Log.e("logGooglePay" , "CARD - Do Nothing it will auto handle by q_by_tid.php");
                                     }
