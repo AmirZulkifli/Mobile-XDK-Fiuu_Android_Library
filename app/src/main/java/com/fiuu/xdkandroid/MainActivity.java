@@ -119,7 +119,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void openStartActivityResult(){
-        //  TODO 1.1 : Check NEW GPay WebCore Flow
         Intent intent = new Intent(MainActivity.this, MOLPayActivity.class);
         intent.putExtra(MOLPayActivity.MOLPayPaymentDetails, paymentDetails);
         paymentActivityResultLauncher.launch(intent);
@@ -160,14 +159,14 @@ public class MainActivity extends AppCompatActivity {
 
         // TODO: Enter your merchant account credentials before test run
 
-//        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "rmsxdk_mobile_Dev");
-//        paymentDetails.put(MOLPayActivity.mp_verification_key, "ee738b541eff7b6b495e44771f71c0ec");
+        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "rmsxdk_mobile_Dev");
+        paymentDetails.put(MOLPayActivity.mp_verification_key, "ee738b541eff7b6b495e44771f71c0ec");
 
-        paymentDetails.put(MOLPayActivity.mp_sandbox_mode, true); // true = Test Environment & false = production (required Google Pay production access approval)
-        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "SB_molpayxdk"); // Sandbox ID for TEST environment & Production/Dev ID once Google approved production access
-//        paymentDetails.put(MOLPayActivity.mp_verification_key, "4445db44bdb60687a8e7f7903a59c3a9"); // Sandbox ID for TEST environment & Production/Dev ID once Google approved production access
-//        New UAT vkey
-        paymentDetails.put(MOLPayActivity.mp_verification_key, "9bd5f1436e15d06c8067ae058f01fc3a"); // Sandbox ID for TEST environment & Production/Dev ID once Google approved production access
+//        paymentDetails.put(MOLPayActivity.mp_sandbox_mode, true); // true = Test Environment & false = production (required Google Pay production access approval)
+//        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "SB_molpayxdk"); // Sandbox ID for TEST environment & Production/Dev ID once Google approved production access
+////        paymentDetails.put(MOLPayActivity.mp_verification_key, "4445db44bdb60687a8e7f7903a59c3a9"); // Sandbox ID for TEST environment & Production/Dev ID once Google approved production access
+////        New UAT vkey
+//        paymentDetails.put(MOLPayActivity.mp_verification_key, "9bd5f1436e15d06c8067ae058f01fc3a"); // Sandbox ID for TEST environment & Production/Dev ID once Google approved production access
 
         paymentDetails.put(MOLPayActivity.mp_amount, "0.10"); // 2 decimal points format
         paymentDetails.put(MOLPayActivity.mp_order_ID, Calendar.getInstance().getTimeInMillis()); // Any unique alphanumeric String. For symbol only allowed hypen "-" and underscore "_"
@@ -178,7 +177,6 @@ public class MainActivity extends AppCompatActivity {
         paymentDetails.put(MOLPayActivity.mp_bill_email, "payer.email@fiuu.com");
         paymentDetails.put(MOLPayActivity.mp_bill_mobile, "123456789");
 
-//        TODO 1.2 : Add close button handler for GPay Webview e.g. allow close OTP page
         paymentDetails.put(MOLPayActivity.mp_closebutton_display, true);
 
         paymentDetails.put(MOLPayActivity.mp_gpay_channel, new String[] { "SHOPEEPAY", "CC", "TNG-EWALLET" });
