@@ -118,21 +118,33 @@ public class WebActivity extends AppCompatActivity {
 
         Log.e("logGooglePay" , "bypass return cancelResponse");
 
+        runPaymentThread ();
+
+        // Register a callback for handling the back press
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                // Do nothing - prevent user from performing backpress
+                Log.e("logGooglePay" , "WebActivity GP backpressed");
+            }
+        };
+
+        // Add the callback to the OnBackPressedDispatcher
+        getOnBackPressedDispatcher().addCallback(this, callback);
+    }
+
+    private void runPaymentThread () {
         new Thread(() -> {
             PaymentThread paymentThread = new PaymentThread();
             paymentThread.setValue(paymentInput, paymentInfo);
-            paymentThread.run(); // or use thread.start() and thread.join() if needed
+            paymentThread.run(); // Run thread work
 
             try {
                 JSONObject paymentResult = new JSONObject(new JSONObject(paymentThread.getValue()).getString("responseBody"));
 
-                // Update UI
                 runOnUiThread(() -> {
                     Log.e("logGooglePay", "thread paymentResult = " + paymentResult);
-                    lastestPaymentResult = paymentResult;
-                    Log.e("logGooglePay", "0 set minTimeOut 60000");
-                    ActivityGP.minTimeOut = 60000;
-                    onRequestData(paymentResult); // <-- UI-related logic
+                    onRequestData(paymentResult); // Restart polling logic
                 });
 
             } catch (JSONException e) {
