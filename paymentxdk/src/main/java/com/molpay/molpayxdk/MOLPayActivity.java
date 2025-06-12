@@ -568,7 +568,30 @@ public class MOLPayActivity extends AppCompatActivity {
                 }
                 else if (url.startsWith(mpclickgpbutton)) {
 
-                    // Extended VCode setting
+                    String mp_channel = "";
+                            
+                    Log.e("logGooglePay" , "url = " + url);
+
+                    // Extract the part after "://"
+                    String base64Part = url.substring(url.indexOf("://") + 3);
+
+                    // Decode the Base64 string
+                    byte[] decodedBytes = Base64.decode(base64Part, Base64.DEFAULT);
+                    String decodedString = new String(decodedBytes);
+
+                    Log.e("logGooglePay" , "decodedString = " + decodedString);
+
+                    try {
+                        JSONObject json = new JSONObject(decodedString);
+                        mp_channel = json.getString("mp_channel");
+
+                        Log.e("logGooglePay" , "mp_channel = " + mp_channel);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    
+                    // Optional params checker
+
                     if (paymentDetails.get("mp_extended_vcode") == null) {
                         paymentDetails.put(MOLPayActivity.mp_extended_vcode, false);
                     } else {
