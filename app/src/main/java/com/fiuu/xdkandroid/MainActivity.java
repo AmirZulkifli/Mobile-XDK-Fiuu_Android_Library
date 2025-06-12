@@ -49,14 +49,13 @@ public class MainActivity extends AppCompatActivity {
 
         // --------------------------------- FOR WEB GOOGLE PAY ----------------------------------------
 
-        // GPay e-Wallet setting examples :
-        paymentDetails.put(MOLPayActivity.mp_gpay_channel, new String[] { "SHOPEEPAY", "TNG-EWALLET", "CC" }); // Enable ShopeePay, TNG eWallet & Card
-//        paymentDetails.put(MOLPayActivity.mp_gpay_channel, new String[] { "SHOPEEPAY", "TNG-EWALLET" }); // Enable ShopeePay & TNG eWallet Only
+        // GPay payment methods setting examples : (by default will show all payment methods)
 //        paymentDetails.put(MOLPayActivity.mp_gpay_channel, new String[] { "CC", "TNG-EWALLET" }); // Enable Card & TNG eWallet Only
+//        paymentDetails.put(MOLPayActivity.mp_gpay_channel, new String[] { "SHOPEEPAY", "TNG-EWALLET" }); // Enable ShopeePay & TNG eWallet Only
 
 //        paymentDetails.put(MOLPayActivity.mp_merchant_ID, ""); // Sandbox ID for TEST environment & Production/Dev ID once Google approved production access
 //        paymentDetails.put(MOLPayActivity.mp_verification_key, ""); // Sandbox vKey for TEST environment & Production/Dev vKey once Google approved production access
-//        paymentDetails.put(MOLPayActivity.mp_sandbox_mode, true); // true = Test Environment & false = production (required Google Pay production access approval)
+//        paymentDetails.put(MOLPayActivity.mp_sandbox_mode, true); // Optional :  true = Test Environment & false = production (required Google Pay production access approval)(by default false)
 //        paymentDetails.put(MOLPayActivity.mp_extended_vcode, false); // Optional : Set true if your account enabled extended Verify Payment (by default false)
 
         // ------------------------------------ OPTIONAL -------------------------------------------
@@ -160,10 +159,9 @@ public class MainActivity extends AppCompatActivity {
         paymentDetails.put(MOLPayActivity.mp_bill_email, "payer.email@fiuu.com");
         paymentDetails.put(MOLPayActivity.mp_bill_mobile, "123456789");
 
-        // GPay e-Wallet setting examples :
-        paymentDetails.put(MOLPayActivity.mp_gpay_channel, new String[] { "SHOPEEPAY", "TNG-EWALLET", "CC" }); // Enable ShopeePay, TNG eWallet & Card
-//        paymentDetails.put(MOLPayActivity.mp_gpay_channel, new String[] { "SHOPEEPAY", "TNG-EWALLET" }); // Enable ShopeePay & TNG eWallet Only
+        // GPay payment methods setting examples : (by default will show all payment methods)
 //        paymentDetails.put(MOLPayActivity.mp_gpay_channel, new String[] { "CC", "TNG-EWALLET" }); // Enable Card & TNG eWallet Only
+//        paymentDetails.put(MOLPayActivity.mp_gpay_channel, new String[] { "SHOPEEPAY", "TNG-EWALLET" }); // Enable ShopeePay & TNG eWallet Only
 
         // Optional
         paymentDetails.put(MOLPayActivity.mp_closebutton_display, true); // Enable close button
