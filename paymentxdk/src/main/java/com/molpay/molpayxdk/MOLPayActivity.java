@@ -604,10 +604,16 @@ public class MOLPayActivity extends AppCompatActivity {
                         paymentDetails.put(MOLPayActivity.mp_sandbox_mode, Objects.requireNonNull(paymentDetails.get("mp_sandbox_mode")));
                     }
 
-                    if (paymentDetails.get(MOLPayActivity.mp_gpay_channel) == null) {
-                        paymentDetails.put(MOLPayActivity.mp_gpay_channel, new String[] { "CC" });
-                    } else {
+                    if (paymentDetails.get(MOLPayActivity.mp_gpay_channel) != null) {
                         paymentDetails.put(MOLPayActivity.mp_gpay_channel, Objects.requireNonNull(paymentDetails.get(MOLPayActivity.mp_gpay_channel)));
+                    } else if (mp_channel.toLowerCase().contains("multi")) {
+                        paymentDetails.put(MOLPayActivity.mp_gpay_channel, new String[] { "SHOPEEPAY", "TNG-EWALLET", "CC" });
+                    } else if (mp_channel.toLowerCase().contains("tng")) {
+                        paymentDetails.put(MOLPayActivity.mp_gpay_channel, new String[] { "TNG-EWALLET" });
+                    } else if (mp_channel.toLowerCase().contains("shopee")) {
+                        paymentDetails.put(MOLPayActivity.mp_gpay_channel, new String[] { "SHOPEEPAY" });
+                    } else if (mp_channel.toLowerCase().contains("credit")) {
+                        paymentDetails.put(MOLPayActivity.mp_gpay_channel, new String[] { "CC" });
                     }
 
                     if (paymentDetails.get(MOLPayActivity.mp_closebutton_display) == null) {
