@@ -105,6 +105,7 @@ public class MOLPayActivity extends AppCompatActivity {
     public final static String mp_closebutton_display = "mp_closebutton_display";
     public final static String mp_metadata = "mp_metadata";
     public final static String mp_gpay_channel = "mp_gpay_channel";
+    public final static String mp_hide_googlepay = "mp_hide_googlepay";
     public final static String device_info = "device_info";
 
     public final static String MOLPAY = "logMOLPAY";

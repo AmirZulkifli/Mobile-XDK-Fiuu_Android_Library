@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
 //        paymentDetails.put(MOLPayActivity.mp_verification_key, ""); // Sandbox vKey for TEST environment & Production/Dev vKey once Google approved production access
 //        paymentDetails.put(MOLPayActivity.mp_sandbox_mode, true); // Optional :  true = Test Environment & false = production (required Google Pay production access approval)(by default false)
 //        paymentDetails.put(MOLPayActivity.mp_extended_vcode, false); // Optional : Set true if your account enabled extended Verify Payment (by default false)
+//        paymentDetails.put(MOLPayActivity.mp_hide_googlepay, true); // Optional : Hide Google Pay button (by default false)
 
         // ------------------------------------ OPTIONAL -------------------------------------------
 
@@ -166,6 +167,7 @@ public class MainActivity extends AppCompatActivity {
         // Optional
         paymentDetails.put(MOLPayActivity.mp_closebutton_display, true); // Enable close button
 //        paymentDetails.put(MOLPayActivity.mp_extended_vcode, false); // Set true if your account enabled extended Verify Payment
+//        paymentDetails.put(MOLPayActivity.mp_hide_googlepay, true); // Optional : Hide Google Pay button (by default false)
 
         openGPActivityWithResult();
     }
