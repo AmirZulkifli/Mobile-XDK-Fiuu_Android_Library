@@ -568,24 +568,18 @@ public class MOLPayActivity extends AppCompatActivity {
 
                 }
                 else if (url.startsWith(mpclickgpbutton)) {
-
                     String mp_channel = "";
-                            
                     Log.e("logGooglePay" , "url = " + url);
-
                     // Extract the part after "://"
                     String base64Part = url.substring(url.indexOf("://") + 3);
-
                     // Decode the Base64 string
                     byte[] decodedBytes = Base64.decode(base64Part, Base64.DEFAULT);
                     String decodedString = new String(decodedBytes);
-
                     Log.e("logGooglePay" , "decodedString = " + decodedString);
 
                     try {
                         JSONObject json = new JSONObject(decodedString);
                         mp_channel = json.getString("mp_channel");
-
                         Log.e("logGooglePay" , "mp_channel = " + mp_channel);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -607,14 +601,14 @@ public class MOLPayActivity extends AppCompatActivity {
 
                     if (paymentDetails.get(MOLPayActivity.mp_gpay_channel) != null) {
                         paymentDetails.put(MOLPayActivity.mp_gpay_channel, Objects.requireNonNull(paymentDetails.get(MOLPayActivity.mp_gpay_channel)));
-                    } else if (mp_channel.toLowerCase().contains("multi")) {
-                        paymentDetails.put(MOLPayActivity.mp_gpay_channel, new String[] { "SHOPEEPAY", "TNG-EWALLET", "CC" });
                     } else if (mp_channel.toLowerCase().contains("tng")) {
                         paymentDetails.put(MOLPayActivity.mp_gpay_channel, new String[] { "TNG-EWALLET" });
                     } else if (mp_channel.toLowerCase().contains("shopee")) {
                         paymentDetails.put(MOLPayActivity.mp_gpay_channel, new String[] { "SHOPEEPAY" });
                     } else if (mp_channel.toLowerCase().contains("credit")) {
                         paymentDetails.put(MOLPayActivity.mp_gpay_channel, new String[] { "CC" });
+                    } else {
+                        paymentDetails.put(MOLPayActivity.mp_gpay_channel, new String[] { "SHOPEEPAY", "TNG-EWALLET", "CC" });
                     }
 
                     if (paymentDetails.get(MOLPayActivity.mp_closebutton_display) == null) {
