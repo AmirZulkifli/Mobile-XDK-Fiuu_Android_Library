@@ -124,8 +124,6 @@ public class ActivityGP extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         boolean isRooted = MOLPayActivity.isDeviceRooted(ActivityGP.this);
-        Log.d("RootCheck", "Device rooted: " + isRooted);
-
         if (isRooted) {
             new AlertDialog.Builder(this)
                     .setTitle("Security Alert")
