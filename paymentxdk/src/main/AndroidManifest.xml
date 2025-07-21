@@ -7,10 +7,8 @@
 
     <application>
         <activity android:name=".MOLPayActivity"
-            android:theme="@style/Theme.Fullscreen"
             android:configChanges="orientation|screenSize" />
         <activity android:name=".googlepay.ActivityGP"
-            android:theme="@style/Theme.Fullscreen"
             android:configChanges="orientation|screenSize" />
         <activity
             android:name=".googlepay.WebActivity"
