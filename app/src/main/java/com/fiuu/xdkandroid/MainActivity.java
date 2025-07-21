@@ -33,11 +33,11 @@ public class MainActivity extends AppCompatActivity {
     private void restartmolpay() {
 
         // Compulsory String. Values obtained from Fiuu.
-        paymentDetails.put(MOLPayActivity.mp_username, "RMSxdk_2022");
-        paymentDetails.put(MOLPayActivity.mp_password, "RMSpwd@2022");
-        paymentDetails.put(MOLPayActivity.mp_app_name, "mobile");
-        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "rmsxdk_mobile_Dev");
-        paymentDetails.put(MOLPayActivity.mp_verification_key, "ee738b541eff7b6b495e44771f71c0ec");
+        paymentDetails.put(MOLPayActivity.mp_username, "");
+        paymentDetails.put(MOLPayActivity.mp_password, "");
+        paymentDetails.put(MOLPayActivity.mp_app_name, "");
+        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "");
+        paymentDetails.put(MOLPayActivity.mp_verification_key, "");
 
         // Compulsory String. Payment info.
         paymentDetails.put(MOLPayActivity.mp_amount, "1.01"); // 2 decimal points format
@@ -87,6 +87,8 @@ public class MainActivity extends AppCompatActivity {
 
         // Optional, show close button.
         paymentDetails.put(MOLPayActivity.mp_closebutton_display, true);
+        paymentDetails.put(MOLPayActivity.mp_enable_fullscreen, true);
+
 
         // Optional, allow / block change channel for preset mp_channel
 //        paymentDetails.put(MOLPayActivity.mp_channel_editing, true);
@@ -151,8 +153,8 @@ public class MainActivity extends AppCompatActivity {
 
         // TODO: Enter your merchant account credentials before test run
 //        paymentDetails.put(MOLPayActivity.mp_sandbox_mode, true); // true = Test Environment & false = production (required Google Pay production access approval)
-        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "rmsxdk_mobile_Dev");
-        paymentDetails.put(MOLPayActivity.mp_verification_key, "ee738b541eff7b6b495e44771f71c0ec");
+        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "");
+        paymentDetails.put(MOLPayActivity.mp_verification_key, "");
 
         paymentDetails.put(MOLPayActivity.mp_amount, "0.10"); // 2 decimal points format
         paymentDetails.put(MOLPayActivity.mp_order_ID, Calendar.getInstance().getTimeInMillis()); // Any unique alphanumeric String. For symbol only allowed hypen "-" and underscore "_"
@@ -170,8 +172,8 @@ public class MainActivity extends AppCompatActivity {
 
         // Optional
         paymentDetails.put(MOLPayActivity.mp_closebutton_display, true); // Enable close button
+        paymentDetails.put(MOLPayActivity.mp_enable_fullscreen, true);
 //        paymentDetails.put(MOLPayActivity.mp_extended_vcode, false); // Set true if your account enabled extended Verify Payment
-
         openGPActivityWithResult();
     }
 
