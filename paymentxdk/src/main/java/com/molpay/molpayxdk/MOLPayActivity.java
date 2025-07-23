@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
@@ -21,6 +22,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import android.util.Base64;
@@ -105,6 +107,7 @@ public class MOLPayActivity extends AppCompatActivity {
     public final static String mp_dpa_id = "mp_dpa_id";
     public final static String mp_company = "mp_company";
     public final static String mp_closebutton_display = "mp_closebutton_display";
+    public final static String mp_enable_fullscreen = "mp_enable_fullscreen";
     public final static String mp_metadata = "mp_metadata";
     public final static String mp_gpay_channel = "mp_gpay_channel";
     public final static String mp_hide_googlepay = "mp_hide_googlepay";
@@ -129,6 +132,7 @@ public class MOLPayActivity extends AppCompatActivity {
     private Boolean isMainUILoaded = false;
     private Boolean isClosingReceipt = false;
     private Boolean isClosebuttonDisplay = false;
+    private Boolean isEnableFullscreen = false;
     private Boolean isTNGResult = false;
 
     private static final Gson gson =  new Gson();
@@ -152,6 +156,7 @@ public class MOLPayActivity extends AppCompatActivity {
             if (json.has("mp_closebutton_display")) {
                 isClosebuttonDisplay = json.getBoolean("mp_closebutton_display");
             }
+
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
@@ -160,6 +165,7 @@ public class MOLPayActivity extends AppCompatActivity {
             getMenuInflater().inflate(R.menu.menu_molpay, menu);
             return super.onCreateOptionsMenu(menu);
         }
+
         return false;
     }
 
@@ -178,8 +184,6 @@ public class MOLPayActivity extends AppCompatActivity {
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_molpay);
 
         paymentDetails = (HashMap<String, Object>) getIntent().getSerializableExtra(MOLPayPaymentDetails);
 
@@ -188,6 +192,21 @@ public class MOLPayActivity extends AppCompatActivity {
         isTNGResult = false;
 
         if (paymentDetails != null) {
+
+            JSONObject json = new JSONObject(paymentDetails);
+
+            if (json.has("mp_enable_fullscreen")) {
+                try {
+                    isEnableFullscreen = json.getBoolean("mp_enable_fullscreen");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                if (isEnableFullscreen) {
+                    setTheme(R.style.Theme_Fullscreen);
+                }
+            }
+
             if (paymentDetails.containsKey("is_submodule")) {
                 is_submodule = Boolean.parseBoolean(Objects.requireNonNull(paymentDetails.get("is_submodule")).toString());
             }
@@ -207,7 +226,11 @@ public class MOLPayActivity extends AppCompatActivity {
                 paymentDetails.put(wrapper_version, wrapperVersion);
             }
             paymentDetails.put(device_info, gson.toJson(DeviceInfoUtil.getDeviceInfo(this)));
+
         }
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_molpay);
 
         // Bind resources
         mpMainUI = findViewById(R.id.MPMainUI);
