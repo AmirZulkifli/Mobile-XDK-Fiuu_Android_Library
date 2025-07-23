@@ -1,5 +1,6 @@
 package com.fiuu.xdkandroid;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -10,6 +11,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -116,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
     ActivityResultLauncher<Intent> paymentActivityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
+
                 Log.d(MOLPayActivity.MOLPAY, "result: "+result);
 
                 if (result.getData() != null) {
@@ -206,6 +209,21 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        boolean isRooted = MOLPayActivity.isDeviceRooted(MainActivity.this);
+        if (isRooted) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Security Alert")
+                    .setMessage("This device appears to be rooted. For security reasons, this application will now close.")
+                    .setCancelable(false)
+                    .setPositiveButton("OK", (dialog, which) -> {
+                        dialog.dismiss();
+                        finish();
+                    })
+                    .show();
+
+            return; // stop further execution
+        }
 
         // TODO: For GPay e-Wallet payment method cannot use PayButton API Style & Personalization : https://developers.google.com/pay/api/android/guides/brand-guidelines
 

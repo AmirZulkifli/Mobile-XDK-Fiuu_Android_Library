@@ -1,6 +1,7 @@
 package com.molpay.molpayxdk.googlepay;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
@@ -122,6 +123,21 @@ public class ActivityGP extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        boolean isRooted = MOLPayActivity.isDeviceRooted(ActivityGP.this);
+        if (isRooted) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Security Alert")
+                    .setMessage("This device appears to be rooted. For security reasons, this application will now close.")
+                    .setCancelable(false)
+                    .setPositiveButton("OK", (dialog, which) -> {
+                        dialog.dismiss();
+                        finish();
+                    })
+                    .show();
+
+            return; // stop further execution
+        }
+
         paymentDetails = (HashMap<String, Object>) getIntent().getSerializableExtra(MOLPayPaymentDetails);
 
         if (paymentDetails != null) {
@@ -192,7 +208,6 @@ public class ActivityGP extends AppCompatActivity {
                 sendCustomFailResponse("Payment failed. Error: " + error);
             }
         } , paymentDetails);
-
     }
 
     private void sendCustomFailResponse(String failMessage) {
