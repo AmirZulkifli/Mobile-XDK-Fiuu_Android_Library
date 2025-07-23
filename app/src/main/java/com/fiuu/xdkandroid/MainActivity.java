@@ -87,6 +87,8 @@ public class MainActivity extends AppCompatActivity {
 
         // Optional, show close button.
         paymentDetails.put(MOLPayActivity.mp_closebutton_display, true);
+//        paymentDetails.put(MOLPayActivity.mp_enable_fullscreen, true); //enable fullscreen
+
 
         // Optional, allow / block change channel for preset mp_channel
 //        paymentDetails.put(MOLPayActivity.mp_channel_editing, true);
@@ -170,8 +172,8 @@ public class MainActivity extends AppCompatActivity {
 
         // Optional
         paymentDetails.put(MOLPayActivity.mp_closebutton_display, true); // Enable close button
+//        paymentDetails.put(MOLPayActivity.mp_enable_fullscreen, true); //enable fullscreen
 //        paymentDetails.put(MOLPayActivity.mp_extended_vcode, false); // Set true if your account enabled extended Verify Payment
-
         openGPActivityWithResult();
     }
 
