@@ -204,6 +204,11 @@ public class MOLPayActivity extends AppCompatActivity {
 
                 if (isEnableFullscreen) {
                     setTheme(R.style.Theme_Fullscreen);
+
+                    View decorView = getWindow().getDecorView();
+                    decorView.setSystemUiVisibility(
+                            View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    );
                 }
             }
 
