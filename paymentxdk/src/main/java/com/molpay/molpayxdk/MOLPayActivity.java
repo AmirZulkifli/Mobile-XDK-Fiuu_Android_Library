@@ -451,6 +451,9 @@ public class MOLPayActivity extends AppCompatActivity {
                     Log.d(MOLPAY, "onResume TNG condition");
                     closemolpay();
                 }
+                else{
+                    closemolpay();
+                }
             } catch (Exception e) {
                 Log.e(MOLPAY, e.toString());
                 closemolpay();
