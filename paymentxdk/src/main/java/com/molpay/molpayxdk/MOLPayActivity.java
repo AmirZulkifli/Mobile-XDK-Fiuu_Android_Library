@@ -433,7 +433,6 @@ public class MOLPayActivity extends AppCompatActivity {
                         isTNGResult = true;
                         Intent intent= new Intent(Intent.ACTION_VIEW, Uri.parse(dataString));
                         startActivity(intent);
-                        paymentDetails = null;
                     } else {
                         Log.d(MOLPAY, "MPMOLPayUIWebClient empty dataString");
                     }
