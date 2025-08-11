@@ -128,7 +128,7 @@ public class MOLPayActivity extends AppCompatActivity {
     private Bitmap imgBitmap;
 
     private WebView mpMainUI, mpMOLPayUI, mpBankUI;
-    private HashMap<String, Object> paymentDetails;
+    private HashMap<String, Object> paymentDetails = new HashMap<>();
     private Boolean isMainUILoaded = false;
     private Boolean isClosingReceipt = false;
     private Boolean isClosebuttonDisplay = false;
@@ -445,9 +445,13 @@ public class MOLPayActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
-        if (mpMOLPayUI != null && !paymentDetails.isEmpty() && isTNGResult) {
-            Log.d(MOLPAY , "onResume TNG condition");
+        try {
+            if(isTNGResult && mpMOLPayUI != null){
+                Log.d(MOLPAY, "onResume TNG condition");
+                closemolpay();
+            }
+        } catch (Exception e) {
+            Log.e(MOLPAY, e.toString());
             closemolpay();
         }
     }
