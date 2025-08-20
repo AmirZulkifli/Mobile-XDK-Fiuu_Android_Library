@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
 //        paymentDetails.put(MOLPayActivity.mp_sandbox_mode, true); // Optional :  true = Test Environment & false = production (required Google Pay production access approval)(by default false)
 //        paymentDetails.put(MOLPayActivity.mp_extended_vcode, false); // Optional : Set true if your account enabled extended Verify Payment (by default false)
 //        paymentDetails.put(MOLPayActivity.mp_hide_googlepay, true); // Optional : Hide Google Pay button (by default false)
+//        paymentDetails.put(MOLPayActivity.mp_company, "Your Company Name"); // Show merchant name in Google Pay
 
         // ------------------------------------ OPTIONAL -------------------------------------------
 
@@ -170,7 +171,8 @@ public class MainActivity extends AppCompatActivity {
 //        paymentDetails.put(MOLPayActivity.mp_gpay_channel, new String[] { "SHOPEEPAY", "TNG-EWALLET" }); // Enable ShopeePay & TNG eWallet Only
 
         // Optional
-        paymentDetails.put(MOLPayActivity.mp_closebutton_display, true); // Enable close button
+//        paymentDetails.put(MOLPayActivity.mp_company, "Your Company Name"); // Show merchant name in Google Pay
+//        paymentDetails.put(MOLPayActivity.mp_closebutton_display, true); // Enable close button
 //        paymentDetails.put(MOLPayActivity.mp_enable_fullscreen, true); //enable fullscreen
 //        paymentDetails.put(MOLPayActivity.mp_extended_vcode, false); // Set true if your account enabled extended Verify Payment
 //        paymentDetails.put(MOLPayActivity.mp_hide_googlepay, true); // Optional : Hide Google Pay button (by default false)
