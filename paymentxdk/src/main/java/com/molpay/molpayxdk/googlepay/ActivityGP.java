@@ -177,6 +177,12 @@ public class ActivityGP extends AppCompatActivity {
                     PAYMENTS_ENVIRONMENT = WalletConstants.ENVIRONMENT_PRODUCTION;
                 }
             }
+
+            if ( ! COUNTRY_CODE.equalsIgnoreCase("MY") || ! CURRENCY_CODE.equalsIgnoreCase("MYR") ) {
+                if ( paymentDetails.get("mp_gpay_channel") != null ) {
+                    paymentDetails.put(MOLPayActivity.mp_gpay_channel, new String[] { "CC" });
+                }
+            }
         }
 
         initializeUi();
