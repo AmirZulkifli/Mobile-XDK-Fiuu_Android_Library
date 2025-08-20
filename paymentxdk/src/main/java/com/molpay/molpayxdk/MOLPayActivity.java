@@ -111,6 +111,7 @@ public class MOLPayActivity extends AppCompatActivity {
     public final static String mp_metadata = "mp_metadata";
     public final static String mp_gpay_channel = "mp_gpay_channel";
     public final static String mp_hide_googlepay = "mp_hide_googlepay";
+    public final static String mp_classic_webcore = "mp_classic_webcore";
     public final static String device_info = "device_info";
 
     public final static String MOLPAY = "logMOLPAY";
@@ -133,6 +134,7 @@ public class MOLPayActivity extends AppCompatActivity {
     private Boolean isClosingReceipt = false;
     private Boolean isClosebuttonDisplay = false;
     private Boolean isEnableFullscreen = false;
+    private String setMPMainUI = "";
     private Boolean isTNGResult = false;
 
     private static final Gson gson =  new Gson();
@@ -212,6 +214,13 @@ public class MOLPayActivity extends AppCompatActivity {
                 }
             }
 
+            boolean isClassicWebcore = json.optBoolean("mp_classic_webcore", false);
+
+            setMPMainUI = isClassicWebcore
+                    ? "https://pay.merchant.razer.com/RMS/API/xdk/"
+                    : "https://xdk.fiuu.com/";
+
+
             if (paymentDetails.containsKey("is_submodule")) {
                 is_submodule = Boolean.parseBoolean(Objects.requireNonNull(paymentDetails.get("is_submodule")).toString());
             }
@@ -257,7 +266,7 @@ public class MOLPayActivity extends AppCompatActivity {
         cookieManager.setAcceptThirdPartyCookies(mpMainUI, true);
         cookieManager.setAcceptThirdPartyCookies(mpMOLPayUI, true);
 
-        mpMainUI.loadUrl("https://xdk.fiuu.com/");
+        mpMainUI.loadUrl(setMPMainUI);
 
         // Configure MOLPay ui
         mpMOLPayUI.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
