@@ -178,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
 //        paymentDetails.put(MOLPayActivity.mp_closebutton_display, true); // Enable close button
 //        paymentDetails.put(MOLPayActivity.mp_enable_fullscreen, true); //enable fullscreen
 //        paymentDetails.put(MOLPayActivity.mp_extended_vcode, false); // Set true if your account enabled extended Verify Payment
-//        paymentDetails.put(MOLPayActivity.mp_hide_googlepay, true); // Optional : Hide Google Pay button (by default false)
+
         openGPActivityWithResult();
     }
 
