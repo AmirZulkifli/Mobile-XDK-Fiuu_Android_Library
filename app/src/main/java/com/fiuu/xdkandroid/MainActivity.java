@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
 //        paymentDetails.put(MOLPayActivity.mp_extended_vcode, false);
 
         // Optional, show close button.
-        paymentDetails.put(MOLPayActivity.mp_closebutton_display, true);
+//        paymentDetails.put(MOLPayActivity.mp_closebutton_display, true);
 //        paymentDetails.put(MOLPayActivity.mp_enable_fullscreen, true); //enable fullscreen
 
 

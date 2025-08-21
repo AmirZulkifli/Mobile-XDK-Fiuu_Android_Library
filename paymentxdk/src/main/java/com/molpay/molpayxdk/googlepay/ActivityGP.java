@@ -182,7 +182,6 @@ public class ActivityGP extends AppCompatActivity {
                     PAYMENTS_ENVIRONMENT = WalletConstants.ENVIRONMENT_PRODUCTION;
                 }
             }
-
         }
 
         initializeUi();
