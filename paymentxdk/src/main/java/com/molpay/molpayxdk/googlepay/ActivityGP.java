@@ -166,6 +166,11 @@ public class ActivityGP extends AppCompatActivity {
 
             COUNTRY_CODE = Objects.requireNonNull(paymentDetails.get("mp_country")).toString();
             CURRENCY_CODE = Objects.requireNonNull(paymentDetails.get("mp_currency")).toString();
+
+            if ( ! COUNTRY_CODE.equalsIgnoreCase("MY") || ! CURRENCY_CODE.equalsIgnoreCase("MYR") ) {
+                paymentDetails.put(MOLPayActivity.mp_gpay_channel, new String[] { "CC" });
+            }
+
             verificationKey = Objects.requireNonNull(paymentDetails.get(MOLPayActivity.mp_verification_key)).toString();
 
             if (paymentDetails.get("mp_sandbox_mode") == null) {
@@ -178,11 +183,6 @@ public class ActivityGP extends AppCompatActivity {
                 }
             }
 
-            if ( ! COUNTRY_CODE.equalsIgnoreCase("MY") || ! CURRENCY_CODE.equalsIgnoreCase("MYR") ) {
-                if ( paymentDetails.get("mp_gpay_channel") != null ) {
-                    paymentDetails.put(MOLPayActivity.mp_gpay_channel, new String[] { "CC" });
-                }
-            }
         }
 
         initializeUi();
