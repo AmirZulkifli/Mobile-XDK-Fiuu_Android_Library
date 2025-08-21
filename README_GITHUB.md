@@ -88,6 +88,19 @@ Import the others required library classes for your class e.g.
         
         import java.util.HashMap;
 
+### Setup Release Build
+
+Add rules in proguard-rules.pro
+
+         #  For WebView / Javascript bridge
+         # Keep all methods annotated with @JavascriptInterface
+         -keepclassmembers class * {
+            @android.webkit.JavascriptInterface <methods>;
+         }
+
+         #  Keep XDK classes (prevents obfuscation of JS functions)
+         -keep class com.molpay.** { *; }
+
 ### Show All Subscribed Channels (Default Page)
 
     HashMap<Object, Object> paymentDetails = new HashMap<>();
