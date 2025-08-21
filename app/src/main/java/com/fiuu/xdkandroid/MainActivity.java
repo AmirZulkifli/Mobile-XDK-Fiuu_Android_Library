@@ -68,6 +68,9 @@ public class MainActivity extends AppCompatActivity {
 
         // -------------------------------- Most commonly used -------------------------------------
 
+        // Used classic XDK UI instead of new one
+//        paymentDetails.put(MOLPayActivity.mp_classic_webcore, true);
+
         // To pre-select channel, please refer to column mp_channel in https://github.com/RazerMS/Mobile-XDK-RazerMS_Examples/blob/master/channel-list.md
 //        paymentDetails.put(MOLPayActivity.mp_channel, "maybank2u");
 

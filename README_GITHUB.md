@@ -184,6 +184,9 @@ Learn more about optional parameters here https://github.com/RazerMS/Mobile-XDK-
 
         // -------------------------------- Most commonly used -------------------------------------
 
+        // Used classic XDK UI instead of new one
+        paymentDetails.put(MOLPayActivity.mp_classic_webcore, true);
+
         // To pre-select channel, refer column mp_channel in https://github.com/FiuuPayment/Mobile-XDK-Fiuu_Examples/blob/master/channel-list.md
         // e.g. set mp_channel = credit to directly load required card info.
         paymentDetails.put(MOLPayActivity.mp_channel, "credit");
