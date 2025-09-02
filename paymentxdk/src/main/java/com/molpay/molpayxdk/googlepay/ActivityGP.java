@@ -295,6 +295,7 @@ public class ActivityGP extends AppCompatActivity {
             requestPayment();
         } else {
             Toast.makeText(this, R.string.google_pay_status_unavailable, Toast.LENGTH_LONG).show();
+            CancelGPay("");
         }
     }
 
