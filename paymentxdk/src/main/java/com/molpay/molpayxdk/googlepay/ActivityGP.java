@@ -85,6 +85,7 @@ public class ActivityGP extends AppCompatActivity {
                             if (paymentData != null) {
                                 handlePaymentSuccess(paymentData);
                             }
+                            handleError(statusCode, "CommonStatusCodes.SUCCESS Result Null");
                         }
                         break;
 
@@ -95,6 +96,12 @@ public class ActivityGP extends AppCompatActivity {
 
                     default:
                         CancelGPay("");
+                                handleError(statusCode, result.getStatus().getStatusMessage());
+                            } else {
+                                handleError(statusCode, "CommonStatusCodes Message Empty");
+                            }
+                        } else {
+                            handleError(statusCode, "CommonStatusCodes Message Null");
                         break;
                 }
             }
@@ -494,7 +501,7 @@ public class ActivityGP extends AppCompatActivity {
                         handleError(status.getStatusCode(), status.getStatusMessage());
                     } else {
                         Log.e("logGooglePay", "RESULT_ERROR status = null");
-                        handleError(0, "");
+                        handleError(0, "AutoResolveHelper.RESULT_ERROR Status Null");
                     }
                     break;
             }
