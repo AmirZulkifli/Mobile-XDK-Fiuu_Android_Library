@@ -193,11 +193,14 @@ public class ApiRequestService {
                 formBuilder.add("paymentMethods[" + 2 + "]", "SHOPEEPAY");
             }
 
-            Log.e("logGooglePay", "2 formBuilder = " + formBuilder.toString());
-
             formBody = formBuilder.build();
 
-            Log.e("logGooglePay", "3 formBody = " + formBody.toString());
+            // Log all fields
+            for (int i = 0; i < formBody.size(); i++) {
+                String name = formBody.encodedName(i);
+                String value = formBody.encodedValue(i);
+                Log.e("logGooglePay", name + " = " + value);
+            }
 
             Request request = new Request.Builder()
                     .url(endPoint)
