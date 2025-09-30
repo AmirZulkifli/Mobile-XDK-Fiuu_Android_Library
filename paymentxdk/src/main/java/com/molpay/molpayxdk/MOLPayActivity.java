@@ -709,6 +709,7 @@ public class MOLPayActivity extends AppCompatActivity {
         public void onPageFinished(WebView view, String url) {
             if (!isMainUILoaded && !url.equals("about:blank")) {
                 if (paymentDetails != null) {
+                    isMainUILoaded = true;
                     JSONObject json = new JSONObject(paymentDetails);
 //                    Log.d(MOLPAY, "MPMainUIWebClient onPageFinished paymentDetails = " + json);
 //                    Init javascript
