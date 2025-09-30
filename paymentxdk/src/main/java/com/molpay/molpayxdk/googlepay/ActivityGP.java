@@ -120,12 +120,12 @@ public class ActivityGP extends AppCompatActivity {
 
                 if (error != null) {
                     if ( ! error.isEmpty()) {
-                        sendCustomFailResponse("Payment cancelled. Error : " + error);
+                        sendCustomFailResponse("Payment aborted. Error : " + error);
                     } else {
-                        sendCustomFailResponse("Payment cancelled. Error : empty");
+                        sendCustomFailResponse("Payment aborted. Error : empty");
                     }
                 } else {
-                    sendCustomFailResponse("Payment cancelled. Error : null");
+                    sendCustomFailResponse("Payment aborted. Error : null");
                 }
             }
         } , paymentDetails);
@@ -242,7 +242,15 @@ public class ActivityGP extends AppCompatActivity {
             public void onFailure(String error) {
                 Log.e("logGooglePay", "ActivityGP createTxn.php onFailure = " + error);
                 // Send custom failed response
-                sendCustomFailResponse("Payment failed. Error: " + error);
+                if (error != null) {
+                    if ( ! error.isEmpty()) {
+                        sendCustomFailResponse("Payment aborted. Error : " + error);
+                    } else {
+                        sendCustomFailResponse("Payment aborted. Error : empty");
+                    }
+                } else {
+                    sendCustomFailResponse("Payment aborted. Error : null");
+                }
             }
         } , paymentDetails);
     }
@@ -308,8 +316,7 @@ public class ActivityGP extends AppCompatActivity {
                     Toast.LENGTH_LONG);
             toast.setGravity(Gravity.CENTER, 0, 0);
             toast.show();
-
-            CancelGPay("");
+            sendCustomFailResponse("Payment aborted. Device not supported Google Pay. Please use other payment method.");
         }
     }
 
