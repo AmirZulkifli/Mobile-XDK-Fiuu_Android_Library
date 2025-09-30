@@ -123,7 +123,7 @@ public class MOLPayActivity extends AppCompatActivity {
     private final static String mpclickgpbutton = "mpclickgpbutton://";
     private final static String module_id = "module_id";
     private final static String wrapper_version = "wrapper_version";
-    private final static String wrapperVersion = "26a";
+    private final static String wrapperVersion = "28a";
 
     private String filename;
     private Bitmap imgBitmap;
@@ -709,6 +709,7 @@ public class MOLPayActivity extends AppCompatActivity {
         public void onPageFinished(WebView view, String url) {
             if (!isMainUILoaded && !url.equals("about:blank")) {
                 if (paymentDetails != null) {
+                    isMainUILoaded = true;
                     JSONObject json = new JSONObject(paymentDetails);
 //                    Log.d(MOLPAY, "MPMainUIWebClient onPageFinished paymentDetails = " + json);
 //                    Init javascript
