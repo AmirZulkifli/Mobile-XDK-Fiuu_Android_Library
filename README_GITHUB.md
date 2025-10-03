@@ -184,8 +184,8 @@ Learn more about optional parameters here https://github.com/RazerMS/Mobile-XDK-
 
         // -------------------------------- Most commonly used -------------------------------------
 
-        // Used classic XDK UI instead of new one
-        paymentDetails.put(MOLPayActivity.mp_classic_webcore, true);
+        // Optional, set Environment for Webview Core URL
+        // paymentDetails.put(MOLPayActivity.mp_core_env, "2"); //default
 
         // To pre-select channel, refer column mp_channel in https://github.com/FiuuPayment/Mobile-XDK-Fiuu_Examples/blob/master/channel-list.md
         // e.g. set mp_channel = credit to directly load required card info.
@@ -215,6 +215,24 @@ Learn more about optional parameters here https://github.com/RazerMS/Mobile-XDK-
 
         // Set language : EN, MS, VI, TH, FIL, MY, KM, ID, ZH.
         paymentDetails.put(MOLPayActivity.mp_language, "MS");
+
+## Environment Configuration
+
+The library supports multiple environments. You can configure which environment to use by setting the `mp_core_env` value.
+
+`mp_core_env` is a string ("1", "2", "3", "4")
+
+Each value maps to a specific environment base URL.
+
+If no value is set, the default environment will be used.
+
+| `mp_core_env` Value | Environment     | Base URL                            |
+|---------------------|-----------------|-------------------------------------|
+| `1`                 | Production - V1 | `https://pay.fiuu.com/RMS/API/xdk/` |
+| `2`                 | Production - V2 | `https://xdk.fiuu.com/`             |
+| `3`                 | UAT - V2        | `https://uat-xdk.fiuu.com/`         |
+| `4`                 | Sandbox -V2     | `https://sandbox-xdk.fiuu.com/`     |
+| *Default*           | Production - V2 | `https://xdk.fiuu.com/`             |
 
 ## Google Pay
 
