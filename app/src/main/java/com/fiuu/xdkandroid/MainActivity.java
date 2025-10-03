@@ -68,8 +68,8 @@ public class MainActivity extends AppCompatActivity {
 
         // -------------------------------- Most commonly used -------------------------------------
 
-        // Used classic XDK UI instead of new one
-//        paymentDetails.put(MOLPayActivity.mp_classic_webcore, true);
+        // Optional, set Environment for Webview Core URL
+//        paymentDetails.put(MOLPayActivity.mp_core_env, "2"); //default
 
         // To pre-select channel, please refer to column mp_channel in https://github.com/RazerMS/Mobile-XDK-RazerMS_Examples/blob/master/channel-list.md
 //        paymentDetails.put(MOLPayActivity.mp_channel, "maybank2u");
@@ -92,8 +92,6 @@ public class MainActivity extends AppCompatActivity {
         // Optional, show close button.
 //        paymentDetails.put(MOLPayActivity.mp_closebutton_display, true);
 //        paymentDetails.put(MOLPayActivity.mp_enable_fullscreen, true); //enable fullscreen
-//        paymentDetails.put(MOLPayActivity.mp_classic_webcore, false);
-
 
         // Optional, allow / block change channel for preset mp_channel
 //        paymentDetails.put(MOLPayActivity.mp_channel_editing, true);

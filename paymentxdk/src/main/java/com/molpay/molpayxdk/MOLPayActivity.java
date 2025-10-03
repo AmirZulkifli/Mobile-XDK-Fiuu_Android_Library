@@ -111,7 +111,7 @@ public class MOLPayActivity extends AppCompatActivity {
     public final static String mp_metadata = "mp_metadata";
     public final static String mp_gpay_channel = "mp_gpay_channel";
     public final static String mp_hide_googlepay = "mp_hide_googlepay";
-    public final static String mp_classic_webcore = "mp_classic_webcore";
+    public final static String mp_core_env = "mp_core_env";
     public final static String device_info = "device_info";
 
     public final static String MOLPAY = "logMOLPAY";
@@ -123,7 +123,7 @@ public class MOLPayActivity extends AppCompatActivity {
     private final static String mpclickgpbutton = "mpclickgpbutton://";
     private final static String module_id = "module_id";
     private final static String wrapper_version = "wrapper_version";
-    private final static String wrapperVersion = "28a";
+    private final static String wrapperVersion = "29a";
 
     private String filename;
     private Bitmap imgBitmap;
@@ -214,12 +214,28 @@ public class MOLPayActivity extends AppCompatActivity {
                 }
             }
 
-            boolean isClassicWebcore = json.optBoolean("mp_classic_webcore", false);
+            setMPMainUI = "https://xdk.fiuu.com/";
 
-            setMPMainUI = isClassicWebcore
-                    ? "https://pay.merchant.razer.com/RMS/API/xdk/"
-                    : "https://xdk.fiuu.com/";
+            if (paymentDetails.containsKey("mp_core_env")){
+                String coreEnv = Objects.requireNonNull(paymentDetails.get("mp_core_env")).toString();
 
+                switch (coreEnv){
+                    case "1":
+                        setMPMainUI = "https://pay.fiuu.com/RMS/API/xdk/";
+                        break;
+                    case "2":
+                        setMPMainUI = "https://xdk.fiuu.com/";
+                        break;
+                    case "3":
+                        setMPMainUI = "https://uat-xdk.fiuu.com/";
+                        break;
+                    case "4":
+                        setMPMainUI = "https://sandbox-xdk.fiuu.com/";
+                        break;
+                    default:
+                        break;
+                }
+            }
 
             if (paymentDetails.containsKey("is_submodule")) {
                 is_submodule = Boolean.parseBoolean(Objects.requireNonNull(paymentDetails.get("is_submodule")).toString());
