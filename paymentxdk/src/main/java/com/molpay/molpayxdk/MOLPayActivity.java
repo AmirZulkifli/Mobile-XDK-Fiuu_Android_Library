@@ -217,9 +217,13 @@ public class MOLPayActivity extends AppCompatActivity {
             boolean isClassicWebcore = json.optBoolean("mp_classic_webcore", false);
 
             setMPMainUI = isClassicWebcore
-                    ? "https://pay.merchant.razer.com/RMS/API/xdk/"
-                    : "https://xdk.fiuu.com/";
+                    ? "https://apps.apis17.net/ashraf/V1_335/"
+                    : "https://apps.apis17.net/ashraf/V2_401/";
+//                    ? "https://pay.merchant.razer.com/RMS/API/xdk/"
+//                    : "https://xdk.fiuu.com/";
 
+            Log.d(MOLPAY, "setMPMainUI = " + setMPMainUI);
+//            Log.d(MOLPAY, "mp_hide_googlepay = " + Boolean.parseBoolean(Objects.requireNonNull(paymentDetails.get("mp_hide_googlepay")).toString()));
 
             if (paymentDetails.containsKey("is_submodule")) {
                 is_submodule = Boolean.parseBoolean(Objects.requireNonNull(paymentDetails.get("is_submodule")).toString());
