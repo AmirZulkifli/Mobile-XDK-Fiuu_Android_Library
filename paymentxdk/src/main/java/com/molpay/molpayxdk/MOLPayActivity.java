@@ -232,6 +232,9 @@ public class MOLPayActivity extends AppCompatActivity {
                     case "4":
                         setMPMainUI = "https://sandbox-xdk.fiuu.com/";
                         break;
+                    case "5":
+                        setMPMainUI = "https://apps.apis17.net/ashraf/V1_335/";
+                        break;
                     default:
                         break;
                 }

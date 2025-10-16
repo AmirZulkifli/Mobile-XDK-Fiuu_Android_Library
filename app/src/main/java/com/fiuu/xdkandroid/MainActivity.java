@@ -33,14 +33,14 @@ public class MainActivity extends AppCompatActivity {
     private void restartmolpay() {
 
         // Compulsory String. Values obtained from Fiuu.
-        paymentDetails.put(MOLPayActivity.mp_username, "");
-        paymentDetails.put(MOLPayActivity.mp_password, "");
-        paymentDetails.put(MOLPayActivity.mp_app_name, "");
-        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "");
-        paymentDetails.put(MOLPayActivity.mp_verification_key, "");
+        paymentDetails.put(MOLPayActivity.mp_username, "RMSxdk_2022");
+        paymentDetails.put(MOLPayActivity.mp_password, "RMSpwd@2022");
+        paymentDetails.put(MOLPayActivity.mp_app_name, "mobile");
+        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "rmsxdk_mobile_Dev");
+        paymentDetails.put(MOLPayActivity.mp_verification_key, "ee738b541eff7b6b495e44771f71c0ec");
 
         // Compulsory String. Payment info.
-        paymentDetails.put(MOLPayActivity.mp_amount, "1.01"); // 2 decimal points format
+        paymentDetails.put(MOLPayActivity.mp_amount, "0.10"); // 2 decimal points format
         paymentDetails.put(MOLPayActivity.mp_order_ID, Calendar.getInstance().getTimeInMillis()); // Any unique alphanumeric String. For symbol only allowed hypen "-" and underscore "_"
         paymentDetails.put(MOLPayActivity.mp_currency, "MYR");
         paymentDetails.put(MOLPayActivity.mp_country, "MY");
@@ -48,6 +48,15 @@ public class MainActivity extends AppCompatActivity {
         paymentDetails.put(MOLPayActivity.mp_bill_name, "Payer Name");
         paymentDetails.put(MOLPayActivity.mp_bill_email, "payer.email@fiuu.com");
         paymentDetails.put(MOLPayActivity.mp_bill_mobile, "123456789");
+
+        paymentDetails.put(MOLPayActivity.mp_core_env, "5");
+
+        // Optional, for credit card BIN restrictions and campaigns.
+        String binlock[] = {"51960321"};
+        paymentDetails.put(MOLPayActivity.mp_bin_lock, binlock);
+
+        // Optional, for mp_bin_lock alert error.
+        paymentDetails.put(MOLPayActivity.mp_bin_lock_err_msg, "Only MAYBANK allowed");
 
         // --------------------------------- FOR WEB GOOGLE PAY ----------------------------------------
 
@@ -156,8 +165,8 @@ public class MainActivity extends AppCompatActivity {
 
         // TODO: Enter your merchant account credentials before test run
 //        paymentDetails.put(MOLPayActivity.mp_sandbox_mode, true); // true = Test Environment & false = production (required Google Pay production access approval)
-        paymentDetails.put(MOLPayActivity.mp_merchant_ID, ""); // Sandbox ID for TEST environment & Production/Dev ID once Google approved production access
-        paymentDetails.put(MOLPayActivity.mp_verification_key, ""); // Sandbox ID for TEST environment & Production/Dev ID once Google approved production access
+        paymentDetails.put(MOLPayActivity.mp_merchant_ID, "rmsxdk_mobile_Dev");
+        paymentDetails.put(MOLPayActivity.mp_verification_key, "ee738b541eff7b6b495e44771f71c0ec");
 
         paymentDetails.put(MOLPayActivity.mp_amount, "0.10"); // 2 decimal points format
         paymentDetails.put(MOLPayActivity.mp_order_ID, Calendar.getInstance().getTimeInMillis()); // Any unique alphanumeric String. For symbol only allowed hypen "-" and underscore "_"
