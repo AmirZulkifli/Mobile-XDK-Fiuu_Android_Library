@@ -34,6 +34,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.webkit.CookieManager;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -127,8 +128,8 @@ public class MOLPayActivity extends AppCompatActivity {
 
     private String filename;
     private Bitmap imgBitmap;
-
-    private WebView mpMainUI, mpMOLPayUI, mpBankUI;
+    private WebView webViewMain;
+    private WebView mpMOLPayUI, mpBankUI;
     private HashMap<String, Object> paymentDetails = new HashMap<>();
     private Boolean isMainUILoaded = false;
     private Boolean isClosingReceipt = false;
@@ -139,13 +140,63 @@ public class MOLPayActivity extends AppCompatActivity {
 
     private static final Gson gson =  new Gson();
     private static DeviceInfo deviceInfo;
+    public enum WebMode {mpMainUI, mpMOLPayUI, mpBankUI}
+    private String modeSelected = "";
 
-    // Private API
-    private void closemolpay() {
-        mpMainUI.loadUrl("javascript:closemolpay()");
-        if (isClosingReceipt) {
-            isClosingReceipt = false;
-            finish();
+    @SuppressLint("SetJavaScriptEnabled")
+    public void configureWebView(WebMode mode) {
+        Log.d(MOLPAY, "resetWebView init mode:" + mode.toString());
+        resetWebView();
+        WebSettings settings = webViewMain.getSettings();
+        modeSelected = mode.toString();
+
+        if(mode == WebMode.mpMainUI) {
+            settings.setJavaScriptEnabled(true);
+            settings.setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
+            settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+            settings.setAllowFileAccess(false);
+            settings.setAllowFileAccessFromFileURLs(false);
+            settings.setAllowUniversalAccessFromFileURLs(false);
+            settings.setAllowContentAccess(false);
+        }
+        else if(mode == WebMode.mpBankUI) {
+            settings.setJavaScriptEnabled(true);
+            settings.setCacheMode(WebSettings.LOAD_DEFAULT);
+            settings.setAllowUniversalAccessFromFileURLs(true);
+            settings.setJavaScriptCanOpenWindowsAutomatically(true);
+            settings.setSupportMultipleWindows(true);
+            webViewMain.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+        }
+        else if(mode == WebMode.mpMOLPayUI){
+            settings.setJavaScriptEnabled(true);
+            settings.setJavaScriptCanOpenWindowsAutomatically(true);
+            settings.setSupportMultipleWindows(true);
+            settings.setLoadWithOverviewMode(true);
+            settings.setUseWideViewPort(true);
+            settings.setCacheMode(WebSettings.LOAD_DEFAULT);
+            settings.setDomStorageEnabled(true);
+            settings.setAllowFileAccess(true);
+            settings.setAllowFileAccessFromFileURLs(true);
+            settings.setAllowUniversalAccessFromFileURLs(true);
+            settings.setAllowContentAccess(true);
+            webViewMain.setLongClickable(true);
+            webViewMain.setOnLongClickListener(view -> {
+                Log.d(MOLPAY, "Long press fired!");
+                webViewMain.evaluateJavascript("document.getElementById(\"qrcode_img\").src", qrdata -> {
+                    Log.d(MOLPAY, "QR data = " + qrdata);
+                    if (qrdata != null && !qrdata.equals("null")) {
+                        String imageQrCode = qrdata.replaceAll("data:image/png;base64,", "");
+                        Log.d(MOLPAY, "imageQrCode = " + imageQrCode);
+                        byte[] decodedBytes = Base64.decode(imageQrCode, 0);
+                        imgBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+                        filename = Objects.requireNonNull(paymentDetails.get("mp_order_ID")) + ".png";
+
+                        isStoragePermissionGranted();
+                    }
+                });
+                return false;
+            });
+
         }
     }
 
@@ -201,7 +252,7 @@ public class MOLPayActivity extends AppCompatActivity {
                 try {
                     isEnableFullscreen = json.getBoolean("mp_enable_fullscreen");
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    Log.e(MOLPAY, e.getMessage(), e);
                 }
 
                 if (isEnableFullscreen) {
@@ -259,7 +310,7 @@ public class MOLPayActivity extends AppCompatActivity {
 
         } else {
             String dataString = "{ \"error\" : \" Payment details is null.\"  }";
-//            Log.d(MOLPAY, "MPMainUIWebClient mptransactionresults dataString = " + dataString);
+            Log.d(MOLPAY, "MPMainUIWebClient mptransactionresults dataString = " + dataString);
             Intent result = new Intent();
             result.putExtra(MOLPayTransactionResult, dataString);
             setResult(RESULT_OK, result);
@@ -269,68 +320,24 @@ public class MOLPayActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_molpay);
 
-        // Bind resources
-        mpMainUI = findViewById(R.id.MPMainUI);
-        mpMOLPayUI = findViewById(R.id.MPMOLPayUI);
-
-        // Enable js
-        mpMainUI.getSettings().setJavaScriptEnabled(true);
-        mpMOLPayUI.getSettings().setJavaScriptEnabled(true);
-
-        // Hide UI by default
-        mpMOLPayUI.setVisibility(View.GONE);
+        webViewMain = new WebView(MOLPayActivity.this);
+        webViewMain.setWebViewClient(new MPMainUIWebClient());
+        webViewMain.setWebChromeClient(new MPMOLPayUIWebChromeClient());
+        configureWebView(WebMode.mpMainUI);
+        setContentView(webViewMain);
 
         // Load the main ui
-        mpMainUI.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
-        mpMainUI.getSettings().setAllowUniversalAccessFromFileURLs(false);
-        mpMainUI.getSettings().setAllowFileAccess(false);
-        mpMainUI.getSettings().setAllowContentAccess(false);
-        mpMainUI.getSettings().setAllowFileAccessFromFileURLs(false);
-        mpMainUI.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
-        mpMainUI.setWebViewClient(new MPMainUIWebClient());
         CookieManager cookieManager = CookieManager.getInstance();
         cookieManager.setAcceptCookie(true);
-        cookieManager.setAcceptThirdPartyCookies(mpMainUI, true);
-        cookieManager.setAcceptThirdPartyCookies(mpMOLPayUI, true);
+        cookieManager.setAcceptThirdPartyCookies(webViewMain, true);
 
-        mpMainUI.loadUrl(setMPMainUI);
-
-        // Configure MOLPay ui
-        mpMOLPayUI.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
-        mpMOLPayUI.getSettings().setAllowUniversalAccessFromFileURLs(true);
-        mpMOLPayUI.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
-        mpMOLPayUI.getSettings().setSupportMultipleWindows(true);
-        mpMOLPayUI.getSettings().setDomStorageEnabled(true);
-        mpMOLPayUI.setWebViewClient(new MPMOLPayUIWebClient());
-        mpMOLPayUI.setWebChromeClient(new MPMOLPayUIWebChromeClient());
-        mpMOLPayUI.getSettings().setLoadWithOverviewMode(true);
-        mpMOLPayUI.getSettings().setUseWideViewPort(true);
-
-        CookieManager.getInstance().setAcceptCookie(true);
-
-        mpMOLPayUI.setLongClickable(true);
-        mpMOLPayUI.setOnLongClickListener(view -> {
-            Log.d(MOLPAY, "Long press fired!");
-            mpMOLPayUI.evaluateJavascript("document.getElementById(\"qrcode_img\").src", qrdata -> {
-                Log.d(MOLPAY, "QR data = " + qrdata);
-                if (qrdata != null && !qrdata.equals("null")) {
-                    String imageQrCode = qrdata.replaceAll("data:image/png;base64,", "");
-                    Log.d(MOLPAY, "imageQrCode = " + imageQrCode);
-                    byte[] decodedBytes = Base64.decode(imageQrCode, 0);
-                    imgBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
-                    filename = Objects.requireNonNull(paymentDetails.get("mp_order_ID")) + ".png";
-
-                    isStoragePermissionGranted();
-                }
-            });
-            return false;
-        });
+        webViewMain.loadUrl(setMPMainUI);
 
         // Register a callback for handling the back press
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                Log.e("logGooglePay" , "WebCore onBackPressed");
+                Log.d("logGooglePay" , "WebCore onBackPressed");
                 closemolpay();
             }
         };
@@ -355,6 +362,57 @@ public class MOLPayActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        try {
+            if(isTNGResult && webViewMain != null){
+                Log.d(MOLPAY, "onResume TNG condition");
+                closemolpay();
+            }
+        } catch (Exception e) {
+            Log.e(MOLPAY, e.getMessage(), e);
+            closemolpay();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == REQUEST_EXTERNAL_STORAGE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Log.d(MOLPAY, "onRequestPermissionsResult Permission: " + permissions[0] + " was " + grantResults[0]);
+                //resume tasks needing this permission
+
+                storeImage(imgBitmap);
+
+            } else {
+                Log.d(MOLPAY, "onRequestPermissionsResult EXTERNAL_STORAGE permission was NOT granted.");
+                Toast.makeText(this, "Image not saved", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    // Private API
+    private void closemolpay() {
+        webViewMain.loadUrl("javascript:closemolpay()");
+        if (isClosingReceipt) {
+            isClosingReceipt = false;
+            finish();
+        }
+    }
+
+    private void resetWebView() {
+        // Clear current content
+        webViewMain.loadUrl("about:blank");
+        webViewMain.setLongClickable(false);
+        webViewMain.setOnLongClickListener(null);
+        // Clear cache and history
+        webViewMain.clearCache(true);
+        webViewMain.clearHistory();
+    }
+
     private void nativeWebRequestUrlUpdates(String url) {
         Log.d(MOLPAY, "nativeWebRequestUrlUpdates url = " + url);
 
@@ -363,9 +421,9 @@ public class MOLPayActivity extends AppCompatActivity {
 
         // Create JSON object for Payment details
         JSONObject json = new JSONObject(data);
-
         // Init javascript
-        mpMainUI.loadUrl("javascript:nativeWebRequestUrlUpdates(" + json + ")");
+        webViewMain.loadUrl("javascript:nativeWebRequestUrlUpdates(" + json + ")");
+        Log.d(MOLPAY, "nativeWebRequestUrlUpdates New Url = javascript:nativeWebRequestUrlUpdates(" + json + ")");
     }
 
 //    private void nativeWebRequestUrlUpdatesOnFinishLoad(String url) {
@@ -381,355 +439,243 @@ public class MOLPayActivity extends AppCompatActivity {
 //        mpMainUI.loadUrl("javascript:nativeWebRequestUrlUpdatesOnFinishLoad(" + json + ")");
 //    }
 
-    private class MPBankUIWebClient extends WebViewClient {
-        @Override
-        public void onPageStarted(WebView view, String url, Bitmap favicon) {
-            Log.d(MOLPAY, "MPBankUIWebClient onPageStarted url = " + url);
-
-            if (url != null) {
-                nativeWebRequestUrlUpdates(url);
-            }
-        }
-        @Override
-        public void onPageFinished (WebView view, String url) {
-            Log.d(MOLPAY, "MPBankUIWebClient onPageFinished url = " + url);
-
-            nativeWebRequestUrlUpdates(url);
-        }
-    }
-
-    private class MPMOLPayUIWebClient extends WebViewClient {
-        @Override
-        public void onPageStarted(WebView view, String url, Bitmap favicon) {
-            Log.d(MOLPAY, "MPMOLPayUIWebClient onPageStarted url = " + url);
-
-            if (url != null) {
-                nativeWebRequestUrlUpdates(url);
-            }
-        }
-
-        @Override
-        public boolean shouldOverrideUrlLoading(final WebView view, String url) {
-            Log.d(MOLPAY, "MPMOLPayUIWebClient shouldOverrideUrlLoading url = " + url);
-
-            if (url != null) {
-                if (url.contains("scbeasy/easy_app_link.html")) {
-                    try {
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                        startActivity(intent);
-                    } catch (ActivityNotFoundException e) {
-                        // Define what your app should do if no activity can handle the intent.
-//                        e.printStackTrace();
-                    }
-                    view.evaluateJavascript("document.getElementById(\"ref_no\").value", ref_no -> {
-                        Log.d(MOLPAY, "MPMOLPayUIWebClient trans_id = " + ref_no.replaceAll("\"", ""));
-                        view.loadUrl("https://pay.merchant.razer.com/RMS/intermediate_app/loading.php?tranID=" + ref_no.replaceAll("\"", ""));
-                    });
-                    return true;
-                }
-                else if (url.contains("atome-my.onelink.me") ||
-                        url.contains("myboost.app") ||
-                        url.contains("market://") ||
-                        url.contains("intent://") ||
-                        url.contains("alipays://") ||
-                        url.contains("https://app.shopback.com/pay") ||
-                        url.contains("https://m.tngdigital.com.my/s/cashier/")) {
-                    try {
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                        startActivity(intent);
-                    } catch (ActivityNotFoundException e) {
-                        // Define what your app should do if no activity can handle the intent.
-                        //TODO implement logger
-//                        e.printStackTrace();
-                    }
-                    return true;
-                }
-            }
-            return false;
-        }
-
-		@Override
-		public void onPageFinished (final WebView view, String url) {
-		    Log.d(MOLPAY, "MPMOLPayUIWebClient onPageFinished url = " + url);
-	//            nativeWebRequestUrlUpdates(url);
-
-            if (url.contains("intermediate_appTNG-EWALLET.php") || url.contains("intermediate_app/processing.php")) {
-
-			Log.d(MOLPAY, "contains url");
-
-			view.evaluateJavascript("document.getElementById(\"systembrowserurl\").innerHTML", s -> {
-                Log.d(MOLPAY, "MPMOLPayUIWebClient base64String = " + s);
-                    // Decode base64
-                    byte[] data = Base64.decode(s, Base64.DEFAULT);
-                    String dataString = new String(data);
-                    Log.d(MOLPAY, "MPBankUIWebClient dataString = " + dataString);
-
-                    if (!s.isEmpty()) {
-                        Log.d(MOLPAY, "MPMOLPayUIWebClient success");
-                        isTNGResult = true;
-                        Intent intent= new Intent(Intent.ACTION_VIEW, Uri.parse(dataString));
-                        startActivity(intent);
-                    } else {
-                        Log.d(MOLPAY, "MPMOLPayUIWebClient empty dataString");
-                    }
-                });
-
-		    }
-		}
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        try {
-            if(isTNGResult && mpMOLPayUI != null){
-                Log.d(MOLPAY, "onResume TNG condition");
-                closemolpay();
-            }
-        } catch (Exception e) {
-            Log.e(MOLPAY, e.toString());
-            closemolpay();
-        }
-    }
-
-    private class MPMOLPayUIWebChromeClient extends WebChromeClient {
-        @SuppressLint("SetJavaScriptEnabled")
-        @Override
-        public boolean onCreateWindow(WebView view, boolean dialog, boolean userGesture, Message resultMsg) {
-            RelativeLayout container = findViewById(R.id.MPContainer);
-
-            mpBankUI = new WebView(MOLPayActivity.this);
-
-            mpBankUI.getSettings().setJavaScriptEnabled(true);
-            mpBankUI.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
-            mpBankUI.getSettings().setAllowUniversalAccessFromFileURLs(true);
-            mpBankUI.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
-            mpBankUI.getSettings().setSupportMultipleWindows(true);
-
-            mpBankUI.setWebViewClient(new MPBankUIWebClient());
-            mpBankUI.setWebChromeClient(new WebChromeClient() {
-                @Override
-                public void onCloseWindow(WebView window) {
-                    closemolpay();
-                }
-            });
-
-            mpBankUI.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-            container.addView(mpBankUI);
-            WebView.WebViewTransport transport = (WebView.WebViewTransport) resultMsg.obj;
-            transport.setWebView(mpBankUI);
-            resultMsg.sendToTarget();
-            return true;
-
-        }
-    }
-
     private class MPMainUIWebClient extends WebViewClient {
         @Override
-        public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            Log.d(MOLPAY, "MPMainUIWebClient shouldOverrideUrlLoading url = " + url);
+        public void onPageStarted(WebView view, String url, Bitmap favicon) {
+            Log.d(MOLPAY, "webViewMainWebClient onPageStarted url = " + url + " modeSelected: " + modeSelected);
 
-            if (url != null) {
-                if (url.startsWith(mpopenmolpaywindow)) {
-                    String base64String = url.replace(mpopenmolpaywindow, "");
-                    Log.d(MOLPAY, "MPMainUIWebClient mpopenmolpaywindow base64String = " + base64String);
+            if (url != null && !url.equals("about:blank") && !modeSelected.equals("mpMainUI")) {
+                Log.d(MOLPAY, "onPageStarted init" + url);
+                nativeWebRequestUrlUpdates(url);
+                Log.d(MOLPAY, "onPageStarted ended" + url);
+            }
+        }
 
-                    // Decode base64
-                    byte[] data = Base64.decode(base64String, Base64.DEFAULT);
-                    String dataString = new String(data);
-                    Log.d(MOLPAY, "MPMainUIWebClient mpopenmolpaywindow dataString = " + dataString);
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+            Uri uri = request.getUrl();
+            if (uri == null) {
+                Log.d(MOLPAY, "Invalid WebResourceRequest or null URL");
+                return false; // Let WebView handle null cases
+                 }
 
-                    if (!dataString.isEmpty()) {
-                        Log.d(MOLPAY, "MPMainUIWebClient mpopenmolpaywindow success");
-                        if (mpMOLPayUI != null) {
-                            Log.d(MOLPAY, "mpMOLPayUI not NULL update UI");
-                            mpMOLPayUI.loadDataWithBaseURL("", dataString, "text/html", "UTF-8", "");
-                            mpMOLPayUI.setVisibility(View.VISIBLE);
-                        } else {
-                            Log.d(MOLPAY, "mpMOLPayUI NULL avoid crash");
-                        }
+            if (uri.toString().startsWith(mpopenmolpaywindow)) {
+                String base64String = uri.toString().replace(mpopenmolpaywindow, "");
+                Log.d(MOLPAY, "MPMainUIWebClient mpopenmolpaywindow base64String = " + base64String);
+
+                // Decode base64
+                byte[] data = Base64.decode(base64String, Base64.DEFAULT);
+                String dataString = new String(data);
+                Log.d(MOLPAY, "MPMainUIWebClient mpopenmolpaywindow dataString = " + dataString);
+
+                if (!dataString.isEmpty()) {
+                    Log.d(MOLPAY, "MPMainUIWebClient mpopenmolpaywindow success");
+                    configureWebView(WebMode.mpMOLPayUI);
+                    if (webViewMain != null) {
+                        Log.d(MOLPAY, "webViewMain not NULL update UI");
+                        webViewMain.loadDataWithBaseURL("", dataString, "text/html", "UTF-8", "");
+    //                    mpMOLPayUI.setVisibility(View.VISIBLE);
                     } else {
-                        Log.d(MOLPAY, "MPMainUIWebClient mpopenmolpaywindow empty dataString");
+                        Log.d(MOLPAY, "webViewMain NULL avoid crash");
                     }
-
+                } else {
+                    Log.d(MOLPAY, "MPMainUIWebClient mpopenmolpaywindow empty dataString");
                 }
-                else if (url.startsWith(mpcloseallwindows)) {
-                    if (mpBankUI != null) {
-                        mpBankUI.loadUrl("about:blank");
-                        mpBankUI.setVisibility(View.GONE);
-                        mpBankUI.clearCache(true);
-                        mpBankUI.clearHistory();
-                        mpBankUI.removeAllViews();
-                        mpBankUI.destroy();
-                        mpBankUI = null;
-                    }
-                    if (mpMOLPayUI != null) {
-                        mpMOLPayUI.loadUrl("about:blank");
-                        mpMOLPayUI.setVisibility(View.GONE);
-                        mpMOLPayUI.clearCache(true);
-                        mpMOLPayUI.clearHistory();
-                        mpMOLPayUI.removeAllViews();
-                        mpMOLPayUI.destroy();
-                        mpMOLPayUI = null;
-                    }
-                }
-                else if (url.startsWith(mptransactionresults)) {
-                    String base64String = url.replace(mptransactionresults, "");
-                    Log.d(MOLPAY, "MPMainUIWebClient mptransactionresults base64String = " + base64String);
+                return true; }
+            if (uri.toString().startsWith(mpcloseallwindows)) {
+                resetWebView();
+                return true;}
+            if (uri.toString().startsWith(mptransactionresults)) {
+                String base64String = uri.toString().replace(mptransactionresults, "");
+                Log.d(MOLPAY, "MPMainUIWebClient mptransactionresults base64String = " + base64String);
 
-                    // Decode base64
-                    byte[] data = Base64.decode(base64String, Base64.DEFAULT);
-                    String dataString = new String(data);
-                    Log.d(MOLPAY, "MPMainUIWebClient mptransactionresults dataString = " + dataString);
+                // Decode base64
+                byte[] data = Base64.decode(base64String, Base64.DEFAULT);
+                String dataString = new String(data);
+                Log.d(MOLPAY, "MPMainUIWebClient mptransactionresults dataString = " + dataString);
 
-                    Intent result = new Intent();
-                    result.putExtra(MOLPayTransactionResult, dataString);
+                Intent result = new Intent();
+                result.putExtra(MOLPayTransactionResult, dataString);
 
-                    if (isJSONValid(dataString)){
-                        Log.d(MOLPAY, "isJSONValid setResult");
-                        setResult(RESULT_OK, result);
+                if (isJSONValid(dataString)){
+                    Log.d(MOLPAY, "isJSONValid setResult");
+                    setResult(RESULT_OK, result);
 
-                        // Check if mp_request_type is "Receipt", if it is, don't finish()
-                        try {
-                            JSONObject jsonResult = new JSONObject(dataString);
-
-                            Log.d(MOLPAY, "MPMainUIWebClient jsonResult = " + jsonResult);
-
-                            if (!jsonResult.has("mp_request_type") || !jsonResult.getString("mp_request_type").equals("Receipt") || jsonResult.has("error_code")) {
-                                finish();
-                            } else {
-                                // Next close button click will finish() the activity
-                                isClosingReceipt = true;
-                                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SECURE);
-                            }
-                        } catch (Throwable t) {
-                            finish();
-                        }
-                    }
-                    else {
-                        Log.d(MOLPAY, "json not valid dont setResult");
-//                    setResult(RESULT_CANCELED, result);
-                    }
-
-                }
-                else if (url.startsWith(mprunscriptonpopup)) {
-                    String base64String = url.replace(mprunscriptonpopup, "");
-                    Log.d(MOLPAY, "MPMainUIWebClient mprunscriptonpopup base64String = " + base64String);
-
-                    // Decode base64
-                    byte[] data = Base64.decode(base64String, Base64.DEFAULT);
-                    String jsString = new String(data);
-                    Log.d(MOLPAY, "MPMainUIWebClient mprunscriptonpopup jsString = " + jsString);
-
-                    if (mpBankUI != null) {
-                        mpBankUI.loadUrl("javascript:"+jsString);
-                        Log.d(MOLPAY, "mpBankUI loadUrl = " + "javascript:"+jsString);
-                    }
-
-                }
-                else if (url.startsWith(mppinstructioncapture)) {
-                    String base64String = url.replace(mppinstructioncapture, "");
-                    Log.d(MOLPAY, "MPMainUIWebClient mppinstructioncapture base64String = " + base64String);
-
-                    // Decode base64
-                    byte[] data = Base64.decode(base64String, Base64.DEFAULT);
-                    String dataString = new String(data);
-                    Log.d(MOLPAY, "MPMainUIWebClient mppinstructioncapture dataString = " + dataString);
-
+                    // Check if mp_request_type is "Receipt", if it is, don't finish()
                     try {
                         JSONObject jsonResult = new JSONObject(dataString);
 
-                        String base64Img = jsonResult.getString("base64ImageUrlData");
-                        filename = jsonResult.getString("filename");
                         Log.d(MOLPAY, "MPMainUIWebClient jsonResult = " + jsonResult);
 
-                        byte[] decodedBytes = Base64.decode(base64Img, 0);
-                        imgBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
-
-                        isStoragePermissionGranted();
-
+                        if (!jsonResult.has("mp_request_type") || !jsonResult.getString("mp_request_type").equals("Receipt") || jsonResult.has("error_code")) {
+                            finish();
+                        } else {
+                            // Next close button click will finish() the activity
+                            isClosingReceipt = true;
+                            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SECURE);
+                        }
                     } catch (Throwable t) {
-                        Log.d(MOLPAY, "MPMainUIWebClient jsonResult error = " + t);
+                        finish();
                     }
-
                 }
-                else if (url.startsWith(mpclickgpbutton)) {
-                    String mp_channel = "";
-                    Log.e("logGooglePay" , "url = " + url);
-                    // Extract the part after "://"
-                    String base64Part = url.substring(url.indexOf("://") + 3);
-                    // Decode the Base64 string
-                    byte[] decodedBytes = Base64.decode(base64Part, Base64.DEFAULT);
-                    String decodedString = new String(decodedBytes);
-                    Log.e("logGooglePay" , "decodedString = " + decodedString);
-
-                    try {
-                        JSONObject json = new JSONObject(decodedString);
-                        mp_channel = json.getString("mp_channel");
-                        Log.e("logGooglePay" , "mp_channel = " + mp_channel);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    
-                    // Optional params checker
-
-                    if (paymentDetails.get("mp_extended_vcode") == null) {
-                        paymentDetails.put(MOLPayActivity.mp_extended_vcode, false);
-                    } else {
-                        paymentDetails.put(MOLPayActivity.mp_extended_vcode, Objects.requireNonNull(paymentDetails.get("mp_extended_vcode")));
-                    }
-
-                    if (paymentDetails.get("mp_sandbox_mode") == null) {
-                        paymentDetails.put(MOLPayActivity.mp_sandbox_mode, false);
-                    } else {
-                        paymentDetails.put(MOLPayActivity.mp_sandbox_mode, Objects.requireNonNull(paymentDetails.get("mp_sandbox_mode")));
-                    }
-
-                    if (paymentDetails.get(MOLPayActivity.mp_gpay_channel) != null) {
-                        paymentDetails.put(MOLPayActivity.mp_gpay_channel, Objects.requireNonNull(paymentDetails.get(MOLPayActivity.mp_gpay_channel)));
-                    } else if (mp_channel.toLowerCase().contains("tng")) {
-                        paymentDetails.put(MOLPayActivity.mp_gpay_channel, new String[] { "TNG-EWALLET" });
-                    } else if (mp_channel.toLowerCase().contains("shopee")) {
-                        paymentDetails.put(MOLPayActivity.mp_gpay_channel, new String[] { "SHOPEEPAY" });
-                    } else if (mp_channel.toLowerCase().contains("credit")) {
-                        paymentDetails.put(MOLPayActivity.mp_gpay_channel, new String[] { "CC" });
-                    } else {
-                        paymentDetails.put(MOLPayActivity.mp_gpay_channel, new String[] { "SHOPEEPAY", "TNG-EWALLET", "CC" });
-                    }
-
-                    if (paymentDetails.get(MOLPayActivity.mp_closebutton_display) == null) {
-                        paymentDetails.put(MOLPayActivity.mp_closebutton_display, false);
-                    } else {
-                        paymentDetails.put(MOLPayActivity.mp_closebutton_display, Objects.requireNonNull(paymentDetails.get(MOLPayActivity.mp_closebutton_display)));
-                    }
-
-                    paymentDetails.put(MOLPayActivity.mp_merchant_ID, Objects.requireNonNull(paymentDetails.get("mp_merchant_ID"))); // Your sandbox / production merchant ID
-                    paymentDetails.put(MOLPayActivity.mp_verification_key, Objects.requireNonNull(paymentDetails.get("mp_verification_key"))); // Your sandbox / production verification key
-                    paymentDetails.put(MOLPayActivity.mp_amount, Objects.requireNonNull(paymentDetails.get("mp_amount"))); // Must be in 2 decimal points format
-                    paymentDetails.put(MOLPayActivity.mp_order_ID, Objects.requireNonNull(paymentDetails.get("mp_order_ID"))); // Must be unique
-                    paymentDetails.put(MOLPayActivity.mp_currency, Objects.requireNonNull(paymentDetails.get("mp_currency"))); // Must matched mp_country
-                    paymentDetails.put(MOLPayActivity.mp_country, Objects.requireNonNull(paymentDetails.get("mp_country"))); // Must matched mp_currency
-                    paymentDetails.put(MOLPayActivity.mp_bill_description, Objects.requireNonNull(paymentDetails.get("mp_bill_description")));
-                    paymentDetails.put(MOLPayActivity.mp_bill_name, Objects.requireNonNull(paymentDetails.get("mp_bill_name")));
-                    paymentDetails.put(MOLPayActivity.mp_bill_email, Objects.requireNonNull(paymentDetails.get("mp_bill_email")));
-                    paymentDetails.put(MOLPayActivity.mp_bill_mobile, Objects.requireNonNull(paymentDetails.get("mp_bill_mobile")));
-
-                    openGPActivityWithResult();
+                else {
+                    Log.d(MOLPAY, "json not valid dont setResult");
+//                    setResult(RESULT_CANCELED, result);
                 }
+                return true;
+            }
+            if (uri.toString().startsWith(mprunscriptonpopup)) {
+                String base64String = uri.toString().replace(mprunscriptonpopup, "");
+                Log.d(MOLPAY, "MPMainUIWebClient mprunscriptonpopup base64String = " + base64String);
+
+                // Decode base64
+                byte[] data = Base64.decode(base64String, Base64.DEFAULT);
+                String jsString = new String(data);
+                Log.d(MOLPAY, "MPMainUIWebClient mprunscriptonpopup jsString = " + jsString);
+                configureWebView(WebMode.mpBankUI);
+                if (webViewMain != null) {
+                    webViewMain.loadUrl("javascript:"+jsString);
+                    Log.d(MOLPAY, "webViewMain loadUrl = javascript:"+jsString);
+                }
+                return true;
+            }
+            if (uri.toString().startsWith(mppinstructioncapture)) {
+                String base64String = uri.toString().replace(mppinstructioncapture, "");
+                Log.d(MOLPAY, "MPMainUIWebClient mppinstructioncapture base64String = " + base64String);
+
+                // Decode base64
+                byte[] data = Base64.decode(base64String, Base64.DEFAULT);
+                String dataString = new String(data);
+                Log.d(MOLPAY, "MPMainUIWebClient mppinstructioncapture dataString = " + dataString);
+
+                try {
+                    JSONObject jsonResult = new JSONObject(dataString);
+
+                    String base64Img = jsonResult.getString("base64ImageUrlData");
+                    filename = jsonResult.getString("filename");
+                    Log.d(MOLPAY, "MPMainUIWebClient jsonResult = " + jsonResult);
+
+                    byte[] decodedBytes = Base64.decode(base64Img, 0);
+                    imgBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+
+                    isStoragePermissionGranted();
+
+                } catch (Throwable t) {
+                    Log.d(MOLPAY, "MPMainUIWebClient jsonResult error = " + t);
+                }
+                return true;
+            }
+            if (uri.toString().startsWith(mpclickgpbutton)) {
+                String mp_channel = "";
+                Log.d("logGooglePay" , "url = " + uri.toString());
+                // Extract the part after "://"
+                String base64Part = uri.toString().substring(uri.toString().indexOf("://") + 3);
+                // Decode the Base64 string
+                byte[] decodedBytes = Base64.decode(base64Part, Base64.DEFAULT);
+                String decodedString = new String(decodedBytes);
+                Log.d("logGooglePay" , "decodedString = " + decodedString);
+
+                try {
+                    JSONObject json = new JSONObject(decodedString);
+                    mp_channel = json.getString("mp_channel");
+                    Log.d("logGooglePay" , "mp_channel = " + mp_channel);
+                } catch (Exception e) {
+                    Log.e(MOLPAY, e.getMessage(), e);
+                }
+
+                // Optional params checker
+
+                if (paymentDetails.get("mp_extended_vcode") == null) {
+                    paymentDetails.put(MOLPayActivity.mp_extended_vcode, false);
+                } else {
+                    paymentDetails.put(MOLPayActivity.mp_extended_vcode, Objects.requireNonNull(paymentDetails.get("mp_extended_vcode")));
+                }
+
+                if (paymentDetails.get("mp_sandbox_mode") == null) {
+                    paymentDetails.put(MOLPayActivity.mp_sandbox_mode, false);
+                } else {
+                    paymentDetails.put(MOLPayActivity.mp_sandbox_mode, Objects.requireNonNull(paymentDetails.get("mp_sandbox_mode")));
+                }
+
+                if (paymentDetails.get(MOLPayActivity.mp_gpay_channel) != null) {
+                    paymentDetails.put(MOLPayActivity.mp_gpay_channel, Objects.requireNonNull(paymentDetails.get(MOLPayActivity.mp_gpay_channel)));
+                } else if (mp_channel.toLowerCase().contains("tng")) {
+                    paymentDetails.put(MOLPayActivity.mp_gpay_channel, new String[] { "TNG-EWALLET" });
+                } else if (mp_channel.toLowerCase().contains("shopee")) {
+                    paymentDetails.put(MOLPayActivity.mp_gpay_channel, new String[] { "SHOPEEPAY" });
+                } else if (mp_channel.toLowerCase().contains("credit")) {
+                    paymentDetails.put(MOLPayActivity.mp_gpay_channel, new String[] { "CC" });
+                } else {
+                    paymentDetails.put(MOLPayActivity.mp_gpay_channel, new String[] { "SHOPEEPAY", "TNG-EWALLET", "CC" });
+                }
+
+                if (paymentDetails.get(MOLPayActivity.mp_closebutton_display) == null) {
+                    paymentDetails.put(MOLPayActivity.mp_closebutton_display, false);
+                } else {
+                    paymentDetails.put(MOLPayActivity.mp_closebutton_display, Objects.requireNonNull(paymentDetails.get(MOLPayActivity.mp_closebutton_display)));
+                }
+
+                paymentDetails.put(MOLPayActivity.mp_merchant_ID, Objects.requireNonNull(paymentDetails.get("mp_merchant_ID"))); // Your sandbox / production merchant ID
+                paymentDetails.put(MOLPayActivity.mp_verification_key, Objects.requireNonNull(paymentDetails.get("mp_verification_key"))); // Your sandbox / production verification key
+                paymentDetails.put(MOLPayActivity.mp_amount, Objects.requireNonNull(paymentDetails.get("mp_amount"))); // Must be in 2 decimal points format
+                paymentDetails.put(MOLPayActivity.mp_order_ID, Objects.requireNonNull(paymentDetails.get("mp_order_ID"))); // Must be unique
+                paymentDetails.put(MOLPayActivity.mp_currency, Objects.requireNonNull(paymentDetails.get("mp_currency"))); // Must matched mp_country
+                paymentDetails.put(MOLPayActivity.mp_country, Objects.requireNonNull(paymentDetails.get("mp_country"))); // Must matched mp_currency
+                paymentDetails.put(MOLPayActivity.mp_bill_description, Objects.requireNonNull(paymentDetails.get("mp_bill_description")));
+                paymentDetails.put(MOLPayActivity.mp_bill_name, Objects.requireNonNull(paymentDetails.get("mp_bill_name")));
+                paymentDetails.put(MOLPayActivity.mp_bill_email, Objects.requireNonNull(paymentDetails.get("mp_bill_email")));
+                paymentDetails.put(MOLPayActivity.mp_bill_mobile, Objects.requireNonNull(paymentDetails.get("mp_bill_mobile")));
+
+                openGPActivityWithResult();
+                return true;
             }
 
-            return true;
+            if (uri.toString().contains("scbeasy/easy_app_link.html")) {
+                try {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    startActivity(intent);
+                }
+                catch (ActivityNotFoundException e) {
+                    // Define what your app should do if no activity can handle the intent.
+                    Log.e(MOLPAY, e.getMessage(), e);
+                }
+                view.evaluateJavascript("document.getElementById(\"ref_no\").value", ref_no -> {
+                    Log.d(MOLPAY, "webViewMainWebClient trans_id = " + ref_no.replaceAll("\"", ""));
+                    view.loadUrl("https://pay.merchant.razer.com/RMS/intermediate_app/loading.php?tranID=" + ref_no.replaceAll("\"", ""));
+                });
+                return true;
+            }
+            if (uri.toString().contains("atome-my.onelink.me") ||
+                    uri.toString().contains("myboost.app") ||
+                    uri.toString().contains("market://") ||
+                    uri.toString().contains("intent://") ||
+                    uri.toString().contains("alipays://") ||
+                    uri.toString().contains("https://app.shopback.com/pay") ||
+                    uri.toString().contains("https://m.tngdigital.com.my/s/cashier/")) {
+                try {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    startActivity(intent);
+                } catch (ActivityNotFoundException e) {
+                    // Define what your app should do if no activity can handle the intent.
+                    Log.e(MOLPAY, e.getMessage(), e);
+                }
+                return true;
+            }
+
+            return false;
+
         }
 
         @Override
         public void onPageFinished(WebView view, String url) {
+            Log.d(MOLPAY, "webViewMainWebClient onPageFinished url = " + url + " modeSelected: " + modeSelected);
             if (!isMainUILoaded && !url.equals("about:blank")) {
                 if (paymentDetails != null) {
                     isMainUILoaded = true;
                     JSONObject json = new JSONObject(paymentDetails);
 //                    Log.d(MOLPAY, "MPMainUIWebClient onPageFinished paymentDetails = " + json);
 //                    Init javascript
-                    mpMainUI.loadUrl("javascript:updateSdkData(" + json + ")");
+                    webViewMain.loadUrl("javascript:updateSdkData(" + json + ")");
                 } else {
                     String dataString = "{ \"error\" : \" Payment details is null.\"  }";
 //                    Log.d(MOLPAY, "MPMainUIWebClient mptransactionresults dataString = " + dataString);
@@ -738,10 +684,60 @@ public class MOLPayActivity extends AppCompatActivity {
                     setResult(RESULT_OK, result);
                     finish();
                 }
-
+            return;
             }
+            if (url.contains("intermediate_appTNG-EWALLET.php") || url.contains("intermediate_app/processing.php")) {
+
+                Log.d(MOLPAY, "contains url");
+
+                view.evaluateJavascript("document.getElementById(\"systembrowserurl\").innerHTML", s -> {
+                    Log.d(MOLPAY, "webViewMainWebClient base64String = " + s);
+                    // Decode base64
+                    byte[] data = Base64.decode(s, Base64.DEFAULT);
+                    String dataString = new String(data);
+                    Log.d(MOLPAY, "webViewMainWebClient dataString = " + dataString);
+
+                    if (!s.isEmpty()) {
+                        Log.d(MOLPAY, "webViewMainWebClient success");
+                        isTNGResult = true;
+                        Intent intent= new Intent(Intent.ACTION_VIEW, Uri.parse(dataString));
+                        startActivity(intent);
+                    } else {
+                        Log.d(MOLPAY, "webViewMainWebClient empty dataString");
+                    }
+                });
+            return;
+            }
+            if(modeSelected.equals("mpBankUI")){
+                Log.d(MOLPAY, "onPageFinished init" + url);
+                nativeWebRequestUrlUpdates(url);
+                Log.d(MOLPAY, "onPageFinished ended" + url);}
+
         }
 
+
+
+    }
+
+    private class MPMOLPayUIWebChromeClient extends WebChromeClient {
+        @SuppressLint("SetJavaScriptEnabled")
+        @Override
+        public boolean onCreateWindow(WebView view, boolean dialog, boolean userGesture, Message resultMsg) {
+
+            Log.d(MOLPAY, "onCreateWindow created");
+            RelativeLayout container = findViewById(R.id.MPContainer);
+            configureWebView(WebMode.mpBankUI);
+            container.addView(webViewMain);
+            WebView.WebViewTransport transport = (WebView.WebViewTransport) resultMsg.obj;
+            transport.setWebView(webViewMain);
+            resultMsg.sendToTarget();
+            return true;
+
+        }
+        @Override
+        public void onCloseWindow(WebView window) {
+            closemolpay();
+        }
     }
 
     private void openGPActivityWithResult(){
@@ -750,26 +746,6 @@ public class MOLPayActivity extends AppCompatActivity {
         intent.putExtra(MOLPayActivity.MOLPayPaymentDetails, paymentDetails);
         gpActivityResultLauncher.launch(intent);
     }
-
-    ActivityResultLauncher<Intent> gpActivityResultLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-
-                Log.d("logGooglePay", "MOLPayActivity gpActivityResultLauncher result = " + result.toString());
-
-                if (result.getData() != null) {
-                    Intent data = result.getData();
-                    String transactionResult = data.getStringExtra(MOLPayActivity.MOLPayTransactionResult);
-
-                    if (transactionResult != null) {
-                        Intent intent = new Intent();
-                        intent.putExtra(MOLPayTransactionResult, transactionResult);
-                        setResult(result.getResultCode(), intent);
-                        finish();
-                    }
-                }
-            }
-    );
 
     public boolean isJSONValid(String test) {
         try {
@@ -826,24 +802,6 @@ public class MOLPayActivity extends AppCompatActivity {
 
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        if (requestCode == REQUEST_EXTERNAL_STORAGE) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Log.d(MOLPAY, "onRequestPermissionsResult Permission: " + permissions[0] + "was " + grantResults[0]);
-                //resume tasks needing this permission
-
-                storeImage(imgBitmap);
-
-            } else {
-                Log.d(MOLPAY, "onRequestPermissionsResult EXTERNAL_STORAGE permission was NOT granted.");
-                Toast.makeText(this, "Image not saved", Toast.LENGTH_LONG).show();
-            }
-        }
-    }
-
     public static boolean isDeviceRooted(Context context) {
         String[] paths = {
                 "/system/app/Superuser.apk",
@@ -885,4 +843,25 @@ public class MOLPayActivity extends AppCompatActivity {
         return false;
     }
 
+
+
+    ActivityResultLauncher<Intent> gpActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+
+                Log.d("logGooglePay", "MOLPayActivity gpActivityResultLauncher result = " + result.toString());
+
+                if (result.getData() != null) {
+                    Intent data = result.getData();
+                    String transactionResult = data.getStringExtra(MOLPayActivity.MOLPayTransactionResult);
+
+                    if (transactionResult != null) {
+                        Intent intent = new Intent();
+                        intent.putExtra(MOLPayTransactionResult, transactionResult);
+                        setResult(result.getResultCode(), intent);
+                        finish();
+                    }
+                }
+            }
+    );
 }
