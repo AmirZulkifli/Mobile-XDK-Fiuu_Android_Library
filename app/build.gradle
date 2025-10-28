@@ -29,7 +29,7 @@ signingConfigs{
             signingConfig signingConfigs.sskey
         }
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.sskey
         }
