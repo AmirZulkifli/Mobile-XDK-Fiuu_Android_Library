@@ -10,30 +10,15 @@ android {
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
-    } 
-
-signingConfigs{ 
-    sskey {
-           keyAlias "xdkandroid"
-           keyPassword "RMSdev123"
-           storeFile file("C:/Users/aizuddin.zulkifli/Documents/dev/keystores/xdkandroid.jks")
-           storePassword "RMSdev123"
-           v1SigningEnabled true
-       }
-}
-
+    }
     buildTypes {
-        debug {
-            debuggable true
-            minifyEnabled false
-            signingConfig signingConfigs.sskey
-        }
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.sskey
+            signingConfig signingConfigs.debug
         }
     }
+
     namespace 'com.fiuu.xdkandroid'
 
     viewBinding {
