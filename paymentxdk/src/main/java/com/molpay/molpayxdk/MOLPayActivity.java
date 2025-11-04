@@ -6,6 +6,7 @@ import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -35,6 +36,7 @@ import android.view.WindowManager;
 import android.webkit.CookieManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -385,7 +387,7 @@ public class MOLPayActivity extends AppCompatActivity {
                     });
                     return true;
                 }
-                else if (url.contains("atome-my.onelink.me") ||
+                if (url.contains("atome-my.onelink.me") ||
                         url.contains("myboost.app") ||
                         url.contains("market://") ||
                         url.contains("intent://") ||
@@ -601,7 +603,6 @@ public class MOLPayActivity extends AppCompatActivity {
 
             return false;
         }
-
         @Override
         public void onPageFinished (WebView webView, String url) {
             if (url == null || url.trim().isEmpty()) {
@@ -661,6 +662,36 @@ public class MOLPayActivity extends AppCompatActivity {
                 return;
             }
             nativeWebRequestUrlUpdates(url);
+        }
+        @Override
+        public void onReceivedHttpError(WebView webView, WebResourceRequest request, WebResourceResponse errorResponse) {
+            super.onReceivedHttpError(webView, request, errorResponse);
+            String tagString = (String) webView.getTag();
+            int statusCode = errorResponse.getStatusCode();
+            String reasonPhrase = errorResponse.getReasonPhrase();
+            Log.e(MOLPAY, "Error statusCode: " + statusCode + " webView: " + tagString + " reasonPhrase: " + reasonPhrase);
+
+            //only handle error on fiuu side.
+            if(!tagString.equals("mpMainUI")) {return;}
+            if (statusCode == 503) {
+                Log.e("WebView", "HTTP 503 Service Unavailable");
+                String dataString = "{ \"error\" : \"HTTP 503 Service Unavailable\"  }";
+                //                    Log.d(MOLPAY, "MPMainUIWebClient mptransactionresults dataString = " + dataString);
+                Intent result = new Intent();
+                result.putExtra(MOLPayTransactionResult, dataString);
+                setResult(RESULT_OK, result);
+                new AlertDialog.Builder(webView.getContext())
+                        .setTitle("Service Unavailable")
+                        .setMessage("The server is currently unavailable (503). Please try again later.")
+                        .setCancelable(false)
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                finish();
+                            }
+                        })
+                        .show();
+            }
         }
 
     }
