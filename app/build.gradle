@@ -18,6 +18,7 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+
     namespace 'com.fiuu.xdkandroid'
 
     viewBinding {
