@@ -290,6 +290,24 @@ public class MOLPayActivity extends AppCompatActivity {
 
         mpMOLPayUI.setWebViewClient(new MPMainUIWebClient());
         mpMOLPayUI.setWebChromeClient(new MPMainUIWebChromeClient());
+
+        mpMOLPayUI.setLongClickable(true);
+        mpMOLPayUI.setOnLongClickListener(view -> {
+            Log.d(MOLPAY, "Long press fired!");
+            mpMOLPayUI.evaluateJavascript("document.getElementById(\"qrcode_img\").src", qrdata -> {
+                Log.d(MOLPAY, "QR data = " + qrdata);
+                if (qrdata != null && !qrdata.equals("null")) {
+                    String imageQrCode = qrdata.replaceAll("data:image/png;base64,", "");
+                    Log.d(MOLPAY, "imageQrCode = " + imageQrCode);
+                    byte[] decodedBytes = Base64.decode(imageQrCode, 0);
+                    imgBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+                    filename = Objects.requireNonNull(paymentDetails.get("mp_order_ID")) + ".png";
+
+                    isStoragePermissionGranted();
+                }
+            });
+            return false;
+        });
         mpMOLPayUI.setVisibility(View.GONE);
         cookieManager.setAcceptThirdPartyCookies(mpMOLPayUI, true);
 
@@ -319,7 +337,7 @@ public class MOLPayActivity extends AppCompatActivity {
                         finish();
                     })
                     .show();
- // stop further execution
+            // stop further execution
         }
     }
 
@@ -646,13 +664,13 @@ public class MOLPayActivity extends AppCompatActivity {
                     if (paymentDetails != null) {
                         isMainUILoaded = true;
                         JSONObject json = new JSONObject(paymentDetails);
-    //                    Log.d(MOLPAY, "MPMainUIWebClient onPageFinished paymentDetails = " + json);
-    //                    Init javascript
+                        //                    Log.d(MOLPAY, "MPMainUIWebClient onPageFinished paymentDetails = " + json);
+                        //                    Init javascript
                         mpMainUI.loadUrl("javascript:updateSdkData(" + json + ")");
                     }
                     else {
                         String dataString = "{ \"error\" : \" Payment details is null.\"  }";
-    //                    Log.d(MOLPAY, "MPMainUIWebClient mptransactionresults dataString = " + dataString);
+                        //                    Log.d(MOLPAY, "MPMainUIWebClient mptransactionresults dataString = " + dataString);
                         Intent result = new Intent();
                         result.putExtra(MOLPayTransactionResult, dataString);
                         setResult(RESULT_OK, result);
@@ -897,57 +915,35 @@ public class MOLPayActivity extends AppCompatActivity {
         Log.d(MOLPAY, "resetWebView init mode: " + tagString);
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
-
-        switch (tagString) {
-            case "mpMainUI" -> {
-                settings.setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
-                settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
-                settings.setAllowFileAccess(false);
-                settings.setAllowFileAccessFromFileURLs(false);
-                settings.setAllowUniversalAccessFromFileURLs(false);
-                settings.setAllowContentAccess(false);
-            }
-            case "mpBankUI" -> {
-                settings.setCacheMode(WebSettings.LOAD_DEFAULT);
-                settings.setAllowUniversalAccessFromFileURLs(true);
-                settings.setJavaScriptCanOpenWindowsAutomatically(true);
-                settings.setSupportMultipleWindows(true);
-                webView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-                webView.setVisibility(View.GONE);
-            }
-            case "mpMOLPayUI" -> {
-                settings.setJavaScriptCanOpenWindowsAutomatically(true);
-                settings.setSupportMultipleWindows(true);
-                settings.setLoadWithOverviewMode(true);
-                settings.setUseWideViewPort(true);
-                settings.setCacheMode(WebSettings.LOAD_DEFAULT);
-                settings.setDomStorageEnabled(true);
-                settings.setAllowFileAccess(true);
-                settings.setAllowFileAccessFromFileURLs(true);
-                settings.setAllowUniversalAccessFromFileURLs(true);
-                settings.setAllowContentAccess(true);
-                webView.setLongClickable(true);
-                webView.setOnLongClickListener(view -> {
-                    Log.d(MOLPAY, "Long press fired!");
-                    webView.evaluateJavascript("document.getElementById(\"qrcode_img\").src", qrdata -> {
-                        Log.d(MOLPAY, "QR data = " + qrdata);
-                        if (qrdata != null && !qrdata.equals("null")) {
-                            String imageQrCode = qrdata.replaceAll("data:image/png;base64,", "");
-                            Log.d(MOLPAY, "imageQrCode = " + imageQrCode);
-                            byte[] decodedBytes = Base64.decode(imageQrCode, 0);
-                            imgBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
-                            filename = Objects.requireNonNull(paymentDetails.get("mp_order_ID")) + ".png";
-
-                            isStoragePermissionGranted();
-                        }
-                    });
-                    return false;
-                });
-                webView.setVisibility(View.GONE);
-
-            }
+        if(tagString.equals("mpMainUI")){
+            settings.setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
+            settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+            settings.setAllowFileAccess(false);
+            settings.setAllowFileAccessFromFileURLs(false);
+            settings.setAllowUniversalAccessFromFileURLs(false);
+            settings.setAllowContentAccess(false);
+            return;
+        }
+        if(tagString.equals("mpBankUI")){
+            settings.setCacheMode(WebSettings.LOAD_DEFAULT);
+            settings.setAllowUniversalAccessFromFileURLs(true);
+            settings.setJavaScriptCanOpenWindowsAutomatically(true);
+            settings.setSupportMultipleWindows(true);
+            webView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+            webView.setVisibility(View.GONE);
+            return;
         }
 
+        settings.setJavaScriptCanOpenWindowsAutomatically(true);
+        settings.setSupportMultipleWindows(true);
+        settings.setLoadWithOverviewMode(true);
+        settings.setUseWideViewPort(true);
+        settings.setCacheMode(WebSettings.LOAD_DEFAULT);
+        settings.setDomStorageEnabled(true);
+        settings.setAllowFileAccess(true);
+        settings.setAllowFileAccessFromFileURLs(true);
+        settings.setAllowUniversalAccessFromFileURLs(true);
+        settings.setAllowContentAccess(true);
 
     }
 
