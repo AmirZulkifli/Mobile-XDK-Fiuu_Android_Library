@@ -128,7 +128,7 @@ public class MOLPayActivity extends AppCompatActivity {
     private final static String mpclickgpbutton = "mpclickgpbutton://";
     private final static String module_id = "module_id";
     private final static String wrapper_version = "wrapper_version";
-    private final static String wrapperVersion = "29a";
+    private final static String wrapperVersion = "31a";
 
     private String filename;
     private Bitmap imgBitmap;
@@ -342,7 +342,7 @@ public class MOLPayActivity extends AppCompatActivity {
         }, TIMEOUT_DURATION);
 
         timeoutHandler.postDelayed(() -> {
-            if (progressLoading < 40 && !isPageLoaded) {
+            if (progressLoading < 30 && !isPageLoaded) {
                 // Timeout reached, stop loading
                 Toast.makeText(this, "We are receiving heavy traffic, network unstable", Toast.LENGTH_LONG).show();
             }
@@ -412,8 +412,6 @@ public class MOLPayActivity extends AppCompatActivity {
             }
             String tagString = (String) webView.getTag();
             if(tagString.equals("mpMainUI")){
-                Log.e(MOLPAY, "mpMainUI Start Loading");
-                isPageLoaded = true;
                 return;
             }
             Log.d(MOLPAY, "onPageStarted url = " + url);
@@ -700,7 +698,8 @@ public class MOLPayActivity extends AppCompatActivity {
                 return;
             }
             if(tagString.equals("mpMainUI")){
-                Log.e(MOLPAY, "Main Finished Loading");
+
+                isPageLoaded = true;
                 if (!isMainUILoaded && !url.equals("about:blank")) {
                     if (paymentDetails != null) {
                         isMainUILoaded = true;
@@ -717,8 +716,6 @@ public class MOLPayActivity extends AppCompatActivity {
                         setResult(RESULT_OK, result);
                         finish();
                     }
-                } else {
-                    Log.e(MOLPAY, "other condition");
                 }
                 return;
             }
