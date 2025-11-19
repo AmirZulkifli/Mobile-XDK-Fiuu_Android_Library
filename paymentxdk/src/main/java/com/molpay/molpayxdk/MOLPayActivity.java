@@ -344,7 +344,7 @@ public class MOLPayActivity extends AppCompatActivity {
         timeoutHandler.postDelayed(() -> {
             if (progressLoading < 30 && !isPageLoaded) {
                 // Timeout reached, stop loading
-                Toast.makeText(this, "We are receiving heavy traffic, network unstable", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Unstable network.\nCheck your connection and try again.", Toast.LENGTH_LONG).show();
             }
         }, NETWORK_HEAVY_DURATION);
 
