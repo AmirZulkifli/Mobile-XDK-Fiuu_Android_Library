@@ -151,6 +151,8 @@ public class MOLPayActivity extends AppCompatActivity {
     private static final int TIMEOUT_DURATION = 5000; // 5seconds
     private static final int NETWORK_HEAVY_DURATION = 3000; // 3seconds
 
+
+
     // Private API
     private void closemolpay() {
         mpMainUI.loadUrl("javascript:closemolpay()");
