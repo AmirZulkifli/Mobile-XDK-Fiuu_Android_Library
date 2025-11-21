@@ -148,8 +148,8 @@ public class MOLPayActivity extends AppCompatActivity {
     private Handler timeoutHandler = new Handler();
     private boolean isPageLoaded = false;
     private int progressLoading = 0;
-    private static final int TIMEOUT_DURATION = 5000; // 5 seconds
-    private static final int NETWORK_HEAVY_DURATION = 3000; // 3 seconds
+    private static final int TIMEOUT_DURATION = 5000; // 5seconds
+    private static final int NETWORK_HEAVY_DURATION = 3000; // 3seconds
 
     // Private API
     private void closemolpay() {
